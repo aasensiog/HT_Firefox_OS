@@ -1,0 +1,5 @@
+$(function() { 
+	$("#auth").click(function() { 
+		
+	}); 
+});
