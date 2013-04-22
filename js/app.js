@@ -3,17 +3,29 @@ var EvImages = {
 	ocasion: 'http://cdn1.iconfinder.com/data/icons/ballcons/png/classic.png'
 };
 
-$(document).ready(function() {
-  	// disable ajax nav
-  	$.mobile.ajaxLinksEnabled = false;
-});
-
 var saveUserToken = function() {
 	var token = $('input#user_token').val();
 	localStorage['userToken'] = token;
 };
 
-$(document).on('pageinit', '#page1', function(){
+$(document).ready(function() {
+  	// disable ajax nav
+  	$.mobile.ajaxLinksEnabled = false;
+});
+
+
+$(document).on('load', '#page1', function(){
+	$.ajax({
+		url: "http://www.google.com",
+		xhrFields: {
+			withCredentials: true
+		}
+	})
+	.done(function() {
+		alert("done");
+	}).fail(function() {
+		alert("fail");
+	});
 
 });
 
