@@ -10,8 +10,6 @@ var saveUserToken = function() {
 	localStorage['userToken'] = token;
 };
 
-var updateLive = function() {};
-
 var buildMatch = function() {
 	if (!response) return null;
 
@@ -25,11 +23,12 @@ $(document).ready(function() {
 });
 
 
-$(document).on('pageinit', '#page1', function(){
-	if (localStorage['userToken']) {
+$(document).on('pageinit', '#page_home', function(){
+	/*if (localStorage['userToken']) {
   		document.location.href = '#page_live';
   		return;
-  	}
+  	}*/
+  	request_token();
 	/*
 	$.ajax({
 		url: "http://www77.hattrick.org/Community/CHPP/NewDocs/Example.aspx?file=players&version=2.3&actionType=view"
