@@ -24,11 +24,13 @@ $(document).ready(function() {
 
 
 $(document).on('pageinit', '#page_home', function(){
-	/*if (localStorage['userToken']) {
+	if (localStorage['userToken']) {
   		document.location.href = '#page_live';
   		return;
-  	}*/
-  	request_token();
+  	}
+  	//request_token();
+  	//authorize_path();
+
 	/*
 	$.ajax({
 		url: "http://www77.hattrick.org/Community/CHPP/NewDocs/Example.aspx?file=players&version=2.3&actionType=view"

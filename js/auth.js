@@ -1,14 +1,36 @@
 
 var request_token_url = 'https://chpp.hattrick.org/oauth/request_token.ashx';
+var authorize_path_url = 'https://chpp.hattrick.org/oauth/authorize.aspx';
+
+var accessor = {
+    token: 'DDWFtJRH1Lb1GNTC',
+    tokenSecret: 'VD6vofdOCG795Lwq',
+    consumerKey : "I7YbVQstMasUCioQvQE19K",
+    consumerSecret: "Uc6kND7rrRdKj5JzAC1qbx2zdjMAxiq3mhPhjEpvvMN"
+};
+
+var access_token = '6U7A4AJRc1HZgshA';
+
+var authorize_path = function() {
+    var url = authorize_path_url;
+    var message = {
+      action: url,
+      method: "GET",
+      parameters: {
+
+      }
+    };
+
+    OAuth.completeRequest(message, accessor);
+    OAuth.SignatureMethod.sign(message, accessor);
+    url = url + '?' + OAuth.formEncode(message.parameters);
+    window.location.href = url;
+};
+
 
 var request_token = function() {
     var url = request_token_url;
-    var accessor = {
-      //token: "...",
-      //tokenSecret: "...",
-      consumerKey : "I7YbVQstMasUCioQvQE19K",
-      consumerSecret: "Uc6kND7rrRdKj5JzAC1qbx2zdjMAxiq3mhPhjEpvvMN"
-    };
+
 
     var message = {
       action: url,
@@ -21,7 +43,7 @@ var request_token = function() {
     OAuth.completeRequest(message, accessor);
     OAuth.SignatureMethod.sign(message, accessor);
     url = url + '?' + OAuth.formEncode(message.parameters);
-
+    window.location.href = url;
     $.ajax({
         url: url,
         dataType: 'html',
@@ -31,12 +53,6 @@ var request_token = function() {
         },
         error: function(data) {
             console.error(data);
-        },
-        complete: function(cs1) {
-            console.info(cs1);
-            if(cs1.readyState == 4 && cs1.status == 200) {
-                console.info(cs1);
-            };
-        },
+        }
     });
 };
