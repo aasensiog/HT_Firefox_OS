@@ -28,7 +28,7 @@ $(document).on('pageinit', '#page_home', function(){
   		document.location.href = '#page_live';
   		return;
   	}
-  	//request_token();
+  	request_token();
   	//authorize_path();
 
 	/*
