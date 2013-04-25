@@ -43,7 +43,7 @@ $(document).on('pageinit', '#page_home', function(){
 
 $(document).on('pageinit', '#page_live', function(){
 	$.ajax({
-		url: "LiveMatchInfoRequest"
+		url: "LiveMatchInfoRequest",
 	})
 	.done(function(xmlDoc) {
 		reponse = toJson(xmlDoc);
