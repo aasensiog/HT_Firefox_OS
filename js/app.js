@@ -24,12 +24,16 @@ $(document).ready(function() {
 
 
 $(document).on('pageinit', '#page_home', function(){
+	
+	/*
 	if (localStorage['userToken']) {
   		document.location.href = '#page_live';
   		return;
   	}
+	*/
   	request_token();
   	//authorize_path();
+  	//access_token();
 
 	/*
 	$.ajax({
