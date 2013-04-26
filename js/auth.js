@@ -1,36 +1,37 @@
 
-var request_token_url = 'https://chpp.hattrick.org/oauth/request_token.ashx';
-var authorize_path_url = 'https://chpp.hattrick.org/oauth/authorize.aspx';
-var acces_token_url = 'https://chpp.hattrick.org/oauth/access_token.ashx';
-
+/*
 var accessor = {
     //token: 'DDWFtJRH1Lb1GNTC',
     //tokenSecret: 'VD6vofdOCG795Lwq',
     consumerKey : "I7YbVQstMasUCioQvQE19K",
     consumerSecret: "Uc6kND7rrRdKj5JzAC1qbx2zdjMAxiq3mhPhjEpvvMN"
 };
-
+*/
 oauth_explorer_proxy_url = '';
 
 function getConsumerInfo() {
   var base_url = 'https://chpp.hattrick.org/oauth/';
-  
+
   var consumer = {
-    consumerKey           : 'I7YbVQstMasUCioQvQE19K',
-    consumerSecret        : "Uc6kND7rrRdKj5JzAC1qbx2zdjMAxiq3mhPhjEpvvMN",
+    consumerKey: 'I7YbVQstMasUCioQvQE19K',
+    consumerSecret: "Uc6kND7rrRdKj5JzAC1qbx2zdjMAxiq3mhPhjEpvvMN",
+
     serviceProvider: {
-      signatureMethod     : 'HMAC-SHA1',
-      requestTokenURL     : request_token_url, 
-      userAuthorizationURL  : authorize_path_url,
-      accessTokenURL      : acces_token_url,
-      revisionA           : true
+      method: 'GET',
+      signatureMethod: 'HMAC-SHA1',
+      request_token_url: base_url+'request_token.ashx',
+      authorize_url: base_url+'authorize.aspx',
+      authenticate_url: base_url+'authenticate.aspx',
+      acces_token_url: base_url+'access_token.ashx',
+      check_token_url: base_url+'access_token.ashx',
+      invalidate_token_url: base_url+'check_token.ashx'
     }
   };
 
   return consumer;
 }
 
-var oauth_verifier = 'FDgxPuLb8RpLx3EF';
+//var oauth_verifier = 'FDgxPuLb8RpLx3EF';
 
 
 var access_token = function() {
@@ -69,49 +70,39 @@ var authorize_path = function() {
 
 
 var request_token = function() {
-  var url = request_token_url;
-
   var consumer = getConsumerInfo();
-
   var message = {
-    action: consumer.serviceProvider.requestTokenURL,
-    method: "GET",
+    action: consumer.serviceProvider.request_token_url,
+    method: null, //consumer.serviceProvider.method,
     parameters: {
       oauth_callback: 'oob'
     }
   };
-
-  var accessor = { 
+  var accessor = {
     consumerSecret: consumer.consumerSecret,
-    consumerKey: consumer.consumerKey 
+    consumerKey: consumer.consumerKey
   };
-  /* 
-  if( consumer.serviceProvider.revisionA ) {
-    message.parameters.push(['oauth_callback','oob']);
-  }
-  */
-  doOAuthCall( message, accessor, function( data, textStatus ) {
-    var list   = OAuth.getParameterMap( OAuth.decodeForm( data ) );
-    alert( list.oauth_token );
-    alert( list.oauth_token_secret );
+
+  doOAuthCall(message, accessor, function(data, textStatus) {
+    var list = OAuth.getParameterMap(OAuth.decodeForm(data));
+    console.info(list);
+    console.info(textStatus);
   });
 };
 
 function doOAuthCall( message, accessor, oncmp ) {
+
   OAuth.completeRequest(message, accessor);
 
-  var bs = OAuth.SignatureMethod.getBaseString( message );
-  var ah = OAuth.getAuthorizationHeader('OAuth', message.parameters );    
+  var ah = OAuth.getAuthorizationHeader('OAuth', message.parameters );
   var cg = OAuth.addToURL( message.action, message.parameters );
-  
+
   if( oauth_explorer_proxy_url == '' ) {
     jQuery.ajaxSetup({
-      'beforeSend': function(xhr) {
-        xhr.setRequestHeader("Authorization", ah)
-      },
-      'error': function(req, err) { oncmp(req.responseText, err ) }
+      'error': function(req, err) { oncmp(req.responseText, err); },
+      'success': function(data) { oncmp(data); }
     });
-    jQuery.get( message.action, [], oncmp, 'text');
+    jQuery.get( cg, [], oncmp, 'text');
   } else {
     jQuery.ajaxSetup({
       'beforeSend': function(xhr) {
