@@ -18,13 +18,13 @@ var buildMatch = function() {
 
 $(document).ready(function() {
   	// disable ajax nav
-  	$.mobile.ajaxLinksEnabled = false;
+  	//$.mobile.ajaxLinksEnabled = false;
 
 });
 
 
 $(document).on('pageinit', '#page_home', function(){
-	
+
 	/*
 	if (localStorage['userToken']) {
   		document.location.href = '#page_live';
