@@ -7,7 +7,7 @@ var accessor = {
     consumerSecret: "Uc6kND7rrRdKj5JzAC1qbx2zdjMAxiq3mhPhjEpvvMN"
 };
 */
-oauth_explorer_proxy_url = '';
+oauth_explorer_proxy_url = 'http://albertasensio.es/proxy.php';
 
 function getConsumerInfo() {
   var base_url = 'https://chpp.hattrick.org/oauth/';
@@ -106,11 +106,10 @@ function doOAuthCall( message, accessor, oncmp ) {
   } else {
     jQuery.ajaxSetup({
       'beforeSend': function(xhr) {
-        xhr.setRequestHeader("X-Forward-Url", message.action);
         xhr.setRequestHeader("Authorization", ah);
       },
       'error': function(req, err) { oncmp(req.responseText, err ) }
     });
-    jQuery.get( oauth_explorer_proxy_url, [], oncmp, 'text');
+    jQuery.get( oauth_explorer_proxy_url+'?proxy_url='+cg, [], oncmp, 'text');
   }
 }
