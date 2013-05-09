@@ -19,34 +19,39 @@ function getConsumerInfo() {
   };
 
   return consumer;
-}
+};
+
+var accessor = {
+  consumerSecret: getConsumerInfo().consumerSecret,
+  consumerKey: getConsumerInfo().consumerKey
+};
 
 /**
-  * url
-  * callback {
-  *   success,
-  *   error
-  * }
-  }
-  */
-  var doXhrCall = function(url, callback) {
-    var xhr = new XMLHttpRequest({
-      mozSystem: true
-    });
+* url
+* callback {
+*   success,
+*   error
+* }
+}
+*/
+var doXhrCall = function(url, callback) {
+  var xhr = new XMLHttpRequest({
+    mozSystem: true
+  });
 
-    xhr.open("GET", url, true);
+  xhr.open("GET", url, true);
 
-    xhr.onreadystatechange = function () {
-        if (xhr.status === 200 && xhr.readyState === 4) {
-            callback.success(xhr.response);
-        }
-    };
-    xhr.onerror = function () {
-        callback.error();
-    };
-
-    xhr.send();
+  xhr.onreadystatechange = function () {
+      if (xhr.status === 200 && xhr.readyState === 4) {
+          callback.success(xhr.response);
+      }
   };
+  xhr.onerror = function () {
+      callback.error();
+  };
+
+  xhr.send();
+};
 
 
 var request_token = function() {
@@ -59,10 +64,6 @@ var request_token = function() {
       oauth_callback: 'oob'
     }
   };
-  var accessor = {
-    consumerSecret: consumer.consumerSecret,
-    consumerKey: consumer.consumerKey
-  };
 
   OAuth.completeRequest(message, accessor);
   url = message.action + '?' + OAuth.formEncode(message.parameters);
@@ -74,10 +75,10 @@ var request_token = function() {
       for (var key in params) {
         localStorage[key]=params[key];
       }
+
     },
     error: function() {
       alert('Error getting:'+message.action);
     }
   });
 };
-

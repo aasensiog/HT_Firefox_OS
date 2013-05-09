@@ -1,7 +1,7 @@
 {
 	"name": "HT Live",
 	"description": "Live your current Hattrick matches anywhere!",
-	"type": "trusted",
+	"type": "privileged",
 	"launch_path": "/index.html",
 	"developer": {
 		"name": "Albert Asensio",

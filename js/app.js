@@ -23,27 +23,23 @@ $(document).ready(function() {
 });
 
 
-$(document).on('pageinit', '#page_home', function(){
+$(document).on('pageinit', '#page_home', function() {
+	var authorizeA = $('#authorize');
+	authorizeA.hide();
 
-
-	if (localStorage['oauthToken']) {
-  		console.log('Tengo el token');
+	if (localStorage['oauth_token']) {
+  		console.log('Tengo el oauth token');
+  		if(localStorage['caca']) {
+  			console.log('Tengo el acces token')
+  		} else {
+  			console.info(getConsumerInfo().serviceProvider.authorize_url+'?oauth_token='+localStorage['oauthToken']);
+  			authorizeA.attr('href',
+  				getConsumerInfo().serviceProvider.authorize_url+'?oauth_token='+localStorage['oauth_token']);
+  			authorizeA.show();
+  		}
   	} else {
         request_token();
     }
-  	//authorize_path();
-  	//access_token();
-
-	/*
-	$.ajax({
-		url: "http://www77.hattrick.org/Community/CHPP/NewDocs/Example.aspx?file=players&version=2.3&actionType=view"
-	})
-	.done(function() {
-		alert("done");
-	}).fail(function(e) {
-		alert("fail");
-	});
-	*/
 });
 
 $(document).on('pageinit', '#page_live', function(){
