@@ -21,12 +21,40 @@ function getConsumerInfo() {
   return consumer;
 }
 
+/**
+  * url
+  * callback {
+  *   success,
+  *   error
+  * }
+  }
+  */
+  var doXhrCall = function(url, callback) {
+    var xhr = new XMLHttpRequest({
+      mozSystem: true
+    });
+
+    xhr.open("GET", url, true);
+
+    xhr.onreadystatechange = function () {
+        if (xhr.status === 200 && xhr.readyState === 4) {
+            callback.success(xhr.response);
+        }
+    };
+    xhr.onerror = function () {
+        callback.error();
+    };
+
+    xhr.send();
+  };
+
+
 var request_token = function() {
   var consumer = getConsumerInfo();
 
   var message = {
     action: consumer.serviceProvider.request_token_url,
-    method: null, //consumer.serviceProvider.method,
+    method: consumer.serviceProvider.method,
     parameters: {
       oauth_callback: 'oob'
     }
@@ -39,40 +67,17 @@ var request_token = function() {
   OAuth.completeRequest(message, accessor);
   url = message.action + '?' + OAuth.formEncode(message.parameters);
 
-  var crossDomainXHRDisplay = $("#cross-domain-xhr-display");
-  var xhr = new XMLHttpRequest({
-    mozSystem: true
-  });
-  xhr.open("GET", url, true);
-  xhr.responseType = 'html';
-
-  xhr.onreadystatechange = function () {
-      if (xhr.status === 200 && xhr.readyState === 4) {
-          crossDomainXHRDisplay.html(xhr.response);
+  doXhrCall(url, {
+    success: function(response) {
+      var params = OAuth.getParameterMap(response);
+      console.log(params);
+      for (var key in params) {
+        localStorage[key]=params[key];
       }
-  }
-  xhr.onerror = function () {
-      crossDomainXHRDisplay.html("<h4>Result from Cross-domain XHR</h4><p>Cross-domain XHR failed</p>");
-  };
-
-  xhr.send();
-
-  /*
-  $.ajax({
-        method: 'GET',
-        url: url,
-        beforeSend: function(xhr) {
-          xhr.setRequestHeader("mozSystem", true);
-        },
-        error : function(req, err) {
-          console.error(req.responseText);
-          console.error(err);
-        },
-        success: function(data)
-        {
-          console.info(data);
-        }
-    });
-    */
+    },
+    error: function() {
+      alert('Error getting:'+message.action);
+    }
+  });
 };
 
