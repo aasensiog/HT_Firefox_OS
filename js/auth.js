@@ -39,18 +39,23 @@ var request_token = function() {
   OAuth.completeRequest(message, accessor);
   url = message.action + '?' + OAuth.formEncode(message.parameters);
 
-  var xmlhttp = new XMLHttpRequest({mozSystem: true});
-  xmlhttp.open('GET', url, true);
-  xmlhttp.send();
+  var crossDomainXHRDisplay = $("#cross-domain-xhr-display");
+  var xhr = new XMLHttpRequest({
+    mozSystem: true
+  });
+  xhr.open("GET", url, true);
+  xhr.responseType = 'html';
 
-  xmlhttp.onreadystatechange = function(){
-    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-      alert('OK');
-    }
-    else {
-      alert('KO');
-    }
+  xhr.onreadystatechange = function () {
+      if (xhr.status === 200 && xhr.readyState === 4) {
+          crossDomainXHRDisplay.html(xhr.response);
+      }
+  }
+  xhr.onerror = function () {
+      crossDomainXHRDisplay.html("<h4>Result from Cross-domain XHR</h4><p>Cross-domain XHR failed</p>");
   };
+
+  xhr.send();
 
   /*
   $.ajax({

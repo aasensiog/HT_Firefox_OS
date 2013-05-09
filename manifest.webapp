@@ -1,6 +1,7 @@
 {
 	"name": "HT Live",
 	"description": "Live your current Hattrick matches anywhere!",
+	"type": "trusted",
 	"launch_path": "/index.html",
 	"developer": {
 		"name": "Albert Asensio",
@@ -14,5 +15,7 @@
 		"128": "/img/icon128.png"
 	},
 	"default_locale": "en",
-	"mozSystem": true
+	"permissions": {
+		"systemXHR":{}
+	}
 }
