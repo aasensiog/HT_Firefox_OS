@@ -37,8 +37,22 @@ var request_token = function() {
   };
 
   OAuth.completeRequest(message, accessor);
-  url = url + '?' + OAuth.formEncode(message.parameters);
+  url = message.action + '?' + OAuth.formEncode(message.parameters);
 
+  var xmlhttp = new XMLHttpRequest({mozSystem: true});
+  xmlhttp.open('GET', url, true);
+  xmlhttp.send();
+
+  xmlhttp.onreadystatechange = function(){
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+      alert('OK');
+    }
+    else {
+      alert('KO');
+    }
+  };
+
+  /*
   $.ajax({
         method: 'GET',
         url: url,
@@ -46,14 +60,14 @@ var request_token = function() {
           xhr.setRequestHeader("mozSystem", true);
         },
         error : function(req, err) {
-          console.info(req.responseText);
-          console.info(err);
+          console.error(req.responseText);
+          console.error(err);
         },
         success: function(data)
         {
           console.info(data);
         }
     });
-
+    */
 };
 
