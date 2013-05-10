@@ -13,8 +13,8 @@ function getConsumerInfo() {
       authorize_url: base_url+'authorize.aspx',
       authenticate_url: base_url+'authenticate.aspx',
       acces_token_url: base_url+'access_token.ashx',
-      check_token_url: base_url+'access_token.ashx',
-      invalidate_token_url: base_url+'check_token.ashx'
+      check_token_url: base_url+'check_token.ashx',
+      invalidate_token_url: base_url+'invalidate_token.ashx'
     }
   };
 
@@ -49,12 +49,13 @@ var doXhrCall = function(url, callback) {
   xhr.onerror = function () {
       callback.error();
   };
-
+  alert('sending');
   xhr.send();
 };
 
 
 var request_token = function() {
+  var deferred = $.Deferred();
   var consumer = getConsumerInfo();
 
   var message = {
@@ -75,10 +76,48 @@ var request_token = function() {
       for (var key in params) {
         localStorage[key]=params[key];
       }
-
+      deferred.resolve();
     },
     error: function() {
       alert('Error getting:'+message.action);
+      deferred.reject();
     }
   });
+  return deferred.promise();
+};
+
+var getAccessToken = function() {
+  var deferred = $.Deferred();
+  var consumer = getConsumerInfo();
+  $.extend(true, accessor, {
+    token: localStorage['oauth_token']
+  });
+
+  var message = {
+    action: consumer.serviceProvider.acces_token_url,
+    method: consumer.serviceProvider.method,
+    parameters: {
+      oauth_verifier: localStorage['oauth_verifier']
+    }
+  };
+
+  OAuth.completeRequest(message, accessor);
+  url = message.action + '?' + OAuth.formEncode(message.parameters);
+
+  alert("doing call: "+ url);
+
+  doXhrCall(url, {
+    success: function(response) {
+      alert('success');
+      var params = OAuth.getParameterMap(response);
+      console.log(params.oauth_token);
+      console.log(params.oauth_token_secret);
+      deferred.resolve();
+    },
+    error: function() {
+      alert('Error getting:'+message.action);
+      deferred.reject();
+    }
+  });
+  return deferred.promise();
 };

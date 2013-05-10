@@ -10,7 +10,7 @@
 	<script src="js/jquery-1.9.1.min.js"></script>
 	<script src='js/jquery.mobile-1.3.1.min.js'></script>
 	<script src="js/xmlToJson.js"></script>
-	
+
 	<script src="js/OAuth/oauth.js"></script>
 	<script src="js/OAuth/sha1.js"></script>
 
@@ -29,8 +29,8 @@
 
 			<a id='authorize' target='_blank'>Authorization is needed for getting your HT team information, get the code</a>
 			<br>
-			<label for='user_token'>Introduce the code:</label><input id='user_token' type='text'>
-			<a href='#page_live' data-role="button" onclick='saveUserToken()'>Authorize</a>
+			<label for='oauth_verifier'>Introduce the code:</label><input id='oauth_verifier' type='text'>
+			<a data-role="button" onclick='saveOauthVerifier()'>Authorize</a>
 
 		</div>
 		<div data-role="footer">

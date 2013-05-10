@@ -5,9 +5,19 @@ var EvImages = {
 
 var response = null;
 
-var saveUserToken = function() {
-	var token = $('input#user_token').val();
-	localStorage['userToken'] = token;
+var saveOauthVerifier = function() {
+    alert('saveOauthVerifier');
+	var verifier = $('input#oauth_verifier').val();
+    if (verifier) {
+        localStorage['oauth_verifier'] = verifier;
+        getAccessToken().done(function() {
+            //TODO: go to Live page
+            console.log('Tengo el accessoooo');
+            localStorage['ok'] = true;
+        });
+    } else {
+        alert('You must enter the authorization code');
+    }
 };
 
 var buildMatch = function() {
@@ -17,8 +27,8 @@ var buildMatch = function() {
 };
 
 $(document).ready(function() {
-  	// disable ajax nav
-  	//$.mobile.ajaxLinksEnabled = false;
+    // disable ajax nav
+    //$.mobile.ajaxLinksEnabled = false;
 
 });
 
@@ -27,18 +37,30 @@ $(document).on('pageinit', '#page_home', function() {
 	var authorizeA = $('#authorize');
 	authorizeA.hide();
 
-	if (localStorage['oauth_token']) {
-  		console.log('Tengo el oauth token');
-  		if(localStorage['caca']) {
-  			console.log('Tengo el acces token')
-  		} else {
-  			console.info(getConsumerInfo().serviceProvider.authorize_url+'?oauth_token='+localStorage['oauthToken']);
-  			authorizeA.attr('href',
-  				getConsumerInfo().serviceProvider.authorize_url+'?oauth_token='+localStorage['oauth_token']);
-  			authorizeA.show();
-  		}
-  	} else {
-        request_token();
+    var step1 = function() {
+        if (!localStorage['oauth_token']) {
+            request_token().done(function() {
+                step2();
+            });
+        } else {
+            step2();
+        }
+    };
+
+    var step2 = function() {
+        console.log('Tengo el oauth token');
+        if (!localStorage['oauth_verifier']) {
+            console.info(getConsumerInfo().serviceProvider.authorize_url+'?oauth_token='+localStorage['oauthToken']);
+            authorizeA.attr('href',
+                getConsumerInfo().serviceProvider.authorize_url+'?oauth_token='+localStorage['oauth_token']);
+            authorizeA.show();
+        }
+    };
+
+    if (!localStorage['ok']) {
+        step1();
+    } else {
+        //TODO: We have access, go to page live
     }
 });
 
