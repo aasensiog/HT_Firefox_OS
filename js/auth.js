@@ -49,7 +49,6 @@ var doXhrCall = function(url, callback) {
   xhr.onerror = function () {
       callback.error();
   };
-  alert('sending');
   xhr.send();
 };
 
@@ -79,7 +78,6 @@ var request_token = function() {
       deferred.resolve();
     },
     error: function() {
-      alert('Error getting:'+message.action);
       deferred.reject();
     }
   });
@@ -90,7 +88,8 @@ var getAccessToken = function() {
   var deferred = $.Deferred();
   var consumer = getConsumerInfo();
   $.extend(true, accessor, {
-    token: localStorage['oauth_token']
+    token: localStorage['oauth_token'],
+    tokenSecret: localStorage['oauth_token_secret']
   });
 
   var message = {
@@ -104,18 +103,16 @@ var getAccessToken = function() {
   OAuth.completeRequest(message, accessor);
   url = message.action + '?' + OAuth.formEncode(message.parameters);
 
-  alert("doing call: "+ url);
+  console.log(url);
 
   doXhrCall(url, {
     success: function(response) {
-      alert('success');
       var params = OAuth.getParameterMap(response);
       console.log(params.oauth_token);
       console.log(params.oauth_token_secret);
-      deferred.resolve();
+      deferred.resolve(params.oauth_token);
     },
     error: function() {
-      alert('Error getting:'+message.action);
       deferred.reject();
     }
   });
