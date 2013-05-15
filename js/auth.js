@@ -120,3 +120,43 @@ var getAccessToken = function() {
   });
   return deferred.promise();
 };
+
+var getTeamDetails = function() {
+
+  var deferred = $.Deferred();
+  var consumer = getConsumerInfo();
+
+  $.extend(true, accessor, {
+    token: localStorage.getItem('ok_oauth_token'),
+    tokenSecret: localStorage.getItem('ok_oauth_token_secret')
+  });
+
+  var message = {
+    action: '',
+    method: consumer.serviceProvider.method,
+    parameters: {
+      file: 'teamdetails',
+      version: '2.8'
+    }
+  };
+
+  OAuth.completeRequest(message, accessor);
+  url = message.action + '?' + OAuth.formEncode(message.parameters);
+
+  console.log(url);
+
+  doXhrCall(url, {
+    success: function(response) {
+      var params = OAuth.getParameterMap(response);
+      for (var key in params) {
+        console.log(params[key]);
+        localStorage.setItem('ok_'+key,params[key]);
+      }
+      deferred.resolve();
+    },
+    error: function() {
+      deferred.reject();
+    }
+  });
+  return deferred.promise();
+};

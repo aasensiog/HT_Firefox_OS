@@ -15,7 +15,7 @@ var saveOauthVerifier = function() {
         getAccessToken().done(function() {
             alert('verified');
             //TODO: go to Live page
-            document.location.href('#page_live');
+            document.location.href ='#page_live';
         }).fail(function() {
             alert('ERROR oauth verifier');
         });
@@ -50,7 +50,7 @@ $(document).on('pageinit', '#page_home', function() {
 
     var step2 = function() {
         console.log('step2');
-        if (!localStorage.getItem('oauth_token')) {
+        if (!localStorage.getItem('oauth_verifier')) {
             console.info(getConsumerInfo().serviceProvider.authorize_url+'?oauth_token='+localStorage.getItem('oauth_token'));
             authorizeA.attr('href',
                 getConsumerInfo().serviceProvider.authorize_url+'?oauth_token='+localStorage.getItem('oauth_token'));
@@ -78,6 +78,6 @@ var buildMatch = function() {
 };
 
 $(document).on('pageinit', '#page_live', function() {
-    $('#match').html(localStorage['ok']);
+    $('#match').html(localStorage['ok_oauth_token']);
     //doCall();
 });
