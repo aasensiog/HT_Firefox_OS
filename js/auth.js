@@ -71,9 +71,9 @@ var request_token = function() {
   doXhrCall(url, {
     success: function(response) {
       var params = OAuth.getParameterMap(response);
-      console.log(params);
       for (var key in params) {
-        localStorage[key]=params[key];
+        console.log(params[key]);
+        localStorage.setItem(key,params[key]);
       }
       deferred.resolve();
     },
@@ -88,15 +88,15 @@ var getAccessToken = function() {
   var deferred = $.Deferred();
   var consumer = getConsumerInfo();
   $.extend(true, accessor, {
-    token: localStorage['oauth_token'],
-    tokenSecret: localStorage['oauth_token_secret']
+    token: localStorage.getItem('oauth_token'),
+    tokenSecret: localStorage.getItem('oauth_token_secret')
   });
 
   var message = {
     action: consumer.serviceProvider.acces_token_url,
     method: consumer.serviceProvider.method,
     parameters: {
-      oauth_verifier: localStorage['oauth_verifier']
+      oauth_verifier: localStorage.getItem('oauth_verifier')
     }
   };
 
@@ -108,9 +108,50 @@ var getAccessToken = function() {
   doXhrCall(url, {
     success: function(response) {
       var params = OAuth.getParameterMap(response);
-      console.log(params.oauth_token);
-      console.log(params.oauth_token_secret);
-      deferred.resolve(params.oauth_token);
+      for (var key in params) {
+        console.log(params[key]);
+        localStorage.setItem('ok_'+key,params[key]);
+      }
+      deferred.resolve();
+    },
+    error: function() {
+      deferred.reject();
+    }
+  });
+  return deferred.promise();
+};
+
+var getData = function(data) {
+
+  var file = data.file,
+      version = data.version;
+
+  var deferred = $.Deferred();
+  var consumer = getConsumerInfo();
+
+  $.extend(true, accessor, {
+    token: localStorage.getItem('ok_oauth_token'),
+    tokenSecret: localStorage.getItem('ok_oauth_token_secret')
+  });
+
+  var message = {
+    action: 'http://chpp.hattrick.org/chppxml.ashx',
+    method: consumer.serviceProvider.method,
+    parameters: {
+      file: file,
+      version: version
+    }
+  };
+
+  OAuth.completeRequest(message, accessor);
+  url = message.action + '?' + OAuth.formEncode(message.parameters);
+
+  console.log(url);
+
+  doXhrCall(url, {
+    success: function(response) {
+      console.log(response);
+      deferred.resolve(response);
     },
     error: function() {
       deferred.reject();
