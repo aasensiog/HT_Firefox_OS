@@ -79,5 +79,9 @@ var buildMatch = function() {
 
 $(document).on('pageinit', '#page_live', function() {
     $('#match').html(localStorage['ok_oauth_token']);
-    //doCall();
+    getTeamDetails().done(function() {
+        alert('done');
+    }).fail(function() {
+        alert('fail');
+    });
 });

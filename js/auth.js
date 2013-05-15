@@ -132,11 +132,11 @@ var getTeamDetails = function() {
   });
 
   var message = {
-    action: '',
+    action: 'http://chpp.hattrick.org/chppxml.ashx',
     method: consumer.serviceProvider.method,
     parameters: {
-      file: 'teamdetails',
-      version: '2.8'
+      file: 'live',
+      version: '1.8'
     }
   };
 
@@ -148,10 +148,7 @@ var getTeamDetails = function() {
   doXhrCall(url, {
     success: function(response) {
       var params = OAuth.getParameterMap(response);
-      for (var key in params) {
-        console.log(params[key]);
-        localStorage.setItem('ok_'+key,params[key]);
-      }
+      console.log(response);
       deferred.resolve();
     },
     error: function() {
