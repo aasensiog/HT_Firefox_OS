@@ -107,7 +107,6 @@ var getAccessToken = function() {
 
   doXhrCall(url, {
     success: function(response) {
-      alert('SUCCESSSSSSSSSSS');
       var params = OAuth.getParameterMap(response);
       for (var key in params) {
         console.log(params[key]);
@@ -116,7 +115,6 @@ var getAccessToken = function() {
       deferred.resolve();
     },
     error: function() {
-      alert('ERRORRRRRRRR');
       deferred.reject();
     }
   });

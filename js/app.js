@@ -11,7 +11,7 @@ var saveOauthVerifier = function() {
     console.log('savingOauthVerifier');
 	var verifier = $('input#oauth_verifier').val();
     if (verifier) {
-        localStorage['oauth_verifier'] = verifier;
+        localStorage.setItem('oauth_verifier', verifier);
         getAccessToken().done(function() {
             alert('verified');
             //TODO: go to Live page
@@ -38,8 +38,8 @@ $(document).on('pageinit', '#page_home', function() {
 
     var step1 = function() {
         console.log('step1');
-        if (!localStorage['oauth_token']) {
-            console.log(localStorage['oauth_token']);
+        if (!localStorage.getItem('oauth_token')) {
+            console.log(localStorage.getItem('oauth_token'));
             request_token().done(function() {
                 step2();
             });
@@ -50,20 +50,23 @@ $(document).on('pageinit', '#page_home', function() {
 
     var step2 = function() {
         console.log('step2');
-        if (!localStorage['oauth_verifier']) {
+        if (!localStorage.getItem('oauth_token')) {
             console.info(getConsumerInfo().serviceProvider.authorize_url+'?oauth_token='+localStorage.getItem('oauth_token'));
             authorizeA.attr('href',
                 getConsumerInfo().serviceProvider.authorize_url+'?oauth_token='+localStorage.getItem('oauth_token'));
             authorizeA.show();
         } else {
-            $('input#oauth_verifier').val(localStorage['oauth_verifier']);
+            $('input#oauth_verifier').val(localStorage.getItem('oauth_verifier'));
         }
     };
 
-    if (!localStorage['ok_oauth_token']) {
-        console.log(localStorage['ok']);
+    if (!localStorage.getItem('ok_oauth_token')) {
+        console.log('No tenemos el ok_access_token');
+        console.log(localStorage.getItem('ok_oauth_token'));
         step1();
     } else {
+        console.log('tenemos el ok_access_token');
+        console.log(localStorage.getItem('ok_oauth_token'));
         document.location.href = '#page_live';
     }
 });
