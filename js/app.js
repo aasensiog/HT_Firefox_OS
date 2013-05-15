@@ -3,8 +3,19 @@ var EvImages = {
 	ocasion: 'http://cdn1.iconfinder.com/data/icons/ballcons/png/classic.png'
 };
 
-var urls = {
-    teamDetails: '?file=teamdetails&version=2.8'
+var files = {
+    teamDetails: {
+        file: 'teamdetails',
+        version:'2.8'
+    },
+    live:  {
+        file: 'live',
+        version: '1.8'
+    },
+    matches: {
+        file: 'matches',
+        version: '2.6'
+    }
 }
 
 var saveOauthVerifier = function() {
@@ -72,15 +83,13 @@ $(document).on('pageinit', '#page_home', function() {
 });
 
 var buildMatch = function() {
-    if (!response) return null;
-
     return '2'+' '+'no-suelo'+' : '+'opponent team'+' '+'1';
 };
 
 $(document).on('pageinit', '#page_live', function() {
     $('#match').html(localStorage['ok_oauth_token']);
-    getTeamDetails().done(function() {
-        alert('done');
+    getData(files.teamDetails).done(function(resp) {
+        $('#list').html(toJson(resp));
     }).fail(function() {
         alert('fail');
     });

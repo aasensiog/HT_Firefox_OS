@@ -121,7 +121,10 @@ var getAccessToken = function() {
   return deferred.promise();
 };
 
-var getTeamDetails = function() {
+var getData = function(data) {
+
+  var file = data.file,
+      version = data.version;
 
   var deferred = $.Deferred();
   var consumer = getConsumerInfo();
@@ -135,8 +138,8 @@ var getTeamDetails = function() {
     action: 'http://chpp.hattrick.org/chppxml.ashx',
     method: consumer.serviceProvider.method,
     parameters: {
-      file: 'live',
-      version: '1.8'
+      file: file,
+      version: version
     }
   };
 
@@ -147,9 +150,8 @@ var getTeamDetails = function() {
 
   doXhrCall(url, {
     success: function(response) {
-      var params = OAuth.getParameterMap(response);
       console.log(response);
-      deferred.resolve();
+      deferred.resolve(response);
     },
     error: function() {
       deferred.reject();
