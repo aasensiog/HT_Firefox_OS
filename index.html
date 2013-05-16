@@ -8,7 +8,7 @@
 	<link rel="stylesheet" href="css/jquery.mobile-1.3.1.min.css" />
 
 	<script src="js/lib/jquery-1.9.1.min.js"></script>
-	<script src='js/lib/query.mobile-1.3.1.min.js'></script>
+	<script src='js/lib/jquery.mobile-1.3.1.min.js'></script>
 
 	<script src="js/xmlToJson.js"></script>
 
@@ -16,12 +16,12 @@
 	<script src="js/lib/OAuth/sha1.js"></script>
 
 	<script src="js/auth.js"></script>
-	<script src="js/app.js"></script>
 	<script src="js/authentication.js"></script>
-	<script src='js/dispatcher.js'></script>
+	<script src="js/app.js"></script>
 
 </head>
 <body>
+
 	<div data-role="page" data-theme="e" id='index'>
 		<div data-role="header">
 			<h1>HT Live</h1>
@@ -36,7 +36,7 @@
 
 	<div data-role="page" data-theme="e" id='authentication'>
 		<div data-role="header">
-			<h1>HT Live Viewer</h1>
+			<h1>Authentication</h1>
 		</div>
 		<div data-role="content">
 
@@ -90,13 +90,12 @@
 
 	<div data-role="page" data-theme='e' id="live">
 	   	<div data-role="header">
-	      	<h1 id='match'></h1>
+	      	<h1 id='match'>Live</h1>
 	   	</div>
 
 	   	<div data-role="content">
 			<div id='content'>
 		      	<ul data-role="listview" data-inset='true' id='list' data-scroll="y"></ul>
-		      	<!--
 		      	<ul data-role="listview" data-inset="">
 					<li>
 						<h3>Stephen Weber</h3>
@@ -111,12 +110,10 @@
 						<p class="ui-li-aside"><strong>9:18</strong>AM</p>
 					</li>
 				</ul>
-				-->
 				</ul>
 			</div>
 	   	</div>
 
-	   	<!--FOOTER-->
 		<div data-role="footer">
 			<h4>@aasensiog - albertasensio.es</h4>
 		</div>

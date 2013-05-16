@@ -16,7 +16,7 @@ var saveOauthVerifier = function() {
 };
 
 var step1 = function() {
-	var authorizeA = $('#authorize');
+    var authorizeA = $('#authorize');
 	authorizeA.hide();
     console.log('step1');
     if (!localStorage.getItem('oauth_token')) {
@@ -32,6 +32,7 @@ var step1 = function() {
 var step2 = function() {
     console.log('step2');
     if (!localStorage.getItem('oauth_verifier')) {
+        var authorizeA = $('#authorize');
         console.info(getConsumerInfo().serviceProvider.authorize_url+'?oauth_token='+localStorage.getItem('oauth_token'));
         authorizeA.attr('href',
             getConsumerInfo().serviceProvider.authorize_url+'?oauth_token='+localStorage.getItem('oauth_token'));

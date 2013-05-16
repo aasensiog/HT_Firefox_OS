@@ -1,5 +1,5 @@
 
-function getConsumerInfo() {
+var getConsumerInfo = function () {
   var base_url = 'https://chpp.hattrick.org/oauth/';
 
   var consumer = {

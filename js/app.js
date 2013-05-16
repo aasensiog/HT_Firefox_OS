@@ -19,7 +19,6 @@ var files = {
 };
 
 $(document).on('pageinit', '#index', function() {
-    alert('1');
     if (!localStorage.getItem('ok_oauth_token')) {
         document.location.href = '#authentication';
     } else {
@@ -30,8 +29,6 @@ $(document).on('pageinit', '#index', function() {
 });
 
 $(document).on('pageinit', '#menu', function() {
-    alert(2);
-    $('body').html(localStorage['ok_oauth_token']);
     getData(files.teamDetails).done(function(resp) {
         alert(toJson(resp));
     }).fail(function() {
@@ -40,7 +37,6 @@ $(document).on('pageinit', '#menu', function() {
 });
 
 $(document).on('pageinit', '#authentication', function() {
-    alert(3);
     console.log('No tenemos el ok_access_token');
     console.log(localStorage.getItem('ok_oauth_token'));
     step1();
