@@ -121,10 +121,19 @@ var getAccessToken = function() {
   return deferred.promise();
 };
 
-var getData = function(data) {
+var getData = function(data, params) {
 
   var file = data.file,
       version = data.version;
+
+  var paramsObject = {
+    file: file,
+    version: version
+  };
+
+  for (var key in params) {
+    paramsObject[key] = params[key];
+  }
 
   var deferred = $.Deferred();
   var consumer = getConsumerInfo();
@@ -137,10 +146,7 @@ var getData = function(data) {
   var message = {
     action: 'http://chpp.hattrick.org/chppxml.ashx',
     method: consumer.serviceProvider.method,
-    parameters: {
-      file: file,
-      version: version
-    }
+    parameters: paramsObject
   };
 
   OAuth.completeRequest(message, accessor);

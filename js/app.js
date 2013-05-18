@@ -15,8 +15,18 @@ var files = {
     matches: {
         file: 'matches',
         version: '2.6'
+    },
+    matchDetails: {
+        file: 'matchdetails',
+        version: '2.5'
     }
 };
+
+$(document).bind("pagebeforechange", function( event, data ) {
+    $.mobile.pageData = (data && data.options && data.options.pageData)
+        ? data.options.pageData
+        : null;
+});
 
 $(document).on('pageinit', '#index', function() {
     if (!localStorage.getItem('ok_oauth_token')) {
@@ -48,6 +58,7 @@ $(document).on('pageshow', '#matchList', function() {
 
         var divider1 = false;
         var divider2 = false;
+        var divider3 = false;
         var matchList = $xml.find('MatchList');
         matchList.find('Match').each(function() {
             matchId = $(this).find('MatchID').text();
@@ -57,27 +68,27 @@ $(document).on('pageshow', '#matchList', function() {
             homeTeamName = $(this).find('HomeTeam').find('HomeTeamNameShortName').text();
             awayTeamName = $(this).find('AwayTeam').find('AwayTeamNameShortName').text();
 
-            var str = homeTeamName+' '+matchHomeGoals+'-'+matchAwayGoals+' '+awayTeamName;
+            var str = homeTeamName+' '+matchHomeGoals+' - '+matchAwayGoals+' '+awayTeamName;
             if (matchStatus === 'FINISHED') {
                 if (!divider1) {
                     $('#list').append("<li data-role='list-divider'>Finished</li>");
                     divider1 = true;
                 }
                 $('#list').append("<li><a href='#match?id="+matchId+"'>"+str+"</a></li>");
-            } else {
-                if (!divider2) {
-                    $('#list').append("<li data-role='list-divider'>Ongoing and Future</li>");
-                    divider2 = true;
+            } 
+            else if (matchStatus === 'ONGOING') {
+                if (!divider3) {
+                    $('#list').append("<li data-role='list-divider'>Ongoing</li>");
+                    divider3 = true;
                 }
                 $('#list').append("<li><a href='#live?id="+matchId+"'>"+str+"</a></li>");
-            }
-            /*
-            if (matchStatus === 'FINISHED') {
-                $('#list').append("<a href='#match' ><li>"+str+"</li></a>");
             } else {
-                $('#list').append("<a href='#live' ><li>"+str+"</li></a>");
+                if (!divider2) {
+                    $('#list').append("<li data-role='list-divider'>Future</li>");
+                    divider2 = true;
+                }
+                $('#list').append("<li data-icon='alert'><a>"+str+"</a></li>");
             }
-            */
         });
         $( "#list" ).listview('refresh');
 
@@ -95,11 +106,29 @@ $(document).on('pageshow', '#team', function() {
 });
 
 $(document).on('pageshow', '#match', function() {
-        var matchId = localStorage.getItem('currentMatch');
-        console.log(matchId);
+    if ($.mobile.pageData && $.mobile.pageData.id) {
+        var matchId = $.mobile.pageData.id;
+    }
+    var params = {
+        matchID: matchId
+    }
+    getData(files.matchDetails, params).done(function(resp) {
+        var xmlDoc = $.parseXML(resp),
+            $xml = $(xmlDoc);
+        $('#content').html();
+        
+        $.Mustache.load('templates/match.html', function() {
+            $('#content').mustache('match', {matchId: 'albert'});
+        });
+
+    }).fail(function() {
+        alert('fail');
+    });
 });
 
 $(document).on('pageshow', '#live', function() {
-    var matchId = localStorage.getItem('currentMatch');
+    if ($.mobile.pageData && $.mobile.pageData.id) {
+        var matchId = $.mobile.pageData.id;
+    }
     console.log(matchId);
 });
