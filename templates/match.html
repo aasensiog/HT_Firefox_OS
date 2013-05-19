@@ -1,3 +1,16 @@
 <script type="text/template" id="match">
-	<h3>{{matchId}}</h3>
+	<h3><span class='homeTeam'>{{homeTeam.name}}</span> {{homeTeam.goals}} - {{awayTeam.goals}} <span class='awayTeam'>{{awayTeam.name}}</span></h3>
+	<p><b>{{arena.name}}</b>: {{arena.soldTotal}} spectators</p>
+	<ul data-role='listview' id='list'>
+	{{#goals}}
+		{{#homeScorer}}
+		  <li class='homeTeam'><span class='goalMinute'>{{scorerMinute}}min</span>: {{scorerPlayerName}}</li>
+		{{/homeScorer}}
+		{{^homeScorer}}
+		  <li class='awayTeam'><span class='goalMinute'>{{scorerMinute}}min</span>: {{scorerPlayerName}}</li>
+		{{/homeScorer}}
+  		
+  	{{/goals}}
+  	</ul>
+  	<h4>{{homeTeam.ratings.mid}}</h4>
 </script>

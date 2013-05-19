@@ -22,6 +22,10 @@ var files = {
     }
 };
 
+var _getWeather = function(weatherId) {
+    return 'cloudy';
+};
+
 $(document).bind("pagebeforechange", function( event, data ) {
     $.mobile.pageData = (data && data.options && data.options.pageData)
         ? data.options.pageData
@@ -115,11 +119,64 @@ $(document).on('pageshow', '#match', function() {
     getData(files.matchDetails, params).done(function(resp) {
         var xmlDoc = $.parseXML(resp),
             $xml = $(xmlDoc);
-        $('#content').html();
-        
-        $.Mustache.load('templates/match.html', function() {
-            $('#content').mustache('match', {matchId: 'albert'});
+        $('#content').html('');
+
+        var homeTeam = $xml.find('HomeTeam'),
+            awayTeam = $xml.find('AwayTeam'),
+            arena = $xml.find('Arena'),
+            scorers = $xml.find('Scorers');
+
+
+        var obj = {
+            homeTeam: {
+                name: homeTeam.find('HomeTeamName').text(),
+                id: homeTeam.find('HomeTeamID').text(),
+                goals: homeTeam.find('HomeGoals').text(),
+                ratings: {
+                    mid: homeTeam.find('RatingMidfield').text(),
+                    defR: homeTeam.find('RatingRightDef').text(),
+                    defM: homeTeam.find('RatingMidDef').text(),
+                    defL: homeTeam.find('RatingLeftDef').text(),
+                    attR: homeTeam.find('RatingRightAtt').text(),
+                    attM: homeTeam.find('RatingMidAtt').text(),
+                    attL: homeTeam.find('RatingLeftAtt').text(),
+                }
+            },
+            awayTeam: {
+                name: awayTeam.find('AwayTeamName').text(),
+                id: awayTeam.find('AwayTeamID').text(),
+                goals: awayTeam.find('AwayGoals').text(),
+                ratings: {
+                    mid: awayTeam.find('RatingMidfield').text(),
+                    defR: awayTeam.find('RatingRightDef').text(),
+                    defM: awayTeam.find('RatingMidDef').text(),
+                    defL: awayTeam.find('RatingLeftDef').text(),
+                    attR: awayTeam.find('RatingRightAtt').text(),
+                    attM: awayTeam.find('RatingMidAtt').text(),
+                    attL: awayTeam.find('RatingLeftAtt').text(),
+                }
+            },
+            arena: {
+                name: arena.find('ArenaName').text(),
+                weather: _getWeather(arena.find('WeatherID').text()),
+                soldTotal: arena.find('SoldTotal').text()
+            }
+        };
+        var goals = [];
+        scorers.find('Goal').each(function() {
+            goals.push({
+                scorerPlayerName: $(this).find('ScorerPlayerName').text(),
+                homeScorer: $(this).find('ScorerTeamID').text() === obj.homeTeam.id,
+                scorerMinute: $(this).find('ScorerMinute') .text()
+            });
         });
+        obj.goals = goals;
+
+        $.Mustache.load('templates/match.html', function() {
+            $('#content').mustache('match', obj);
+            $('#list').listview('refresh');
+        });
+        $('#list').listview();
 
     }).fail(function() {
         alert('fail');

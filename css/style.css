@@ -1,1 +1,12 @@
+.homeTeam {
+	color: darkgreen;
+}
 
+.awayTeam {
+	color: darkblue;
+}
+
+.goalMinute {
+	color: grey;
+	font-style: inherit;
+}
