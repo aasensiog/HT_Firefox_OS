@@ -176,7 +176,8 @@ $(document).on('pageshow', '#match', function() {
             $('#content').mustache('match', obj);
             $('#list').listview('refresh');
         });
-        $('#list').listview();
+        $('#ratingsTable').table( "refresh" );
+        $('#list').listview('refresh');
 
     }).fail(function() {
         alert('fail');
