@@ -1,0 +1,103 @@
+<script type="text/template" id="match">
+	<h3 class='center'><span class='homeTeam'>{{homeTeam.name}}</span> {{homeTeam.goals}} - {{awayTeam.goals}} <span class='awayTeam'>{{awayTeam.name}}</span></h3>
+	<p><b>{{arena.name}}</b>: {{arena.soldTotal}} spectators</p>
+	<ul data-role='listview' id='list'>
+	{{#goals}}
+		{{#homeScorer}}
+		  <li class='homeTeam'><span class='goalMinute'>{{scorerMinute}}min</span>: {{scorerPlayerName}}</li>
+		{{/homeScorer}}
+		{{^homeScorer}}
+		  <li class='awayTeam'><span class='goalMinute'>{{scorerMinute}}min</span>: {{scorerPlayerName}}</li>
+		{{/homeScorer}}
+
+  	{{/goals}}
+  	{{#injuries}}
+  		{{#injuryHome}}
+  			<li class='homeTeam'><span class='goalMinute'><img src='../img/injury_{{injuryType}}.png' /> {{injuryMinute}}min</span>: {{injuryPlayerName}}</li>
+  		{{/injuryHome}}
+  		{{^injuryHome}}
+  			<li class='awayTeam'><span class='goalMinute'><img src='../img/injury_{{injuryType}}.png' /> {{injuryMinute}}min</span>: {{injuryPlayerName}}</li>
+  		{{/injuryHome}}
+  	{{/injuries}}
+  	</ul>
+  	<table data-role="table" class="ui-responsive" id='ratingsTable'>
+	    <tr>
+	        <td></td>
+	        <th>{{homeTeam.name}}</th>
+	        <th>{{awayTeam.name}}</th>
+	    </tr>
+	    <tr>
+	        <th>Mid</th>
+	        <td>{{homeTeam.ratings.mid}}</td>
+	        <td>{{awayTeam.ratings.mid}}</td>
+	    </tr>
+	    <tr>
+	        <th>DefR</th>
+	        <td>{{homeTeam.ratings.defR}}</td>
+	        <td>{{awayTeam.ratings.defR}}</td>
+	    </tr>
+	    <tr>
+	        <th>DefM</th>
+	        <td>{{homeTeam.ratings.defM}}</td>
+	        <td>{{awayTeam.ratings.defM}}</td>
+	    </tr>
+	    <tr>
+	        <th>DefL</th>
+	        <td>{{homeTeam.ratings.defL}}</td>
+	        <td>{{awayTeam.ratings.defL}}</td>
+	    </tr>
+	    <tr>
+	        <th>AttR</th>
+	        <td>{{homeTeam.ratings.attR}}</td>
+	        <td>{{awayTeam.ratings.attR}}</td>
+	    </tr>
+	    <tr>
+	        <th>AttM</th>
+	        <td>{{homeTeam.ratings.attM}}</td>
+	        <td>{{awayTeam.ratings.attM}}</td>
+	    </tr>
+	    <tr>
+	        <th>AttL</th>
+	        <td>{{homeTeam.ratings.attL}}</td>
+	        <td>{{awayTeam.ratings.attL}}</td>
+	    </tr>
+	    <tr>
+	        <th></th>
+	        <td></td>
+	        <td></td>
+	    </tr>
+	    <tr>
+	        <th>Ind. D</th>
+	        <td>{{homeTeam.ratings.iD}}</td>
+	        <td>{{awayTeam.ratings.iD}}</td>
+	    </tr>
+	    <tr>
+	        <th>Ind. A</th>
+	        <td>{{homeTeam.ratings.iA}}</td>
+	        <td>{{awayTeam.ratings.iA}}</td>
+	    </tr>
+	    <!--
+	    <tr>
+	        <th></th>
+	        <td></td>
+	        <td></td>
+	    </tr>
+	    <tr>
+	        <th>Attitude</th>
+	        <td>{{homeTeam.attitude}}</td>
+	        <td>{{awayTeam.attitude}}</td>
+	    </tr>
+	    -->
+	    <tr>
+	        <th></th>
+	        <td></td>
+	        <td></td>
+	    </tr>
+	    <tr>
+	        <th>Possession</th>
+	        <td>{{homeTeam.possession.firstHalf}}% {{homeTeam.possession.secondHalf}}%</td>
+	        <td>{{awayTeam.possession.firstHalf}}% {{awayTeam.possession.secondHalf}}%</td>
+	    </tr>
+	</table>
+
+</script>
