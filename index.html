@@ -5,26 +5,45 @@
 	<meta name="viewport" content="width=device-width" />
 	<meta charset="UTF-8" />
 
+	<meta name="author" content="Albert Asensio Gimenez (me@albertasensio.es)">
+
 	<link rel="stylesheet" href="css/jquery.mobile-1.3.1.min.css" />
+	<link rel="stylesheet" href="css/style.css" />
 
-	<script src="js/jquery-1.9.1.min.js"></script>
-	<script src='js/jquery.mobile-1.3.1.min.js'></script>
+	<script src="js/lib/jquery-1.9.1.min.js"></script>
+	<script src='js/lib/jquery.mobile-1.3.1.min.js'></script>
+	<script src='js/lib/mustache.js'></script>
+	<script src='js/lib/jquery.mustache.js'></script>
 
-	<script src="js/xmlToJson.js"></script>
+	<script src="js/xml2json.js"></script>
+	<script src='js/lib/jqm.page.params.js'></script>
 
-	<script src="js/OAuth/oauth.js"></script>
-	<script src="js/OAuth/sha1.js"></script>
+	<script src="js/lib/OAuth/oauth.js"></script>
+	<script src="js/lib/OAuth/sha1.js"></script>
 
 	<script src="js/auth.js"></script>
+	<script src="js/authentication.js"></script>
+	<script src="js/constantsTranslator.js"></script>
 	<script src="js/app.js"></script>
 
 </head>
 <body>
 
-	<!-- Auth -->
-	<div data-role="page" data-theme="e" id='page_home'>
-		<div data-role="header">
-			<h1>HT Live Viewer</h1>
+	<div data-role="page" data-theme="e" id='index'>
+		<div data-role="header" data-position='fixed'>
+			<h1>HT Live</h1>
+		</div>
+		<div data-role="content">
+			Loading ...
+		</div>
+		<div data-role="footer">
+			<h4>@aasensiog</h4>
+		</div>
+	</div>
+
+	<div data-role="page" data-theme="e" id='authentication'>
+		<div data-role="header" data-position='fixed'>
+			<h1>Authentication</h1>
 		</div>
 		<div data-role="content">
 
@@ -39,19 +58,56 @@
 		</div>
 	</div>
 
+	<div data-role="page" data-theme="e" id='menu'>
+		<div data-role="header" data-position='fixed'>
+			<h1>Menu</h1>
+		</div>
+		<div data-role="content">
+			<a href='#team' data-role="button">Team</a>
+			<a href='#matchList' data-role="button">Matches</a>
+		</div>
+		<div data-role="footer">
+			<h4>@aasensiog</h4>
+		</div>
+	</div>
 
+	<div data-role="page" data-theme="e" id='matchList'>
+		<div data-role="header" data-position='fixed'>
+			<h1>Matches</h1>
+			<a data-icon='back' data-rel="back"></a>
+		</div>
+		<div data-role="content">
+			<ul data-role="listview" data-inset="true" data-divider-theme="a" id='list'>
 
-	<!-- Match details 1-->
-	<div data-role="page" data-theme='e' id="page_live">
-	   	<div data-role="header">
-	      	<h1 id='match'></h1>
+			</ul>
+		</div>
+		<div data-role="footer">
+			<h4>@aasensiog</h4>
+		</div>
+	</div>
+
+	<div data-role="page" data-theme="e" id='match'>
+		<div data-role="header" data-position='fixed'>
+			<h1>Match</h1>
+			<a data-icon='back' data-rel="back"></a>
+		</div>
+		<div data-role="content" id='content'>
+
+		</div>
+		<div data-role="footer">
+			<h4>@aasensiog</h4>
+		</div>
+	</div>
+
+	<div data-role="page" data-theme='e' id="live">
+	   	<div data-role="header" data-position='fixed'>
+	      	<h1 id='match'>Live</h1>
+	      	<a data-icon='back' data-rel="back"></a>
 	   	</div>
 
-	   	<!--PAGE 2_1-->
 	   	<div data-role="content">
 			<div id='content'>
 		      	<ul data-role="listview" data-inset='true' id='list' data-scroll="y"></ul>
-		      	<!--
 		      	<ul data-role="listview" data-inset="">
 					<li>
 						<h3>Stephen Weber</h3>
@@ -66,21 +122,19 @@
 						<p class="ui-li-aside"><strong>9:18</strong>AM</p>
 					</li>
 				</ul>
-				-->
 				</ul>
 			</div>
 	   	</div>
 
-	   	<!--FOOTER-->
 		<div data-role="footer">
 			<h4>@aasensiog - albertasensio.es</h4>
 		</div>
 	</div>
 
-	<!-- Settings -->
-	<div data-role="page" data-theme="e" id='page_settings'>
-		<div data-role="header">
-			<h1>HT Live</h1>
+	<div data-role="page" data-theme="e" id='team'>
+		<div data-role="header" data-position='fixed'>
+			<h1>Team</h1>
+			<a data-icon='back' data-rel="back"></a>
 		</div>
 		<div data-role="content">
 
