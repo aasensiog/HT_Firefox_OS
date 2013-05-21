@@ -3,12 +3,15 @@ var saveOauthVerifier = function() {
 	var verifier = $('input#oauth_verifier').val();
     if (verifier) {
         localStorage.setItem('oauth_verifier', verifier);
+        $.mobile.showPageLoadingMsg("a", "Verifying");
         getAccessToken().done(function() {
             alert('Verified');
             //TODO: go to Live page
             document.location.href ='#menu';
         }).fail(function() {
             alert('ERROR oauth verifier');
+        }).always(function() {
+            $.mobile.hidePageLoadingMsg();
         });
     } else {
         alert('You must enter the authorization code');
@@ -21,8 +24,11 @@ var step1 = function() {
     console.log('step1');
     if (!localStorage.getItem('oauth_token')) {
         console.log(localStorage.getItem('oauth_token'));
+        $.mobile.showPageLoadingMsg("a", "Loading ...");
         request_token().done(function() {
             step2();
+        }).always(function() {
+            $.mobile.hidePageLoadingMsg();
         });
     } else {
         step2();
