@@ -77,14 +77,6 @@ $(document).on('pageshow', '#matchList', function() {
     });
 });
 
-$(document).on('pageshow', '#team', function() {
-    getData(files.teamDetails).done(function(resp) {
-        alert(resp);
-    }).fail(function() {
-        alert('fail');
-    });
-});
-
 $(document).on('pageshow', '#match', function() {
     if ($.mobile.pageData && $.mobile.pageData.id) {
         var matchId = $.mobile.pageData.id;
@@ -281,3 +273,15 @@ var refreshLiveMatch = function(matchId) {
         $.mobile.hidePageLoadingMsg();
     });
 };
+
+
+$(document).on('pageshow', '#team', function() {
+    getData(files.teamDetails).done(function(resp) {
+        var xmlDoc = $.parseXML(resp),
+            $xml = $(xmlDoc);
+
+
+    }).fail(function() {
+        alert('fail');
+    });
+});
