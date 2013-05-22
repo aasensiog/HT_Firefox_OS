@@ -1,11 +1,9 @@
 .homeTeam {
 	color: darkgreen;
-    text-align: left;
 }
 
 .awayTeam {
 	color: darkblue;
-    text-align: right;
 }
 
 .goalMinute {

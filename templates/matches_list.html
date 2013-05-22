@@ -1,0 +1,24 @@
+<script type="text/template" id="matches_list">
+    <ul data-role="listview" data-inset="true" data-divider-theme="a" id='list_matches'>
+    {{#finished.fill}}
+        <li data-role='list-divider'>Finished</li>
+        {{#finished.list}}
+            <li><a href='#match?id={{matchId}}'>{{homeTeamName}} {{matchHomeGoals}} - {{matchAwayGoals}} {{awayTeamName}}</a></li>
+        {{/finished.list}}
+    {{/finished.fill}}
+
+    {{#ongoing.fill}}
+        <li data-role='list-divider'>Finished</li>
+        {{#ongoing.list}}
+            <li><a href='#match?id={{matchId}}'>{{homeTeamName}} {{matchHomeGoals}} - {{matchAwayGoals}} {{awayTeamName}}</a></li>
+        {{/ongoing.list}}
+    {{/ongoing.fill}}
+
+    {{#future.fill}}
+        <li data-role='list-divider'>Finished</li>
+        {{#future.list}}
+            <li><a href='#match?id={{matchId}}'>{{homeTeamName}} {{matchHomeGoals}} - {{matchAwayGoals}} {{awayTeamName}}</a></li>
+        {{/future.list}}
+    {{/future.fill}}
+    </ul>
+</script>

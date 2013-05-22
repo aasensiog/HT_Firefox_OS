@@ -27,7 +27,7 @@ $(document).on('pageinit', '#authentication', function() {
 
 $(document).on('pageshow', '#matchList', function() {
     $.mobile.showPageLoadingMsg("a", "Loading matches list...");
-    $('#list').html('');
+    $('#content_matchList').html('');
     getData(files.matches)
     .done(function(resp) {
         //TODO: Create a list of a with href=#live/match?id=matchId
@@ -38,6 +38,21 @@ $(document).on('pageshow', '#matchList', function() {
         var divider2 = false;
         var divider3 = false;
         var matchList = $xml.find('MatchList');
+        var maList = {
+            finished: {
+                list: [],
+                fill: false
+            },
+            ongoing: {
+                list: [],
+                fill: false
+            },
+            future: {
+                list: [],
+                fill: false
+            }
+        };
+
         matchList.find('Match').each(function() {
             matchId = $(this).find('MatchID').text();
             matchStatus = $(this).find('Status').text();
@@ -46,29 +61,33 @@ $(document).on('pageshow', '#matchList', function() {
             homeTeamName = $(this).find('HomeTeam').find('HomeTeamNameShortName').text();
             awayTeamName = $(this).find('AwayTeam').find('AwayTeamNameShortName').text();
 
-            var str = homeTeamName+' '+matchHomeGoals+' - '+matchAwayGoals+' '+awayTeamName;
+            var obj = {
+                matchId: matchId,
+                matchStatus: matchStatus,
+                matchHomeGoals: matchHomeGoals,
+                matchAwayGoals: matchAwayGoals,
+                homeTeamName: homeTeamName,
+                awayTeamName: awayTeamName
+            };
+
             if (matchStatus === 'FINISHED') {
-                if (!divider1) {
-                    $('#list').append("<li data-role='list-divider'>Finished</li>");
-                    divider1 = true;
-                }
-                $('#list').append("<li><a href='#match?id="+matchId+"'>"+str+"</a></li>");
-            }
-            else if (matchStatus === 'ONGOING') {
-                if (!divider3) {
-                    $('#list').append("<li data-role='list-divider'>Ongoing</li>");
-                    divider3 = true;
-                }
-                $('#list').append("<li><a href='#live?id="+matchId+"'>"+str+"</a></li>");
+                console.log('Pushing');
+                console.log(obj);
+                maList.finished.list.push(obj);
+                maList.finished.fill = true;
+            } else if (matchStatus === 'ONGOING') {
+                maList.ongoing.list.push(obj);
+                maList.ongoing.fill = true;
             } else {
-                if (!divider2) {
-                    $('#list').append("<li data-role='list-divider'>Future</li>");
-                    divider2 = true;
-                }
-                $('#list').append("<li data-icon='alert'><a href='#live?id="+matchId+"'>"+str+"</a></li>");
+                maList.future.list.push(obj);
+                maList.future.fill = true;
             }
         });
-        $( "#list" ).listview('refresh');
+        
+        $.Mustache.load('templates/matches_list.html', function() {
+            $('#content_matchList').mustache('matches_list', maList);
+            $('#list_matches').listview();
+        });
 
     }).fail(function() {
         alert('fail');
