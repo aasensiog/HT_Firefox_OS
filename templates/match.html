@@ -4,19 +4,19 @@
 	<ul data-role='listview' id='list'>
 	{{#goals}}
 		{{#homeScorer}}
-		  <li class='homeTeam'><span class='goalMinute'>{{scorerMinute}}min</span>: {{scorerPlayerName}}</li>
+		  <li class='homeTeam'><span class='goalMinute'><img src='../img/goal.png' /> {{scorerMinute}}min</span>: {{scorerPlayerName}}</li>
 		{{/homeScorer}}
 		{{^homeScorer}}
-		  <li class='awayTeam'><span class='goalMinute'>{{scorerMinute}}min</span>: {{scorerPlayerName}}</li>
+		  <li class='awayTeam'><span class='goalMinute'><img src='../img/goal.png' /> {{scorerMinute}}min</span>: {{scorerPlayerName}}</li>
 		{{/homeScorer}}
 
   	{{/goals}}
   	{{#injuries}}
   		{{#injuryHome}}
-  			<li class='homeTeam'><span class='goalMinute'><img src='../img/injury_{{injuryType}}.png' /> {{injuryMinute}}min</span>: {{injuryPlayerName}}</li>
+  			<li class='homeTeam'><span class='goalMinute'><img src='../img/injury_{{injuryType}}.gif' /> {{injuryMinute}}min</span>: {{injuryPlayerName}}</li>
   		{{/injuryHome}}
   		{{^injuryHome}}
-  			<li class='awayTeam'><span class='goalMinute'><img src='../img/injury_{{injuryType}}.png' /> {{injuryMinute}}min</span>: {{injuryPlayerName}}</li>
+  			<li class='awayTeam'><span class='goalMinute'><img src='../img/injury_{{injuryType}}.gif' /> {{injuryMinute}}min</span>: {{injuryPlayerName}}</li>
   		{{/injuryHome}}
   	{{/injuries}}
   	</ul>

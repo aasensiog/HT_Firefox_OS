@@ -1,0 +1,12 @@
+<script type="text/template" id="match">
+    <h3 class='center'><span class='homeTeam'>{{homeTeam.name}}</span> {{homeTeam.goals}} - {{awayTeam.goals}} <span class='awayTeam'>{{awayTeam.name}}</span></h3>
+    <ul data-role="listview" data-inset='true' id='list' data-scroll="y"></ul>
+    {{#events}}
+        <li>
+            <h3>{{teamId}}</h3>
+            <p>{{description}}</p>
+            <p class="ui-li-aside"><strong>{{minute}}</strong>PM</p>
+        </li>
+    {{/events}}
+    </ul>
+</script>
