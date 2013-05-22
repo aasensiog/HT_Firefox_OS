@@ -1,7 +1,8 @@
 <script type="text/template" id="match">
 	<h3 class='center'><span class='homeTeam'>{{homeTeam.name}}</span> {{homeTeam.goals}} - {{awayTeam.goals}} <span class='awayTeam'>{{awayTeam.name}}</span></h3>
 	<p><b>{{arena.name}}</b>: {{arena.soldTotal}} spectators</p>
-	<ul data-role='listview' id='list'>
+	</br>
+	<ul data-role='listview' id='list_goals' data-theme="c">
 	{{#goals}}
 		{{#homeScorer}}
 		  <li class='homeTeam'><span class='goalMinute'><img src='../img/goal.png' /> {{scorerMinute}}min</span>: {{scorerPlayerName}}</li>
@@ -20,6 +21,7 @@
   		{{/injuryHome}}
   	{{/injuries}}
   	</ul>
+  	</br>
   	<table data-role="table" class="ui-responsive" id='ratingsTable'>
 	    <tr>
 	        <td></td>

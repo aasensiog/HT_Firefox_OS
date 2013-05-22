@@ -28,7 +28,8 @@ $(document).on('pageinit', '#authentication', function() {
 $(document).on('pageshow', '#matchList', function() {
     $.mobile.showPageLoadingMsg("a", "Loading matches list...");
     $('#list').html('');
-    getData(files.matches).done(function(resp) {
+    getData(files.matches)
+    .done(function(resp) {
         //TODO: Create a list of a with href=#live/match?id=matchId
         var xmlDoc = $.parseXML(resp),
             $xml = $(xmlDoc);
@@ -64,7 +65,7 @@ $(document).on('pageshow', '#matchList', function() {
                     $('#list').append("<li data-role='list-divider'>Future</li>");
                     divider2 = true;
                 }
-                $('#list').append("<li data-icon='alert'><a>"+str+"</a></li>");
+                $('#list').append("<li data-icon='alert'><a href='#live?id="+matchId+"'>"+str+"</a></li>");
             }
         });
         $( "#list" ).listview('refresh');
@@ -93,7 +94,8 @@ $(document).on('pageshow', '#match', function() {
     };
     $.mobile.showPageLoadingMsg("a", "Loading match info...");
     $('#content').html('');
-    getData(files.matchDetails, params).done(function(resp) {
+    getData(files.matchDetails, params)
+    .done(function(resp) {
         var xmlDoc = $.parseXML(resp),
             $xml = $(xmlDoc);
 
@@ -179,10 +181,9 @@ $(document).on('pageshow', '#match', function() {
 
         $.Mustache.load('templates/match.html', function() {
             $('#content').mustache('match', obj);
-            $('#list').listview('refresh');
+            $('#list_goals').listview();
         });
         $('#ratingsTable').table( "refresh" );
-        $('#list').listview('refresh');
 
     }).fail(function() {
         alert('fail');
@@ -192,22 +193,54 @@ $(document).on('pageshow', '#match', function() {
 });
 
 $(document).on('pageshow', '#live', function() {
+    var matchId = null;
     if ($.mobile.pageData && $.mobile.pageData.id) {
-        var matchId = $.mobile.pageData.id;
+        matchId = $.mobile.pageData.id;
     }
 
+    var liveMatchesAdded = JSON.parse(localStorage.getItem('liveMatchesAdded'));
+    if (!liveMatchesAdded) {
+        liveMatchesAdded = [];
+        localStorage.setItem(JSON.stringify(liveMatchesAdded));
+    }
+
+    if (liveMatchesAdded.indexOf(matchId) === -1) {
+        var params = {
+            actionType: 'addMatch',
+            matchID: matchId
+        };
+
+        $.mobile.showPageLoadingMsg("a", "Adding match to live...");
+        getData(files.live, params)
+        .done(function() {
+            liveMatchesAdded.push(matchId);
+            localStorage.setItem(JSON.stringify(liveMatchesAdded));
+            refreshLiveMatch(matchId);
+        }).fail(function() {
+            alert('Error adding match, please try again.');
+        }).always(function() {
+            $.mobile.hidePageLoadingMsg();
+        });
+    } else {
+        refreshLiveMatch(matchId);
+    }
+});
+
+var refreshLiveMatch = function(matchId) {
+
     var params = {
-        actionType: 'addMatch',
+        actionType: 'viewAll',
         matchID: matchId
     };
 
     $.mobile.showPageLoadingMsg("a", "Loading live match info...");
     $('#content').html('');
-    getData(files.live, params).done(function(resp) {
+    getData(files.live, params)
+    .done(function(resp) {
         var xmlDoc = $.parseXML(resp),
             $xml = $(xmlDoc);
-        var matches = $xml.find('Matches'),
-            match = matches.find('Match').each(function() {
+        var matches = $xml.find('MatchList');
+            matches.find('Match').each(function() {
             if ($(this).find('MatchID').text() === matchId) {
                 var homeTeam = $(this).find('HomeTeam'),
                     awayTeam = $(this).find('AwayTeam'),
@@ -236,13 +269,15 @@ $(document).on('pageshow', '#live', function() {
                 });
                 obj.events = events;
 
+
                 $.Mustache.load('templates/live.html', function() {
-                    $('#content').mustache('live', obj);
-                    $('#list').listview('refresh');
+                    var html = mustache('live', obj);
+                    $('#content_live').html(html);
+                    $('#list_live').listview();
                 });
             }
         });
     }).always(function() {
         $.mobile.hidePageLoadingMsg();
     });
-});
+};
