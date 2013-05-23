@@ -27,8 +27,9 @@ $(document).on('pageinit', '#authentication', function() {
 
 $(document).on('pageshow', '#matchList', function() {
     $.mobile.showPageLoadingMsg("a", "Loading matches list...");
-    $('#list').html('');
-    getData(files.matches).done(function(resp) {
+    $('#content_matchList').html('');
+    getData(files.matches)
+    .done(function(resp) {
         //TODO: Create a list of a with href=#live/match?id=matchId
         var xmlDoc = $.parseXML(resp),
             $xml = $(xmlDoc);
@@ -37,6 +38,21 @@ $(document).on('pageshow', '#matchList', function() {
         var divider2 = false;
         var divider3 = false;
         var matchList = $xml.find('MatchList');
+        var maList = {
+            finished: {
+                list: [],
+                fill: false
+            },
+            ongoing: {
+                list: [],
+                fill: false
+            },
+            future: {
+                list: [],
+                fill: false
+            }
+        };
+
         matchList.find('Match').each(function() {
             matchId = $(this).find('MatchID').text();
             matchStatus = $(this).find('Status').text();
@@ -45,42 +61,38 @@ $(document).on('pageshow', '#matchList', function() {
             homeTeamName = $(this).find('HomeTeam').find('HomeTeamNameShortName').text();
             awayTeamName = $(this).find('AwayTeam').find('AwayTeamNameShortName').text();
 
-            var str = homeTeamName+' '+matchHomeGoals+' - '+matchAwayGoals+' '+awayTeamName;
+            var obj = {
+                matchId: matchId,
+                matchStatus: matchStatus,
+                matchHomeGoals: matchHomeGoals,
+                matchAwayGoals: matchAwayGoals,
+                homeTeamName: homeTeamName,
+                awayTeamName: awayTeamName
+            };
+
             if (matchStatus === 'FINISHED') {
-                if (!divider1) {
-                    $('#list').append("<li data-role='list-divider'>Finished</li>");
-                    divider1 = true;
-                }
-                $('#list').append("<li><a href='#match?id="+matchId+"'>"+str+"</a></li>");
-            }
-            else if (matchStatus === 'ONGOING') {
-                if (!divider3) {
-                    $('#list').append("<li data-role='list-divider'>Ongoing</li>");
-                    divider3 = true;
-                }
-                $('#list').append("<li><a href='#live?id="+matchId+"'>"+str+"</a></li>");
+                console.log('Pushing');
+                console.log(obj);
+                maList.finished.list.push(obj);
+                maList.finished.fill = true;
+            } else if (matchStatus === 'ONGOING') {
+                maList.ongoing.list.push(obj);
+                maList.ongoing.fill = true;
             } else {
-                if (!divider2) {
-                    $('#list').append("<li data-role='list-divider'>Future</li>");
-                    divider2 = true;
-                }
-                $('#list').append("<li data-icon='alert'><a>"+str+"</a></li>");
+                maList.future.list.push(obj);
+                maList.future.fill = true;
             }
         });
-        $( "#list" ).listview('refresh');
+        
+        $.Mustache.load('templates/matches_list.html', function() {
+            $('#content_matchList').mustache('matches_list', maList);
+            $('#list_matches').listview();
+        });
 
     }).fail(function() {
         alert('fail');
     }).always(function() {
         $.mobile.hidePageLoadingMsg();
-    });
-});
-
-$(document).on('pageshow', '#team', function() {
-    getData(files.teamDetails).done(function(resp) {
-        alert(resp);
-    }).fail(function() {
-        alert('fail');
     });
 });
 
@@ -93,7 +105,8 @@ $(document).on('pageshow', '#match', function() {
     };
     $.mobile.showPageLoadingMsg("a", "Loading match info...");
     $('#content').html('');
-    getData(files.matchDetails, params).done(function(resp) {
+    getData(files.matchDetails, params)
+    .done(function(resp) {
         var xmlDoc = $.parseXML(resp),
             $xml = $(xmlDoc);
 
@@ -120,7 +133,7 @@ $(document).on('pageshow', '#match', function() {
                     attM: getRating(homeTeam.find('RatingMidAtt').text()),
                     attL: getRating(homeTeam.find('RatingLeftAtt').text()),
                     iD: getRating(homeTeam.find('RatingIndirectSetPiecesDef').text()),
-                    iA: getRating(homeTeam.find('RatingIndirectSetPiecesAtt').text()),
+                    iA: getRating(homeTeam.find('RatingIndirectSetPiecesAtt').text())
                 },
                 possession: {
                     firstHalf: $xml.find('PossessionFirstHalfHome').text(),
@@ -142,7 +155,7 @@ $(document).on('pageshow', '#match', function() {
                     attM: getRating(awayTeam.find('RatingMidAtt').text()),
                     attL: getRating(awayTeam.find('RatingLeftAtt').text()),
                     iD: getRating(awayTeam.find('RatingIndirectSetPiecesDef').text()),
-                    iA: getRating(awayTeam.find('RatingIndirectSetPiecesAtt').text()),
+                    iA: getRating(awayTeam.find('RatingIndirectSetPiecesAtt').text())
                 },
                 possession: {
                     firstHalf: $xml.find('PossessionFirstHalfAway').text(),
@@ -155,6 +168,7 @@ $(document).on('pageshow', '#match', function() {
                 soldTotal: arena.find('SoldTotal').text()
             }
         };
+
         var goals = [];
         scorers.find('Goal').each(function() {
             goals.push({
@@ -178,10 +192,9 @@ $(document).on('pageshow', '#match', function() {
 
         $.Mustache.load('templates/match.html', function() {
             $('#content').mustache('match', obj);
-            $('#list').listview('refresh');
+            $('#list_goals').listview();
         });
         $('#ratingsTable').table( "refresh" );
-        $('#list').listview('refresh');
 
     }).fail(function() {
         alert('fail');
@@ -191,8 +204,103 @@ $(document).on('pageshow', '#match', function() {
 });
 
 $(document).on('pageshow', '#live', function() {
+    var matchId = null;
     if ($.mobile.pageData && $.mobile.pageData.id) {
-        var matchId = $.mobile.pageData.id;
+        matchId = $.mobile.pageData.id;
     }
-    console.log(matchId);
+
+    var liveMatchesAdded = JSON.parse(localStorage.getItem('liveMatchesAdded'));
+    if (!liveMatchesAdded) {
+        liveMatchesAdded = [];
+        localStorage.setItem(JSON.stringify(liveMatchesAdded));
+    }
+
+    if (liveMatchesAdded.indexOf(matchId) === -1) {
+        var params = {
+            actionType: 'addMatch',
+            matchID: matchId
+        };
+
+        $.mobile.showPageLoadingMsg("a", "Adding match to live...");
+        getData(files.live, params)
+        .done(function() {
+            liveMatchesAdded.push(matchId);
+            localStorage.setItem(JSON.stringify(liveMatchesAdded));
+            refreshLiveMatch(matchId);
+        }).fail(function() {
+            alert('Error adding match, please try again.');
+        }).always(function() {
+            $.mobile.hidePageLoadingMsg();
+        });
+    } else {
+        refreshLiveMatch(matchId);
+    }
+});
+
+var refreshLiveMatch = function(matchId) {
+
+    var params = {
+        actionType: 'viewAll',
+        matchID: matchId
+    };
+
+    $.mobile.showPageLoadingMsg("a", "Loading live match info...");
+    $('#content').html('');
+    getData(files.live, params)
+    .done(function(resp) {
+        var xmlDoc = $.parseXML(resp),
+            $xml = $(xmlDoc);
+        var matches = $xml.find('MatchList');
+            matches.find('Match').each(function() {
+            if ($(this).find('MatchID').text() === matchId) {
+                var homeTeam = $(this).find('HomeTeam'),
+                    awayTeam = $(this).find('AwayTeam'),
+                    eventList = $(this).find('EventList');
+
+                var obj = {
+                    homeTeam: {
+                        name: homeTeam.find('HomeTeamShortName').text(),
+                        id: homeTeam.find('HomeTeamID').text(),
+                        goals: $(this).find('HomeGoals').text()
+                    },
+                    awayTeam: {
+                        name: awayTeam.find('AwayTeamShortName').text(),
+                        id: awayTeam.find('AwayTeamID').text(),
+                        goals: $(this).find('AwayGoals').text()
+                    }
+                };
+
+                var events = [];
+                eventList.find('Event').each(function() {
+                    events.push({
+                        minute: $(this).find('Minute').text(),
+                        description: $(this).find('EventText').text(),
+                        teamId: $(this).find('SubjectTeamID').text()
+                    });
+                });
+                obj.events = events;
+
+
+                $.Mustache.load('templates/live.html', function() {
+                    var html = mustache('live', obj);
+                    $('#content_live').html(html);
+                    $('#list_live').listview();
+                });
+            }
+        });
+    }).always(function() {
+        $.mobile.hidePageLoadingMsg();
+    });
+};
+
+
+$(document).on('pageshow', '#team', function() {
+    getData(files.teamDetails).done(function(resp) {
+        var xmlDoc = $.parseXML(resp),
+            $xml = $(xmlDoc);
+
+
+    }).fail(function() {
+        alert('fail');
+    });
 });
