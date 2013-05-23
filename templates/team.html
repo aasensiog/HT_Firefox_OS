@@ -1,0 +1,29 @@
+<script type="text/template" id="team_details">
+    <div class="ui-grid-a">
+        <div class="ui-block-a">
+            <img src='{{team.logoUrl}}' />
+        </div>
+        <div class="ui-block-b">
+            <p>{{team.name}}</p>
+            <p>{{arenaName}}</p>
+            <p>{{leagueName}}, {{regionName}}</p>
+            <p>{{leagueLevel}}</p>
+            {{#stillInCup}}
+                <p>{{stillInCup}}</p>
+            {{/stillInCup}}
+            <p>Victories: {{numVictories}}, Undefeated: {{numUndefeated}}</p>
+            <p>Team rank: {{teamRank}}</p>
+            <p>Fan club: {{fanClubName}}</p>
+        </div>
+    </div>
+    <div class="ui-grid-a">
+        <div class="ui-block-a">
+            <img src='{{dressURI}}' />
+        </div>
+        <div class="ui-block-b">
+            <img src='{{dressAlternateURI}}' />
+        </div>
+    </div>
+
+
+</script>
