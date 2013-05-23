@@ -1,6 +1,6 @@
 var EvImages = {
-    goal: 'http://cdn1.iconfinder.com/data/icons/ballcons/png/classic.png',
-    ocasion: 'http://cdn1.iconfinder.com/data/icons/ballcons/png/classic.png'
+    goal: '',
+    ocasion: ''
 };
 
 var files = {
@@ -8,7 +8,7 @@ var files = {
         file: 'teamdetails',
         version:'2.8'
     },
-    live:  {
+    live: {
         file: 'live',
         version: '1.8'
     },
