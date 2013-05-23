@@ -1,15 +1,15 @@
 <script type="text/template" id="team_details">
-    <h3>{{team.name}}</h3>
+    <h3>{{team.name}} / {{user.username}}</h3>
     <div class="ui-grid-a">
         <div class="ui-block-a">
             <img src='{{team.logoUrl}}' />
         </div>
         <div class="ui-block-b">
-            <p>{{team.arenaName}}</p>
-            <p>{{team.leagueName}}, {{team.regionName}}</p>
-            <p>{{team.leagueLevel}}</p>
+            <p class='italic'>{{team.arenaName}}</p>
+            <p>{{team.leagueName}} {{team.regionName}}</p>
+            <p class='italic'>{{team.leagueLevel}}</p>
             {{#team.stillInCup}}
-                <p>Still playing cup</p>
+                <p><strong>Still playing <img src='../img/cup.png' /></strong></p>
             {{/team.stillInCup}}
             
         </div>
@@ -24,7 +24,7 @@
         <div class="ui-block-a">
             <p>Victories: {{team.numVictories}}, Undefeated: {{team.numUndefeated}}</p>
             <p>Ranking: {{team.teamRank}}</p>
-            <p>Fan club: {{team.fanClubName}}</p>
+            <p>Fan club: <span class='italic'>{{team.fanClubName}}</span></p>
         </div>
     </div>
 
