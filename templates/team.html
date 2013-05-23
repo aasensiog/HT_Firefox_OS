@@ -1,27 +1,30 @@
 <script type="text/template" id="team_details">
+    <h3>{{team.name}}</h3>
     <div class="ui-grid-a">
         <div class="ui-block-a">
             <img src='{{team.logoUrl}}' />
         </div>
         <div class="ui-block-b">
-            <p>{{team.name}}</p>
-            <p>{{arenaName}}</p>
-            <p>{{leagueName}}, {{regionName}}</p>
-            <p>{{leagueLevel}}</p>
-            {{#stillInCup}}
-                <p>{{stillInCup}}</p>
-            {{/stillInCup}}
-            <p>Victories: {{numVictories}}, Undefeated: {{numUndefeated}}</p>
-            <p>Team rank: {{teamRank}}</p>
-            <p>Fan club: {{fanClubName}}</p>
+            <p>{{team.arenaName}}</p>
+            <p>{{team.leagueName}}, {{team.regionName}}</p>
+            <p>{{team.leagueLevel}}</p>
+            {{#team.stillInCup}}
+                <p>Still playing cup</p>
+            {{/team.stillInCup}}
+            
         </div>
-    </div>
-    <div class="ui-grid-a">
         <div class="ui-block-a">
-            <img src='{{dressURI}}' />
+            <img src='{{team.dressURI}}' />
         </div>
         <div class="ui-block-b">
-            <img src='{{dressAlternateURI}}' />
+            <img src='{{team.dressAlternateURI}}' />
+        </div>
+    </div>
+    <div class="ui-grid-solo">
+        <div class="ui-block-a">
+            <p>Victories: {{team.numVictories}}, Undefeated: {{team.numUndefeated}}</p>
+            <p>Ranking: {{team.teamRank}}</p>
+            <p>Fan club: {{team.fanClubName}}</p>
         </div>
     </div>
 

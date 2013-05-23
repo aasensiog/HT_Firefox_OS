@@ -52,7 +52,6 @@ $(document).on('pageshow', '#matchList', function() {
 
         matchList.find('Match').each(function() {
             var matchType = getMatchTypeImage($(this).find('MatchType').text());
-            console.log(matchType);
             obj = {
                 matchId: $(this).find('MatchID').text(),
                 matchStatus: $(this).find('Status').text(),
@@ -164,7 +163,9 @@ $(document).on('pageshow', '#match', function() {
             goals.push({
                 scorerPlayerName: $(this).find('ScorerPlayerName').text(),
                 homeScorer: $(this).find('ScorerTeamID').text() === obj.homeTeam.id,
-                scorerMinute: $(this).find('ScorerMinute') .text()
+                scorerMinute: $(this).find('ScorerMinute').text(),
+                homeGoals: $(this).find('ScorerHomeGoals').text(),
+                awayGoals: $(this).find('ScorerAwayGoals').text()
             });
         });
         obj.goals = goals;
@@ -313,13 +314,12 @@ $(document).on('pageshow', '#team', function() {
                         numVictories: $(this).find('NumberOfVictories').text(),
                         numUndefeated: $(this).find('NumberOfUndefeated').text(),
                         teamRank: $(this).find('TeamRank').text(),
-                        fanClubName: $(this).find('FanClubName').text(),
+                        fanClubName: $(this).find('Fanclub').find('FanclubName').text(),
 
                         logoUrl: ($(this).find('SupporterTier').text()) ? $(this).find('LogoURL').text() : null
                     };
                 }
             });
-            alert(obj);
 
             $.Mustache.load('templates/team.html', function() {
                $('#content_team').mustache('team_details', obj);
