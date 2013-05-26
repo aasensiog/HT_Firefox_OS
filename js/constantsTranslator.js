@@ -19,6 +19,10 @@ var files = {
     matchDetails: {
         file: 'matchdetails',
         version: '2.5'
+    },
+    league: {
+        file: 'leaguedetails',
+        version: '1.4'
     }
 };
 

@@ -284,48 +284,90 @@ var refreshLiveMatch = function(matchId) {
 
 $(document).on('pageshow', '#team', function() {
     $('#content_team').html('');
-    getData(files.teamDetails).done(function(resp) {
+    getData(files.teamDetails)
+    .done(function(resp) {
         var xmlDoc = $.parseXML(resp),
             $xml = $(xmlDoc),
             user = $xml.find('User'),
             teams = $xml.find('Teams'),
             obj = null;
 
-            obj = {
-                user: {
-                    username: user.find('Loginname').text(),
-                    language: user.find('Language').find('LanguageName').text()
-                }
-            };
+        obj = {
+            user: {
+                username: user.find('Loginname').text(),
+                language: user.find('Language').find('LanguageName').text()
+            }
+        };
 
-            teams.find('Team').each(function() {
-                if ($(this).find('IsPrimaryClub').text()) {
-                    obj.team = {
-                        name: $(this).find('TeamName').text(),
-                        shortName: $(this).find('ShortTeamName').text(),
-                        arenaName: $(this).find('Arena').find('ArenaName').text(),
-                        leagueName: $(this).find('League').find('LeagueName').text(),
-                        regionName: $(this).find('Region').find('RegionName').text(),
-                        homePage: $(this).find('HomePage').text(),
-                        dressURI: $(this).find('DressURI').text(),
-                        dressAlternateURI: $(this).find('DressAlternateURI').text(),
-                        leagueLevel: $(this).find('LeagueLevelUnit').find('LeagueLevelUnitName').text(),
-                        stillInCup: $(this).find('Cup').find('StillInCup').text(),
-                        numVictories: $(this).find('NumberOfVictories').text(),
-                        numUndefeated: $(this).find('NumberOfUndefeated').text(),
-                        teamRank: $(this).find('TeamRank').text(),
-                        fanClubName: $(this).find('Fanclub').find('FanclubName').text(),
+        teams.find('Team').each(function() {
+            if ($(this).find('IsPrimaryClub').text()) {
+                obj.team = {
+                    name: $(this).find('TeamName').text(),
+                    shortName: $(this).find('ShortTeamName').text(),
+                    arenaName: $(this).find('Arena').find('ArenaName').text(),
+                    leagueName: $(this).find('League').find('LeagueName').text(),
+                    regionName: $(this).find('Region').find('RegionName').text(),
+                    homePage: $(this).find('HomePage').text(),
+                    dressURI: $(this).find('DressURI').text(),
+                    dressAlternateURI: $(this).find('DressAlternateURI').text(),
+                    leagueLevel: $(this).find('LeagueLevelUnit').find('LeagueLevelUnitName').text(),
+                    stillInCup: $(this).find('Cup').find('StillInCup').text(),
+                    numVictories: $(this).find('NumberOfVictories').text(),
+                    numUndefeated: $(this).find('NumberOfUndefeated').text(),
+                    teamRank: $(this).find('TeamRank').text(),
+                    fanClubName: $(this).find('Fanclub').find('FanclubName').text(),
 
-                        logoUrl: ($(this).find('SupporterTier').text()) ? $(this).find('LogoURL').text() : null
-                    };
-                }
+                    logoUrl: ($(this).find('SupporterTier').text()) ? $(this).find('LogoURL').text() : null
+                };
+            }
+        });
+
+        $.Mustache.load('templates/team.html', function() {
+           $('#content_team').mustache('team_details', obj);
+        });
+
+    }).always(function() {
+        $.mobile.hidePageLoadingMsg();
+    });
+});
+
+$(document).on('pageshow', '#team', function() {
+    $('#content_league').html('');
+    getData(files.teamDetails)
+    .done(function(resp) {
+        var xmlDoc = $.parseXML(resp),
+            $xml = $(xmlDoc),
+            obj = null,
+            teams = [];
+
+        obj = {
+            league: {
+                country: $xml.find('LeagueName').text(),
+                name: $xml.find('LeagueLevelUnitName').text(),
+                currentRound: $xml.find('CurrentMatchRound').text()
+            }
+        };
+
+        $xml.find('Team').each(function() {
+            teams.push({
+                name: $(this).find('TeamName').text(),
+                position: $(this).find('Position').text(),
+                matches: $(this).find('Matches').text(),
+                goalsFor: $(this).find('GoalsFor').text(),
+                goalsAgainst: $(this).find('GoalsAgainst').text(),
+                points: $(this).find('Points').text(),
+                won: $(this).find('Won').text(),
+                lost: $(this).find('Lost').text(),
+                draws: $(this).find('Draws').text()
+
             });
+        });
 
-            $.Mustache.load('templates/team.html', function() {
-               $('#content_team').mustache('team_details', obj);
-            });
+        $.Mustache.load('templates/league.html', function() {
+           $('#content_league').mustache('league', obj);
+        });
 
-    }).fail(function() {
-        alert('fail');
+    }).always(function() {
+        $.mobile.hidePageLoadingMsg();
     });
 });
