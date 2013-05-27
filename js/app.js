@@ -104,6 +104,7 @@ $(document).on('pageshow', '#match', function() {
             arena = $xml.find('Arena'),
             scorers = $xml.find('Scorers'),
             injuries = $xml.find('Injuries'),
+            bookingsList = $xml.find('Bookings'),
             obj = {
                 homeTeam: {
                     name: homeTeam.find('HomeTeamName').text(),
@@ -157,7 +158,8 @@ $(document).on('pageshow', '#match', function() {
                 matchType: getMatchTypeImage($xml.find('MatchType').text())
             },
             goals = [],
-            injuriesList = [];
+            injuriesList = [],
+            bookingsList = [];
 
         scorers.find('Goal').each(function() {
             goals.push({
@@ -179,6 +181,16 @@ $(document).on('pageshow', '#match', function() {
             });
         });
         obj.injuries = injuriesList;
+
+        bookings.find('Booking').each(function() {
+            bookingsList.push({
+                bookingPlayerName: $(this).find('InjuryPlayerName').text(),
+                bookingType: $(this).find('InjuryType').text(),
+                bookingHome: $(this).find('InjuryTeamID').text() === obj.homeTeam.id,
+                bookingMinute: $(this).find('InjuryMinute').text()
+            });
+        });
+        obj.bookings = bookingsList;
 
         $.Mustache.load('templates/match.html', function() {
             $('#content').mustache('match', obj);
@@ -331,9 +343,9 @@ $(document).on('pageshow', '#team', function() {
     });
 });
 
-$(document).on('pageshow', '#team', function() {
+$(document).on('pageshow', '#league', function() {
     $('#content_league').html('');
-    getData(files.teamDetails)
+    getData(files.league)
     .done(function(resp) {
         var xmlDoc = $.parseXML(resp),
             $xml = $(xmlDoc),
@@ -352,16 +364,16 @@ $(document).on('pageshow', '#team', function() {
             teams.push({
                 name: $(this).find('TeamName').text(),
                 position: $(this).find('Position').text(),
-                matches: $(this).find('Matches').text(),
+                played: $(this).find('Matches').text(),
                 goalsFor: $(this).find('GoalsFor').text(),
                 goalsAgainst: $(this).find('GoalsAgainst').text(),
                 points: $(this).find('Points').text(),
                 won: $(this).find('Won').text(),
                 lost: $(this).find('Lost').text(),
                 draws: $(this).find('Draws').text()
-
             });
         });
+        obj.teams = teams;
 
         $.Mustache.load('templates/league.html', function() {
            $('#content_league').mustache('league', obj);
