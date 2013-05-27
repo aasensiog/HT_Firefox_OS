@@ -295,6 +295,7 @@ var refreshLiveMatch = function(matchId) {
 
 
 $(document).on('pageshow', '#team', function() {
+    $.mobile.showPageLoadingMsg("a", "Loading team info...");
     $('#content_team').html('');
     getData(files.teamDetails)
     .done(function(resp) {
@@ -344,7 +345,12 @@ $(document).on('pageshow', '#team', function() {
 });
 
 $(document).on('pageshow', '#players', function() {
-    getData(files.players).done(function(resp) {
+
+    $('#content_players').html('');
+    $.mobile.showPageLoadingMsg("a", "Loading players...");
+
+    getData(files.players)
+    .done(function(resp) {
         var xmlDoc = $.parseXML(resp),
             $xml = $(xmlDoc),
             team = $xml.find('Team'),
@@ -356,19 +362,18 @@ $(document).on('pageshow', '#players', function() {
 
         players.find('Player').each(function() {
             playerList.push({
-                name: $(this).find('NickName').text()
+                name: $(this).find('FirstName').text() + ' ' + $(this).find('LastName').text()
             });
         });
 
         obj.players = playerList;
 
         $.Mustache.load('templates/players.html', function() {
-            var html = mustache('players', obj);
-            $('#content_players').html(html);
+            $('#content_players').mustache('players', obj);
         });
 
-    }).fail(function() {
-        alert('fail');
+    }).always(function() {
+        $.mobile.hidePageLoadingMsg();
     });
 });
 
@@ -377,6 +382,7 @@ var updateMatchList = function() {
 };
 
 $(document).on('pageshow', '#league', function() {
+    $.mobile.showPageLoadingMsg("a", "Loading league details...");
     $('#content_league').html('');
     getData(files.league)
     .done(function(resp) {
