@@ -1,3 +1,29 @@
-<script type="text/template" id="live">
-    tablaaaaaaaaaaaaaaaaaaaaaa
+<script type="text/template" id="league">
+    <h3>{{league.country}} {{league.name}} <span class='italic'>round {{league.currentRound}}</span></h3>
+    <table data-role="table" id="league_table">
+    <tr>
+		<th></th>
+		<th>Team</th>
+		<th>Pld</th>
+		<th>W</th>
+		<th>D</th>
+		<th>L</th>
+		<th>GF</th>
+		<th>GA</th>
+		<th>Pts</th>
+    </tr>
+    {{#teams}}
+    	<tr>
+    		<td>{{position}}</td>
+    		<td>{{name}}</td>
+    		<td>{{played}}</td>
+    		<td>{{won}}</td>
+    		<td>{{draws}}</td>
+    		<td>{{lost}}</td>
+    		<td>{{goalsFor}}</td>
+    		<td>{{goalsAgainst}}</td>
+    		<td>{{points}}</td>
+    	</tr>
+    {{/teams}}
+    </table>
 </script>
