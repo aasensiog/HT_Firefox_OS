@@ -333,3 +333,7 @@ $(document).on('pageshow', '#players', function() {
         alert('fail');
     });
 });
+
+var updateMatchList = function() {
+    alert('update match list');
+};
