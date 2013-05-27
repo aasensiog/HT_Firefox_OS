@@ -83,7 +83,7 @@ $(document).on('pageshow', '#matchList', function() {
                 maList.future.fill = true;
             }
         });
-        
+
         $.Mustache.load('templates/matches_list.html', function() {
             $('#content_matchList').mustache('matches_list', maList);
             $('#list_matches').listview();
@@ -299,6 +299,35 @@ $(document).on('pageshow', '#team', function() {
         var xmlDoc = $.parseXML(resp),
             $xml = $(xmlDoc);
 
+
+    }).fail(function() {
+        alert('fail');
+    });
+});
+
+$(document).on('pageshow', '#players', function() {
+    getData(files.players).done(function(resp) {
+        var xmlDoc = $.parseXML(resp),
+            $xml = $(xmlDoc),
+            team = $xml.find('Team'),
+            players = team.find('PlayerList'),
+            playerList = [],
+            obj = {
+                teamName: team.find('TeamName').text()
+            };
+
+        players.find('Player').each(function() {
+            playerList.push({
+                name: $(this).find('NickName').text()
+            });
+        });
+
+        obj.players = playerList;
+
+        $.Mustache.load('templates/players.html', function() {
+            var html = mustache('players', obj);
+            $('#content_players').html(html);
+        });
 
     }).fail(function() {
         alert('fail');
