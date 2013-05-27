@@ -20,6 +20,10 @@ var files = {
         file: 'matchdetails',
         version: '2.5'
     },
+    players: {
+        file: 'players',
+        version: '2.3'
+    },
     league: {
         file: 'leaguedetails',
         version: '1.4'

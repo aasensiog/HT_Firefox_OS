@@ -343,6 +343,39 @@ $(document).on('pageshow', '#team', function() {
     });
 });
 
+$(document).on('pageshow', '#players', function() {
+    getData(files.players).done(function(resp) {
+        var xmlDoc = $.parseXML(resp),
+            $xml = $(xmlDoc),
+            team = $xml.find('Team'),
+            players = team.find('PlayerList'),
+            playerList = [],
+            obj = {
+                teamName: team.find('TeamName').text()
+            };
+
+        players.find('Player').each(function() {
+            playerList.push({
+                name: $(this).find('NickName').text()
+            });
+        });
+
+        obj.players = playerList;
+
+        $.Mustache.load('templates/players.html', function() {
+            var html = mustache('players', obj);
+            $('#content_players').html(html);
+        });
+
+    }).fail(function() {
+        alert('fail');
+    });
+});
+
+var updateMatchList = function() {
+    alert('update match list');
+};
+
 $(document).on('pageshow', '#league', function() {
     $('#content_league').html('');
     getData(files.league)
