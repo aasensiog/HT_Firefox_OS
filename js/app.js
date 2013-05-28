@@ -184,10 +184,10 @@ $(document).on('pageshow', '#match', function() {
 
         bookings.find('Booking').each(function() {
             bookingsList.push({
-                bookingPlayerName: $(this).find('InjuryPlayerName').text(),
-                bookingType: $(this).find('InjuryType').text(),
-                bookingHome: $(this).find('InjuryTeamID').text() === obj.homeTeam.id,
-                bookingMinute: $(this).find('InjuryMinute').text()
+                bookingPlayerName: $(this).find('BookingPlayerName').text(),
+                bookingType: $(this).find('BookingType').text(),
+                bookingHome: $(this).find('BookingTeamID').text() === obj.homeTeam.id,
+                bookingMinute: $(this).find('BookingMinute').text()
             });
         });
         obj.bookings = bookingsList;
@@ -283,7 +283,7 @@ var refreshLiveMatch = function(matchId) {
 
 
                 $.Mustache.load('templates/live.html', function() {
-                   $('#content_live').mustache('live', obj);
+                    $('#content_live').mustache('live', obj);
                     $('#list_live').listview();
                 });
             }
@@ -362,7 +362,14 @@ $(document).on('pageshow', '#players', function() {
 
         players.find('Player').each(function() {
             playerList.push({
-                name: $(this).find('FirstName').text() + ' ' + $(this).find('LastName').text()
+                name: $(this).find('FirstName').text() + ' ' + $(this).find('LastName').text(),
+                number: ($(this).find('PlayerNumber').text() != 100) ? $(this).find('PlayerNumber').text() : null,
+                age: $(this).find('Age').text(),
+                ageDays: $(this).find('AgeDays').text(),
+                salary: $(this).find('Salary').text(),
+                cards: ($(this).find('Cards').text() != 0) ? $(this).find('Cards').text() : null,
+                injury: ($(this).find('InjuryLevel').text() != -1) ? $(this).find('InjuryLevel').text() : null,
+                tsi: $(this).find('TSI').text()
             });
         });
 
@@ -370,6 +377,7 @@ $(document).on('pageshow', '#players', function() {
 
         $.Mustache.load('templates/players.html', function() {
             $('#content_players').mustache('players', obj);
+            $('#list_players').listview();
         });
 
     }).always(function() {
