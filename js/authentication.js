@@ -27,6 +27,8 @@ var step1 = function() {
         $.mobile.showPageLoadingMsg("a", "Loading ...");
         request_token().done(function() {
             step2();
+        }).fail(function() {
+            alert('Conection error');
         }).always(function() {
             $.mobile.hidePageLoadingMsg();
         });
@@ -37,6 +39,8 @@ var step1 = function() {
 
 var step2 = function() {
     console.log('step2');
+    $('#auth_html').show();
+
     if (!localStorage.getItem('oauth_verifier')) {
         var authorizeA = $('#authorize');
         console.info(getConsumerInfo().serviceProvider.authorize_url+'?oauth_token='+localStorage.getItem('oauth_token'));

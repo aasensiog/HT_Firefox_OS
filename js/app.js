@@ -1,4 +1,6 @@
 
+var liveInterval = null;
+
 $(document).bind("pagebeforechange", function( event, data ) {
     $.mobile.pageData = (data && data.options && data.options.pageData) ?
     data.options.pageData : null;
@@ -15,16 +17,23 @@ $(document).on('pageinit', '#index', function() {
 });
 
 $(document).on('pageinit', '#menu', function() {
+    if (liveInterval) {
+        clearInterval(liveInterval);
+    }
 
 });
 
 $(document).on('pageinit', '#authentication', function() {
+    $('#auth_html').hide();
     console.log('No tenemos el ok_access_token');
     console.log(localStorage.getItem('ok_oauth_token'));
     step1();
 });
 
 $(document).on('pageshow', '#matchList', function() {
+    if (liveInterval) {
+        clearInterval(liveInterval);
+    }
     $.mobile.showPageLoadingMsg("a", "Loading matches list...");
     $('#content_matchList').html('');
     getData(files.matches)
@@ -86,6 +95,9 @@ $(document).on('pageshow', '#matchList', function() {
 });
 
 $(document).on('pageshow', '#match', function() {
+    if (liveInterval) {
+        clearInterval(liveInterval);
+    }
     if ($.mobile.pageData && $.mobile.pageData.id) {
         var matchId = $.mobile.pageData.id;
     }
@@ -228,7 +240,10 @@ $(document).on('pageshow', '#live', function() {
             liveMatchesAdded.push(matchId);
             localStorage.setItem('liveMatchesAdded', JSON.stringify(liveMatchesAdded));
             refreshLiveMatch(matchId);
-            setInterval(function() {
+            if (liveInterval) {
+                clearInterval(liveInterval);
+            }
+            liveInterval = setInterval(function() {
                 refreshLiveMatch(matchId);
             }, 60000);
         }).fail(function() {
@@ -238,7 +253,10 @@ $(document).on('pageshow', '#live', function() {
         });
     } else {
         refreshLiveMatch(matchId);
-        setInterval(function() {
+        if (liveInterval) {
+            clearInterval(liveInterval);
+        }
+        liveInterval = setInterval(function() {
             refreshLiveMatch(matchId);
         }, 60000);
     }
@@ -300,6 +318,9 @@ var refreshLiveMatch = function(matchId) {
 
 
 $(document).on('pageshow', '#team', function() {
+    if (liveInterval) {
+        clearInterval(liveInterval);
+    }
     $.mobile.showPageLoadingMsg("a", "Loading team info...");
     $('#content_team').html('');
     getData(files.teamDetails)
@@ -350,7 +371,9 @@ $(document).on('pageshow', '#team', function() {
 });
 
 $(document).on('pageshow', '#players', function() {
-
+    if (liveInterval) {
+        clearInterval(liveInterval);
+    }
     $('#content_players').html('');
     $.mobile.showPageLoadingMsg("a", "Loading players...");
 
@@ -391,6 +414,9 @@ $(document).on('pageshow', '#players', function() {
 });
 
 $(document).on('pageshow', '#league', function() {
+    if (liveInterval) {
+        clearInterval(liveInterval);
+    }
     $.mobile.showPageLoadingMsg("a", "Loading league details...");
     $('#content_league').html('');
     getData(files.league)

@@ -46,12 +46,12 @@
 			<h1>Authentication</h1>
 		</div>
 		<div data-role="content">
-
-			<a id='authorize' target='_blank'>Authorization is needed for getting your HT team information, get the code</a>
-			<br>
-			<label for='oauth_verifier'>Introduce the code:</label><input id='oauth_verifier' type='text'>
-			<a data-role="button" onclick='saveOauthVerifier()'>Authorize</a>
-
+			<div id='auth_html'>
+				<a id='authorize' target='_blank'>Authorization is needed for getting your HT team information, get the code</a>
+				<br>
+				<label for='oauth_verifier'>Introduce the code:</label><input id='oauth_verifier' type='text'>
+				<a data-role="button" onclick='saveOauthVerifier()' id='auth_button'>Authorize</a>
+			</div>
 		</div>
 		<div data-role="footer" data-position="fixed">
 			<h4>@aasensiog</h4>
