@@ -79,10 +79,6 @@ var Attitude = {
     Normal: 'Normal',
     Mots: 'Mots',
     Pic: 'Pic'
-}
-
-var _getWeather = function(weatherId) {
-    return 'cloudy';
 };
 
 var getAttitude = function(att) {

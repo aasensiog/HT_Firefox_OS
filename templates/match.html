@@ -1,6 +1,6 @@
 <script type="text/template" id="match">
 	<h3 class='center'><span class='homeTeam'>{{homeTeam.name}}</span> {{homeTeam.goals}} - {{awayTeam.goals}} <span class='awayTeam'>{{awayTeam.name}}</span></h3>
-	<p><img src='../img/{{matchType}}'/> <b>{{arena.name}}</b>: {{arena.soldTotal}} spectators</p>
+	<p><img src='../img/{{matchType}}'/> <b>{{arena.name}} <img src='../img/weather_{{arena.weather}}.png'/></b>: {{arena.soldTotal}} spectators</p>
 
 	<ul data-role='listview' data-inset="true" id='list_goals' data-theme="c">
 		<li data-role='list-divider'>Highlights</li>
@@ -15,8 +15,7 @@
 		  		<p class="ui-li-aside ui-li-desc"><strong>{{scorerMinute}}</strong>min</p>
 		  		<h3 class="ui-li-desc"><strong>{{scorerPlayerName}}</strong></h3>
 		  		<p class='ui-li-desc'>{{homeGoals}} - {{awayGoals}}</p>
-		  </li>
-
+		  	</li>
   	{{/goals}}
   	{{#injuries}}
   		{{#injuryHome}}
@@ -30,6 +29,18 @@
 		  		<h3 class="ui-li-desc"><strong>{{injuryPlayerName}}</strong></h3>
 		  	</li>
   	{{/injuries}}
+  	{{#bookings}}
+  		{{#bookingHome}}
+  			<li class='homeTeam'>
+  		{{/bookingHome}}
+  		{{^bookingHome}}
+  			<li class='awayTeam'>
+  		{{/bookingHome}}
+  				<img src='../img/booking_{{bookingType}}.png' class="ui-li-icon ui-li-thumb"/>
+		  		<p class="ui-li-aside ui-li-desc"><strong>{{bookingMinute}}</strong>min</p>
+		  		<h3 class="ui-li-desc"><strong>{{bookingPlayerName}}</strong></h3>
+		  	</li>
+  	{{/bookings}}
   	</ul>
 
   	<table data-role="table" class="ui-responsive" id='ratingsTable'>

@@ -1,6 +1,7 @@
 <script type="text/template" id="live">
     <h3 class='center'><span class='homeTeam'>{{homeTeam.name}}</span> {{homeTeam.goals}} - {{awayTeam.goals}} <span class='awayTeam'>{{awayTeam.name}}</span></h3>
-    <ul data-role="listview" data-inset='true' id='list_live' data-scroll="y" data-theme="c">
+    <ul data-role="listview" data-inset="true" id='list_live' data-scroll="y" data-theme="c">
+    <li data-role='list-divider'>Highlights</li>
     {{#events}}
         {{#homeTeam}}
         <li class='homeTeam'>
@@ -8,9 +9,9 @@
         {{^homeTeam}}
         <li class='awayTeam'>
         {{/homeTeam}}
-            <h3>{{teamId}}</h3>
-            <p class="ui-li-desc">{{description}}</p>
-            <p class="ui-li-aside ui-li-desc"><strong>{{minute}}</strong>PM</p>
+            <!--<h3>{{teamId}}</h3>-->
+            <p class="ui-li-desc"><font style="white-space:normal; font-size: small" >{{description}}</font></p>
+            <!--<p class="ui-li-aside ui-li-desc"><strong>{{minute}}</strong>PM</p>-->
         </li>
     {{/events}}
     </ul>

@@ -1,8 +1,7 @@
 
 $(document).bind("pagebeforechange", function( event, data ) {
-    $.mobile.pageData = (data && data.options && data.options.pageData)
-        ? data.options.pageData
-        : null;
+    $.mobile.pageData = (data && data.options && data.options.pageData) ?
+    data.options.pageData : null;
 });
 
 $(document).on('pageinit', '#index', function() {
@@ -104,7 +103,7 @@ $(document).on('pageshow', '#match', function() {
             arena = $xml.find('Arena'),
             scorers = $xml.find('Scorers'),
             injuries = $xml.find('Injuries'),
-            bookingsList = $xml.find('Bookings'),
+            bookings = $xml.find('Bookings'),
             obj = {
                 homeTeam: {
                     name: homeTeam.find('HomeTeamName').text(),
@@ -152,7 +151,7 @@ $(document).on('pageshow', '#match', function() {
                 },
                 arena: {
                     name: arena.find('ArenaName').text(),
-                    weather: _getWeather(arena.find('WeatherID').text()),
+                    weather: arena.find('WeatherID').text(),
                     soldTotal: arena.find('SoldTotal').text()
                 },
                 matchType: getMatchTypeImage($xml.find('MatchType').text())
@@ -214,7 +213,7 @@ $(document).on('pageshow', '#live', function() {
     var liveMatchesAdded = JSON.parse(localStorage.getItem('liveMatchesAdded'));
     if (!liveMatchesAdded) {
         liveMatchesAdded = [];
-        localStorage.setItem(JSON.stringify(liveMatchesAdded));
+        localStorage.setItem('liveMatchesAdded', JSON.stringify(liveMatchesAdded));
     }
 
     if (liveMatchesAdded.indexOf(matchId) === -1) {
@@ -227,8 +226,11 @@ $(document).on('pageshow', '#live', function() {
         getData(files.live, params)
         .done(function() {
             liveMatchesAdded.push(matchId);
-            localStorage.setItem(JSON.stringify(liveMatchesAdded));
+            localStorage.setItem('liveMatchesAdded', JSON.stringify(liveMatchesAdded));
             refreshLiveMatch(matchId);
+            setInterval(function() {
+                refreshLiveMatch(matchId);
+            }, 60000);
         }).fail(function() {
             alert('Error adding match, please try again.');
         }).always(function() {
@@ -236,6 +238,9 @@ $(document).on('pageshow', '#live', function() {
         });
     } else {
         refreshLiveMatch(matchId);
+        setInterval(function() {
+            refreshLiveMatch(matchId);
+        }, 60000);
     }
 });
 
@@ -247,7 +252,7 @@ var refreshLiveMatch = function(matchId) {
     };
 
     $.mobile.showPageLoadingMsg("a", "Loading live match info...");
-    $('#content').html('');
+    $('#content_live').html('');
     getData(files.live, params)
     .done(function(resp) {
         var xmlDoc = $.parseXML(resp),
@@ -275,7 +280,7 @@ var refreshLiveMatch = function(matchId) {
                 eventList.find('Event').each(function() {
                     events.push({
                         minute: $(this).find('Minute').text(),
-                        description: $(this).find('EventText').text(),
+                        description: $(this).find('EventText').text().replace(/<[^>]*>/g, ''),
                         homeTeam: ($(this).find('SubjectTeamID').text() === homeTeam.id)
                     });
                 });
@@ -384,10 +389,6 @@ $(document).on('pageshow', '#players', function() {
         $.mobile.hidePageLoadingMsg();
     });
 });
-
-var updateMatchList = function() {
-    alert('update match list');
-};
 
 $(document).on('pageshow', '#league', function() {
     $.mobile.showPageLoadingMsg("a", "Loading league details...");
