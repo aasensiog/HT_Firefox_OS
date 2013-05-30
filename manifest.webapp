@@ -8,11 +8,7 @@
 		"url": "http://albertasensio.es"
 	},
 	"icons": {
-		"16": "/img/icon16.png",
-		"32": "/img/icon32.png",
-		"48": "/img/icon48.png",
-		"64": "/img/icon64.png",
-		"128": "/img/icon128.png"
+		"128": "/logo/HT_match_viewer_logo.png"
 	},
 	"default_locale": "en",
 	"permissions": {
