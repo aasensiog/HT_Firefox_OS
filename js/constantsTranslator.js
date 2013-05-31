@@ -92,6 +92,16 @@ var getAttitude = function(att) {
     }
 };
 
+var getInjurySign = function(injuryLevel) {
+    if (injuryLevel == -1) {
+        return null;
+    } else if (injuryLevel == 0) {
+        return 1;
+    } else {
+        return 2;
+    }
+};
+
 var matchTypes = {
     1:   'League match',
     2:   'Qualification match',

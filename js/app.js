@@ -396,7 +396,7 @@ $(document).on('pageshow', '#players', function() {
                 ageDays: $(this).find('AgeDays').text(),
                 salary: $(this).find('Salary').text(),
                 cards: ($(this).find('Cards').text() != 0) ? $(this).find('Cards').text() : null,
-                injury: ($(this).find('InjuryLevel').text() != -1) ? $(this).find('InjuryLevel').text() : null,
+                injury: getInjurySign($(this).find('InjuryLevel').text()),
                 tsi: $(this).find('TSI').text()
             });
         });
