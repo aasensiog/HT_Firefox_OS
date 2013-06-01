@@ -6,7 +6,7 @@ $(document).bind("pagebeforechange", function( event, data ) {
     data.options.pageData : null;
 });
 
-$(document).on('pageinit', '#index', function() {
+$(document).on('pageshow', '#index', function() {
     if (!localStorage.getItem('ok_oauth_token')) {
         document.location.href = '#authentication';
     } else {
@@ -291,7 +291,8 @@ var refreshLiveMatch = function(matchId) {
                             name: awayTeam.find('AwayTeamShortName').text(),
                             id: awayTeam.find('AwayTeamID').text(),
                             goals: $(this).find('AwayGoals').text()
-                        }
+                        }/*,
+                        matchMinute: getMatchMinute($(this).find('MatchDate').text())*/
                     },
                     events = [];
 
@@ -456,4 +457,11 @@ $(document).on('pageshow', '#league', function() {
     }).always(function() {
         $.mobile.hidePageLoadingMsg();
     });
+});
+
+$(document).on('pageinit', '#settings', function() {
+    if (liveInterval) {
+        clearInterval(liveInterval);
+    }
+
 });

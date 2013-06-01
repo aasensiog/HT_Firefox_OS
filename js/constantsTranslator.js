@@ -97,8 +97,23 @@ var getInjurySign = function(injuryLevel) {
         return null;
     } else if (injuryLevel == 0) {
         return 1;
-    } else {
+    } else if (!!parseInt(injuryLevel,10)){
         return 2;
+    } else {
+        return null;
+    }
+};
+
+var getMatchMinute = function(matchTime) {
+    var d = new Date(matchTime);
+    var now = new Date();
+    var minutes = (now-d)*1000*60;
+    if (minutes > 45 && minutes < 60) {
+        return null;
+    } else if (minutes < 45) {
+        return minutes;
+    } else {
+        return minutes - 15;
     }
 };
 

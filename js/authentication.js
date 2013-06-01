@@ -51,3 +51,8 @@ var step2 = function() {
         $('input#oauth_verifier').val(localStorage.getItem('oauth_verifier'));
     }
 };
+
+var logout = function() {
+    logOut();
+    document.location.href = '#index';
+};

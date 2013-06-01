@@ -67,6 +67,8 @@
 			<a href='#matchList' data-role="button">Matches</a>
 			<a href='#players' data-role="button">Players</a>
 			<a href='#league' data-role="button">League</a>
+
+			<a href='#settings' data-role="button" data-theme="a">Settings</a>
 		</div>
 		<div data-role="footer" data-position="fixed">
 			<h4>@aasensiog</h4>
@@ -102,13 +104,11 @@
 	      	<h1 id='match'>Live</h1>
 	      	<!--TODO: button refresh -->
 	   	</div>
-
 	   	<div data-role="content" id='content_live'>
 
 	   	</div>
-
 		<div data-role="footer" data-position="fixed">
-			<h4>@aasensiog - albertasensio.es</h4>
+			<h4>@aasensiog</h4>
 		</div>
 	</div>
 
@@ -146,6 +146,19 @@
 			<h4>@aasensiog</h4>
 		</div>
 	</div>
+
+	<div data-role="page" data-theme="e" id='settings' data-add-back-btn="true">
+		<div data-role="header" data-position='fixed'>
+			<h1>Settings</h1>
+		</div>
+		<div data-role="content" id='content_settings'>
+			<a data-role="button" onclick='logout();' data-theme='a'>Log out</a>
+		</div>
+		<div data-role="footer">
+			<h4>@aasensiog</h4>
+		</div>
+	</div>
+
 
 </body>
 </html>

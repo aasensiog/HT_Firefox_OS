@@ -165,3 +165,7 @@ var getData = function(data, params) {
   });
   return deferred.promise();
 };
+
+var logOut = function() {
+  alert('Log out');
+};
