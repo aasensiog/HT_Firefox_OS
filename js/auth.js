@@ -167,5 +167,6 @@ var getData = function(data, params) {
 };
 
 var logOut = function() {
+  //TODO: call to invalidate token path url
   alert('Log out');
 };
