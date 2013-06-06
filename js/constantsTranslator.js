@@ -84,9 +84,9 @@ var Attitude = {
 var getAttitude = function(att) {
     if (!att) return null;
     switch (att) {
-        case -1:
+        case '-1':
             return Attitude.Pic;
-        case 1:
+        case '1':
             return Attitude.Mots;
         default:
             return Attitude.Normal;
