@@ -62,5 +62,4 @@ var logout = function() {
     .fail(function() {
         alert('Logout failed, try again');
     });
-    document.location.href = '#index';
 };
