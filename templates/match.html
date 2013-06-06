@@ -99,7 +99,7 @@
 	        <td>{{homeTeam.ratings.iA}}</td>
 	        <td>{{awayTeam.ratings.iA}}</td>
 	    </tr>
-	    <!--
+
 	    <tr>
 	        <th></th>
 	        <td></td>
@@ -107,10 +107,21 @@
 	    </tr>
 	    <tr>
 	        <th>Attitude</th>
-	        <td>{{homeTeam.attitude}}</td>
-	        <td>{{awayTeam.attitude}}</td>
+	        {{#homeTeam.attitude}}
+	        	<td>{{homeTeam.attitude}}</td>
+	        {{/homeTeam.attitude}}
+	        {{^homeTeam.attitude}}
+	        	<td>Unknown</td>
+	        {{/homeTeam.attitude}}
+
+	        {{#awayTeam.attitude}}
+	        	<td>{{awayTeam.attitude}}</td>
+	        {{/awayTeam.attitude}}
+	        {{^awayTeam.attitude}}
+	        	<td>Unknown</td>
+	        {{/awayTeam.attitude}}
 	    </tr>
-	    -->
+
 	    <tr>
 	        <th></th>
 	        <td></td>

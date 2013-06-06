@@ -167,6 +167,33 @@ var getData = function(data, params) {
 };
 
 var logOut = function() {
-  //TODO: call to invalidate token path url
-  alert('Log out');
+  var deferred = $.Deferred();
+  var consumer = getConsumerInfo();
+
+  $.extend(true, accessor, {
+    token: localStorage.getItem('ok_oauth_token'),
+    tokenSecret: localStorage.getItem('ok_oauth_token_secret')
+  });
+
+  var message = {
+    action: consumer.serviceProvider.invalidate_token_url,
+    method: consumer.serviceProvider.method,
+    parameters: {}
+  };
+
+  OAuth.completeRequest(message, accessor);
+  url = message.action + '?' + OAuth.formEncode(message.parameters);
+
+  console.log(url);
+
+  doXhrCall(url, {
+    success: function(response) {
+      console.log(response);
+      deferred.resolve(response);
+    },
+    error: function() {
+      deferred.reject();
+    }
+  });
+  return deferred.promise();
 };

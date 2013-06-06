@@ -82,6 +82,7 @@ var Attitude = {
 };
 
 var getAttitude = function(att) {
+    if (!att) return null;
     switch (att) {
         case -1:
             return Attitude.Pic;

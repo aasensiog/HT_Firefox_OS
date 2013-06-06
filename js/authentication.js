@@ -53,6 +53,14 @@ var step2 = function() {
 };
 
 var logout = function() {
-    logOut();
+    logOut()
+    .done(function() {
+        alert('Logout done successfully');
+        localStorage.clear();
+        document.location.href = '#index';
+    })
+    .fail(function() {
+        alert('Logout failed, try again');
+    });
     document.location.href = '#index';
 };
