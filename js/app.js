@@ -7,11 +7,19 @@ $(document).bind("pagebeforechange", function( event, data ) {
 });
 
 $(document).on('pageshow', '#index', function() {
+    $('#auth_button').click(function() {
+        saveOauthVerifier();
+    });
+    $('#logout_button').click(function() {
+        logout();
+    });
+
+
     if (!localStorage.getItem('ok_oauth_token')) {
         document.location.href = '#authentication';
     } else {
-        console.log('tenemos el ok_access_token');
-        console.log(localStorage.getItem('ok_oauth_token'));
+        //console.log('tenemos el ok_access_token');
+        //console.log(localStorage.getItem('ok_oauth_token'));
         document.location.href = '#menu';
     }
 });
@@ -20,13 +28,12 @@ $(document).on('pageinit', '#menu', function() {
     if (liveInterval) {
         clearInterval(liveInterval);
     }
-
 });
 
 $(document).on('pageinit', '#authentication', function() {
     $('#auth_html').hide();
-    console.log('No tenemos el ok_access_token');
-    console.log(localStorage.getItem('ok_oauth_token'));
+    //console.log('No tenemos el ok_access_token');
+    //console.log(localStorage.getItem('ok_oauth_token'));
     step1();
 });
 

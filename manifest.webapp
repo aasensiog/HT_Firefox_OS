@@ -12,6 +12,8 @@
 	},
 	"default_locale": "en",
 	"permissions": {
-		"systemXHR":{}
+		"systemXHR":{
+			"description": "Required for connecting to service provider"
+		}
 	}
 }

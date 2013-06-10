@@ -72,7 +72,7 @@ var request_token = function() {
     success: function(response) {
       var params = OAuth.getParameterMap(response);
       for (var key in params) {
-        console.log(params[key]);
+        //console.log(params[key]);
         localStorage.setItem(key,params[key]);
       }
       deferred.resolve();
@@ -103,13 +103,13 @@ var getAccessToken = function() {
   OAuth.completeRequest(message, accessor);
   url = message.action + '?' + OAuth.formEncode(message.parameters);
 
-  console.log(url);
+  //console.log(url);
 
   doXhrCall(url, {
     success: function(response) {
       var params = OAuth.getParameterMap(response);
       for (var key in params) {
-        console.log(params[key]);
+        //console.log(params[key]);
         localStorage.setItem('ok_'+key,params[key]);
       }
       deferred.resolve();
@@ -152,11 +152,11 @@ var getData = function(data, params) {
   OAuth.completeRequest(message, accessor);
   url = message.action + '?' + OAuth.formEncode(message.parameters);
 
-  console.log(url);
+  //console.log(url);
 
   doXhrCall(url, {
     success: function(response) {
-      console.log(response);
+      //console.log(response);
       deferred.resolve(response);
     },
     error: function() {
@@ -184,11 +184,11 @@ var logOut = function() {
   OAuth.completeRequest(message, accessor);
   url = message.action + '?' + OAuth.formEncode(message.parameters);
 
-  console.log(url);
+  //console.log(url);
 
   doXhrCall(url, {
     success: function(response) {
-      console.log(response);
+      //console.log(response);
       deferred.resolve(response);
     },
     error: function() {
@@ -196,4 +196,11 @@ var logOut = function() {
     }
   });
   return deferred.promise();
+};
+
+var resetAccessor = function() {
+  accessor = {
+    consumerSecret: getConsumerInfo().consumerSecret,
+    consumerKey: getConsumerInfo().consumerKey
+  };
 };

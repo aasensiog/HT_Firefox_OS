@@ -50,7 +50,7 @@
 				<a id='authorize' target='_blank'>Authorization is needed for getting your HT team information, get the code</a>
 				<br>
 				<label for='oauth_verifier'>Introduce the code:</label><input id='oauth_verifier' type='text'>
-				<a data-role="button" onclick='saveOauthVerifier()' id='auth_button'>Authorize</a>
+				<a data-role="button" id='auth_button'>Authorize</a>
 			</div>
 		</div>
 		<div data-role="footer" data-position="fixed">
@@ -152,7 +152,7 @@
 			<h1>Settings</h1>
 		</div>
 		<div data-role="content" id='content_settings'>
-			<a data-role="button" onclick='logout();' data-theme='a'>Log out</a>
+			<a id='logout_button' data-role="button" data-theme='a'>Log out</a>
 		</div>
 		<div data-role="footer">
 			<h4>@aasensiog</h4>
