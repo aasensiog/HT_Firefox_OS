@@ -351,7 +351,7 @@ $(document).on('pageshow', '#team', function() {
                     dressURI: $(this).find('DressURI').text(),
                     dressAlternateURI: $(this).find('DressAlternateURI').text(),
                     leagueLevel: $(this).find('LeagueLevelUnit').find('LeagueLevelUnitName').text(),
-                    stillInCup: $(this).find('Cup').find('StillInCup').text(),
+                    stillInCup: $(this).find('Cup').find('StillInCup').text() == 'True' ? true : false,
                     numVictories: $(this).find('NumberOfVictories').text(),
                     numUndefeated: $(this).find('NumberOfUndefeated').text(),
                     teamRank: $(this).find('TeamRank').text(),
