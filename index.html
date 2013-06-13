@@ -36,7 +36,7 @@
 		<div data-role="content">
 			Loading ...
 		</div>
-		<div data-role="footer">
+		<div data-role="footer" data-position="fixed">
 			<h4>@aasensiog</h4>
 		</div>
 	</div>
@@ -46,14 +46,14 @@
 			<h1>Authentication</h1>
 		</div>
 		<div data-role="content">
-
-			<a id='authorize' target='_blank'>Authorization is needed for getting your HT team information, get the code</a>
-			<br>
-			<label for='oauth_verifier'>Introduce the code:</label><input id='oauth_verifier' type='text'>
-			<a data-role="button" onclick='saveOauthVerifier()'>Authorize</a>
-
+			<div id='auth_html'>
+				<a id='authorize' target='_blank'>Authorization is needed for getting your HT team information, get the code</a>
+				<br>
+				<label for='oauth_verifier'>Introduce the code:</label><input id='oauth_verifier' type='text'>
+				<a data-role="button" id='auth_button'>Authorize</a>
+			</div>
 		</div>
-		<div data-role="footer">
+		<div data-role="footer" data-position="fixed">
 			<h4>@aasensiog</h4>
 		</div>
 	</div>
@@ -65,67 +65,100 @@
 		<div data-role="content">
 			<a href='#team' data-role="button">Team</a>
 			<a href='#matchList' data-role="button">Matches</a>
+			<a href='#players' data-role="button">Players</a>
+			<a href='#league' data-role="button">League</a>
+
+			<a href='#settings' data-role="button" data-theme="a">Settings</a>
 		</div>
-		<div data-role="footer">
+		<div data-role="footer" data-position="fixed">
 			<h4>@aasensiog</h4>
 		</div>
 	</div>
 
-	<div data-role="page" data-theme="e" id='matchList'>
+	<div data-role="page" data-theme="e" id='matchList' data-add-back-btn="true">
 		<div data-role="header" data-position='fixed'>
 			<h1>Matches</h1>
-			<a data-icon='back' data-rel="back"></a>
 		</div>
 		<div data-role="content" id='content_matchList'>
-			
+
 		</div>
-		<div data-role="footer">
+		<div data-role="footer" data-position="fixed">
 			<h4>@aasensiog</h4>
 		</div>
 	</div>
 
-	<div data-role="page" data-theme="e" id='match'>
+	<div data-role="page" data-theme="e" id='match' data-add-back-btn="true">
 		<div data-role="header" data-position='fixed'>
 			<h1>Match</h1>
-			<a data-icon='back' data-rel="back"></a>
 		</div>
 		<div data-role="content" id='content'>
 
 		</div>
-		<div data-role="footer">
+		<div data-role="footer" data-position="fixed">
 			<h4>@aasensiog</h4>
 		</div>
 	</div>
 
-	<div data-role="page" data-theme='e' id="live">
+	<div data-role="page" data-theme='e' id="live" data-add-back-btn="true">
 	   	<div data-role="header" data-position='fixed'>
 	      	<h1 id='match'>Live</h1>
-	      	<a data-icon='back' data-rel="back"></a>
+	      	<!--TODO: button refresh -->
 	   	</div>
-
 	   	<div data-role="content" id='content_live'>
-	   		<ul data-role="listview" data-inset='true' id='list_live' data-scroll="y">
 
-	   		</ul>
 	   	</div>
-
-		<div data-role="footer">
-			<h4>@aasensiog - albertasensio.es</h4>
+		<div data-role="footer" data-position="fixed">
+			<h4>@aasensiog</h4>
 		</div>
 	</div>
 
-	<div data-role="page" data-theme="e" id='team'>
+	<div data-role="page" data-theme="e" id='team' data-add-back-btn="true">
 		<div data-role="header" data-position='fixed'>
 			<h1>Team</h1>
-			<a data-icon='back' data-rel="back"></a>
 		</div>
-		<div data-role="content">
+		<div data-role="content" id='content_team'>
+
+		</div>
+		<div data-role="footer" data-position="fixed">
+			<h4>@aasensiog</h4>
+		</div>
+	</div>
+	<div data-role="page" data-theme="e" id='league' data-add-back-btn="true">
+		<div data-role="header" data-position='fixed'>
+			<h1>League</h1>
+		</div>
+		<div data-role="content" id='content_league'>
+
+		</div>
+		<div data-role="footer" data-position="fixed">
+			<h4>@aasensiog</h4>
+		</div>
+	</div>
+
+	<div data-role="page" data-theme="e" id='players' data-add-back-btn="true">
+		<div data-role="header" data-position='fixed'>
+			<h1>Players</h1>
+		</div>
+		<div data-role="content" id='content_players'>
 
 		</div>
 		<div data-role="footer">
 			<h4>@aasensiog</h4>
 		</div>
 	</div>
+
+	<div data-role="page" data-theme="e" id='settings' data-add-back-btn="true">
+		<div data-role="header" data-position='fixed'>
+			<h1>Settings</h1>
+		</div>
+		<div data-role="content" id='content_settings'>
+			<a id='logout_button' data-role="button" data-theme='a'>Log out</a>
+		</div>
+		<div data-role="footer">
+			<h4>@aasensiog</h4>
+		</div>
+	</div>
+
 
 </body>
 </html>

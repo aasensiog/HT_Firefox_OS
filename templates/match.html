@@ -1,28 +1,48 @@
 <script type="text/template" id="match">
 	<h3 class='center'><span class='homeTeam'>{{homeTeam.name}}</span> {{homeTeam.goals}} - {{awayTeam.goals}} <span class='awayTeam'>{{awayTeam.name}}</span></h3>
-	<p><b>{{arena.name}}</b>: {{arena.soldTotal}} spectators</p>
+	<p><img src='../img/{{matchType}}'/> <b>{{arena.name}} <img src='../img/weather_{{arena.weather}}.png'/></b>: {{arena.soldTotal}} spectators</p>
 
 	<ul data-role='listview' data-inset="true" id='list_goals' data-theme="c">
 		<li data-role='list-divider'>Highlights</li>
 	{{#goals}}
 		{{#homeScorer}}
-		  <li class='homeTeam'><span class='goalMinute'><img src='../img/goal.png' /> {{scorerMinute}}min</span>: {{scorerPlayerName}}</li>
+		 	<li class='homeTeam'>
 		{{/homeScorer}}
 		{{^homeScorer}}
-		  <li class='awayTeam'><span class='goalMinute'><img src='../img/goal.png' /> {{scorerMinute}}min</span>: {{scorerPlayerName}}</li>
+		  	<li class='awayTeam'>
 		{{/homeScorer}}
-
+				<img src='../img/goal.png' class="ui-li-icon ui-li-thumb"/>
+		  		<p class="ui-li-aside ui-li-desc"><strong>{{scorerMinute}}</strong>min</p>
+		  		<h3 class="ui-li-desc"><strong>{{scorerPlayerName}}</strong></h3>
+		  		<p class='ui-li-desc'>{{homeGoals}} - {{awayGoals}}</p>
+		  	</li>
   	{{/goals}}
   	{{#injuries}}
   		{{#injuryHome}}
-  			<li class='homeTeam'><span class='goalMinute'><img src='../img/injury_{{injuryType}}.gif' /> {{injuryMinute}}min</span>: {{injuryPlayerName}}</li>
+  			<li class='homeTeam'>
   		{{/injuryHome}}
   		{{^injuryHome}}
-  			<li class='awayTeam'><span class='goalMinute'><img src='../img/injury_{{injuryType}}.gif' /> {{injuryMinute}}min</span>: {{injuryPlayerName}}</li>
+  			<li class='awayTeam'>
   		{{/injuryHome}}
+  				<img src='../img/injury_{{injuryType}}.gif' class="ui-li-icon ui-li-thumb"/>
+		  		<p class="ui-li-aside ui-li-desc"><strong>{{injuryMinute}}</strong>min</p>
+		  		<h3 class="ui-li-desc"><strong>{{injuryPlayerName}}</strong></h3>
+		  	</li>
   	{{/injuries}}
+  	{{#bookings}}
+  		{{#bookingHome}}
+  			<li class='homeTeam'>
+  		{{/bookingHome}}
+  		{{^bookingHome}}
+  			<li class='awayTeam'>
+  		{{/bookingHome}}
+  				<img src='../img/booking_{{bookingType}}.png' class="ui-li-icon ui-li-thumb"/>
+		  		<p class="ui-li-aside ui-li-desc"><strong>{{bookingMinute}}</strong>min</p>
+		  		<h3 class="ui-li-desc"><strong>{{bookingPlayerName}}</strong></h3>
+		  	</li>
+  	{{/bookings}}
   	</ul>
-  	
+
   	<table data-role="table" class="ui-responsive" id='ratingsTable'>
 	    <tr>
 	        <td></td>
@@ -79,7 +99,7 @@
 	        <td>{{homeTeam.ratings.iA}}</td>
 	        <td>{{awayTeam.ratings.iA}}</td>
 	    </tr>
-	    <!--
+
 	    <tr>
 	        <th></th>
 	        <td></td>
@@ -87,10 +107,21 @@
 	    </tr>
 	    <tr>
 	        <th>Attitude</th>
-	        <td>{{homeTeam.attitude}}</td>
-	        <td>{{awayTeam.attitude}}</td>
+	        {{#homeTeam.attitude}}
+	        	<td>{{homeTeam.attitude}}</td>
+	        {{/homeTeam.attitude}}
+	        {{^homeTeam.attitude}}
+	        	<td>Unknown</td>
+	        {{/homeTeam.attitude}}
+
+	        {{#awayTeam.attitude}}
+	        	<td>{{awayTeam.attitude}}</td>
+	        {{/awayTeam.attitude}}
+	        {{^awayTeam.attitude}}
+	        	<td>Unknown</td>
+	        {{/awayTeam.attitude}}
 	    </tr>
-	    -->
+
 	    <tr>
 	        <th></th>
 	        <td></td>

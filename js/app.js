@@ -1,81 +1,86 @@
 
+var liveInterval = null;
+
 $(document).bind("pagebeforechange", function( event, data ) {
-    $.mobile.pageData = (data && data.options && data.options.pageData)
-        ? data.options.pageData
-        : null;
+    $.mobile.pageData = (data && data.options && data.options.pageData) ?
+    data.options.pageData : null;
 });
 
-$(document).on('pageinit', '#index', function() {
+$(document).on('pageshow', '#index', function() {
+    $('#auth_button').click(function() {
+        saveOauthVerifier();
+    });
+    $('#logout_button').click(function() {
+        logout();
+    });
+
+
     if (!localStorage.getItem('ok_oauth_token')) {
         document.location.href = '#authentication';
     } else {
-        console.log('tenemos el ok_access_token');
-        console.log(localStorage.getItem('ok_oauth_token'));
+        //console.log('tenemos el ok_access_token');
+        //console.log(localStorage.getItem('ok_oauth_token'));
         document.location.href = '#menu';
     }
 });
 
 $(document).on('pageinit', '#menu', function() {
-
+    if (liveInterval) {
+        clearInterval(liveInterval);
+    }
 });
 
 $(document).on('pageinit', '#authentication', function() {
-    console.log('No tenemos el ok_access_token');
-    console.log(localStorage.getItem('ok_oauth_token'));
+    $('#auth_html').hide();
+    //console.log('No tenemos el ok_access_token');
+    //console.log(localStorage.getItem('ok_oauth_token'));
     step1();
 });
 
 $(document).on('pageshow', '#matchList', function() {
+    if (liveInterval) {
+        clearInterval(liveInterval);
+    }
     $.mobile.showPageLoadingMsg("a", "Loading matches list...");
     $('#content_matchList').html('');
     getData(files.matches)
     .done(function(resp) {
         //TODO: Create a list of a with href=#live/match?id=matchId
         var xmlDoc = $.parseXML(resp),
-            $xml = $(xmlDoc);
-
-        var divider1 = false;
-        var divider2 = false;
-        var divider3 = false;
-        var matchList = $xml.find('MatchList');
-        var maList = {
-            finished: {
-                list: [],
-                fill: false
+            $xml = $(xmlDoc),
+            matchList = $xml.find('MatchList'),
+            maList = {
+                finished: {
+                    list: [],
+                    fill: false
+                },
+                ongoing: {
+                    list: [],
+                    fill: false
+                },
+                future: {
+                    list: [],
+                    fill: false
+                }
             },
-            ongoing: {
-                list: [],
-                fill: false
-            },
-            future: {
-                list: [],
-                fill: false
-            }
-        };
+            obj = null;
 
         matchList.find('Match').each(function() {
-            matchId = $(this).find('MatchID').text();
-            matchStatus = $(this).find('Status').text();
-            matchHomeGoals = $(this).find('HomeGoals').text();
-            matchAwayGoals = $(this).find('AwayGoals').text();
-            homeTeamName = $(this).find('HomeTeam').find('HomeTeamNameShortName').text();
-            awayTeamName = $(this).find('AwayTeam').find('AwayTeamNameShortName').text();
-
-            var obj = {
-                matchId: matchId,
-                matchStatus: matchStatus,
-                matchHomeGoals: matchHomeGoals,
-                matchAwayGoals: matchAwayGoals,
-                homeTeamName: homeTeamName,
-                awayTeamName: awayTeamName
+            var matchType = getMatchTypeImage($(this).find('MatchType').text());
+            obj = {
+                matchId: $(this).find('MatchID').text(),
+                matchStatus: $(this).find('Status').text(),
+                matchType: matchType,
+                matchHomeGoals: $(this).find('HomeGoals').text(),
+                matchAwayGoals: $(this).find('AwayGoals').text(),
+                homeTeamName: $(this).find('HomeTeam').find('HomeTeamNameShortName').text(),
+                awayTeamName: $(this).find('AwayTeam').find('AwayTeamNameShortName').text()
             };
 
-            if (matchStatus === 'FINISHED') {
-                console.log('Pushing');
-                console.log(obj);
+            if (obj.matchStatus === 'FINISHED') {
                 maList.finished.list.push(obj);
                 maList.finished.fill = true;
-            } else if (matchStatus === 'ONGOING') {
+            } else if (obj.matchStatus === 'ONGOING') {
                 maList.ongoing.list.push(obj);
                 maList.ongoing.fill = true;
             } else {
@@ -83,7 +88,7 @@ $(document).on('pageshow', '#matchList', function() {
                 maList.future.fill = true;
             }
         });
-        
+
         $.Mustache.load('templates/matches_list.html', function() {
             $('#content_matchList').mustache('matches_list', maList);
             $('#list_matches').listview();
@@ -97,6 +102,9 @@ $(document).on('pageshow', '#matchList', function() {
 });
 
 $(document).on('pageshow', '#match', function() {
+    if (liveInterval) {
+        clearInterval(liveInterval);
+    }
     if ($.mobile.pageData && $.mobile.pageData.id) {
         var matchId = $.mobile.pageData.id;
     }
@@ -108,78 +116,80 @@ $(document).on('pageshow', '#match', function() {
     getData(files.matchDetails, params)
     .done(function(resp) {
         var xmlDoc = $.parseXML(resp),
-            $xml = $(xmlDoc);
-
-        var homeTeam = $xml.find('HomeTeam'),
+            $xml = $(xmlDoc),
+            homeTeam = $xml.find('HomeTeam'),
             awayTeam = $xml.find('AwayTeam'),
             arena = $xml.find('Arena'),
             scorers = $xml.find('Scorers'),
-            injuries = $xml.find('Injuries')
-
-
-        var obj = {
-            homeTeam: {
-                name: homeTeam.find('HomeTeamName').text(),
-                id: homeTeam.find('HomeTeamID').text(),
-                goals: homeTeam.find('HomeGoals').text(),
-                attitude: getAttitude(homeTeam.find('TeamAttitude').text()),
-                formation: homeTeam.find('Formation').text(),
-                ratings: {
-                    mid: getRating(homeTeam.find('RatingMidfield').text()),
-                    defR: getRating(homeTeam.find('RatingRightDef').text()),
-                    defM: getRating(homeTeam.find('RatingMidDef').text()),
-                    defL: getRating(homeTeam.find('RatingLeftDef').text()),
-                    attR: getRating(homeTeam.find('RatingRightAtt').text()),
-                    attM: getRating(homeTeam.find('RatingMidAtt').text()),
-                    attL: getRating(homeTeam.find('RatingLeftAtt').text()),
-                    iD: getRating(homeTeam.find('RatingIndirectSetPiecesDef').text()),
-                    iA: getRating(homeTeam.find('RatingIndirectSetPiecesAtt').text())
+            injuries = $xml.find('Injuries'),
+            bookings = $xml.find('Bookings'),
+            obj = {
+                homeTeam: {
+                    name: homeTeam.find('HomeTeamName').text(),
+                    id: homeTeam.find('HomeTeamID').text(),
+                    goals: homeTeam.find('HomeGoals').text(),
+                    attitude: getAttitude(homeTeam.find('TeamAttitude').text()),
+                    formation: homeTeam.find('Formation').text(),
+                    ratings: {
+                        mid: getRating(homeTeam.find('RatingMidfield').text()),
+                        defR: getRating(homeTeam.find('RatingRightDef').text()),
+                        defM: getRating(homeTeam.find('RatingMidDef').text()),
+                        defL: getRating(homeTeam.find('RatingLeftDef').text()),
+                        attR: getRating(homeTeam.find('RatingRightAtt').text()),
+                        attM: getRating(homeTeam.find('RatingMidAtt').text()),
+                        attL: getRating(homeTeam.find('RatingLeftAtt').text()),
+                        iD: getRating(homeTeam.find('RatingIndirectSetPiecesDef').text()),
+                        iA: getRating(homeTeam.find('RatingIndirectSetPiecesAtt').text())
+                    },
+                    possession: {
+                        firstHalf: $xml.find('PossessionFirstHalfHome').text(),
+                        secondHalf: $xml.find('PossessionSecondHalfHome').text()
+                    }
                 },
-                possession: {
-                    firstHalf: $xml.find('PossessionFirstHalfHome').text(),
-                    secondHalf: $xml.find('PossessionSecondHalfHome').text()
-                }
-            },
-            awayTeam: {
-                name: awayTeam.find('AwayTeamName').text(),
-                id: awayTeam.find('AwayTeamID').text(),
-                goals: awayTeam.find('AwayGoals').text(),
-                attitude: getAttitude(awayTeam.find('TeamAttitude').text()),
-                formation: awayTeam.find('Formation').text(),
-                ratings: {
-                    mid: getRating(awayTeam.find('RatingMidfield').text()),
-                    defR: getRating(awayTeam.find('RatingRightDef').text()),
-                    defM: getRating(awayTeam.find('RatingMidDef').text()),
-                    defL: getRating(awayTeam.find('RatingLeftDef').text()),
-                    attR: getRating(awayTeam.find('RatingRightAtt').text()),
-                    attM: getRating(awayTeam.find('RatingMidAtt').text()),
-                    attL: getRating(awayTeam.find('RatingLeftAtt').text()),
-                    iD: getRating(awayTeam.find('RatingIndirectSetPiecesDef').text()),
-                    iA: getRating(awayTeam.find('RatingIndirectSetPiecesAtt').text())
+                awayTeam: {
+                    name: awayTeam.find('AwayTeamName').text(),
+                    id: awayTeam.find('AwayTeamID').text(),
+                    goals: awayTeam.find('AwayGoals').text(),
+                    attitude: getAttitude(awayTeam.find('TeamAttitude').text()),
+                    formation: awayTeam.find('Formation').text(),
+                    ratings: {
+                        mid: getRating(awayTeam.find('RatingMidfield').text()),
+                        defR: getRating(awayTeam.find('RatingRightDef').text()),
+                        defM: getRating(awayTeam.find('RatingMidDef').text()),
+                        defL: getRating(awayTeam.find('RatingLeftDef').text()),
+                        attR: getRating(awayTeam.find('RatingRightAtt').text()),
+                        attM: getRating(awayTeam.find('RatingMidAtt').text()),
+                        attL: getRating(awayTeam.find('RatingLeftAtt').text()),
+                        iD: getRating(awayTeam.find('RatingIndirectSetPiecesDef').text()),
+                        iA: getRating(awayTeam.find('RatingIndirectSetPiecesAtt').text())
+                    },
+                    possession: {
+                        firstHalf: $xml.find('PossessionFirstHalfAway').text(),
+                        secondHalf: $xml.find('PossessionSecondHalfAway').text()
+                    }
                 },
-                possession: {
-                    firstHalf: $xml.find('PossessionFirstHalfAway').text(),
-                    secondHalf: $xml.find('PossessionSecondHalfAway').text()
-                }
+                arena: {
+                    name: arena.find('ArenaName').text(),
+                    weather: arena.find('WeatherID').text(),
+                    soldTotal: arena.find('SoldTotal').text()
+                },
+                matchType: getMatchTypeImage($xml.find('MatchType').text())
             },
-            arena: {
-                name: arena.find('ArenaName').text(),
-                weather: _getWeather(arena.find('WeatherID').text()),
-                soldTotal: arena.find('SoldTotal').text()
-            }
-        };
+            goals = [],
+            injuriesList = [],
+            bookingsList = [];
 
-        var goals = [];
         scorers.find('Goal').each(function() {
             goals.push({
                 scorerPlayerName: $(this).find('ScorerPlayerName').text(),
                 homeScorer: $(this).find('ScorerTeamID').text() === obj.homeTeam.id,
-                scorerMinute: $(this).find('ScorerMinute') .text()
+                scorerMinute: $(this).find('ScorerMinute').text(),
+                homeGoals: $(this).find('ScorerHomeGoals').text(),
+                awayGoals: $(this).find('ScorerAwayGoals').text()
             });
         });
         obj.goals = goals;
 
-        var injuriesList = [];
         injuries.find('Injury').each(function() {
             injuriesList.push({
                 injuryPlayerName: $(this).find('InjuryPlayerName').text(),
@@ -189,6 +199,16 @@ $(document).on('pageshow', '#match', function() {
             });
         });
         obj.injuries = injuriesList;
+
+        bookings.find('Booking').each(function() {
+            bookingsList.push({
+                bookingPlayerName: $(this).find('BookingPlayerName').text(),
+                bookingType: $(this).find('BookingType').text(),
+                bookingHome: $(this).find('BookingTeamID').text() === obj.homeTeam.id,
+                bookingMinute: $(this).find('BookingMinute').text()
+            });
+        });
+        obj.bookings = bookingsList;
 
         $.Mustache.load('templates/match.html', function() {
             $('#content').mustache('match', obj);
@@ -212,7 +232,7 @@ $(document).on('pageshow', '#live', function() {
     var liveMatchesAdded = JSON.parse(localStorage.getItem('liveMatchesAdded'));
     if (!liveMatchesAdded) {
         liveMatchesAdded = [];
-        localStorage.setItem(JSON.stringify(liveMatchesAdded));
+        localStorage.setItem('liveMatchesAdded', JSON.stringify(liveMatchesAdded));
     }
 
     if (liveMatchesAdded.indexOf(matchId) === -1) {
@@ -225,8 +245,14 @@ $(document).on('pageshow', '#live', function() {
         getData(files.live, params)
         .done(function() {
             liveMatchesAdded.push(matchId);
-            localStorage.setItem(JSON.stringify(liveMatchesAdded));
+            localStorage.setItem('liveMatchesAdded', JSON.stringify(liveMatchesAdded));
             refreshLiveMatch(matchId);
+            if (liveInterval) {
+                clearInterval(liveInterval);
+            }
+            liveInterval = setInterval(function() {
+                refreshLiveMatch(matchId);
+            }, 60000);
         }).fail(function() {
             alert('Error adding match, please try again.');
         }).always(function() {
@@ -234,6 +260,12 @@ $(document).on('pageshow', '#live', function() {
         });
     } else {
         refreshLiveMatch(matchId);
+        if (liveInterval) {
+            clearInterval(liveInterval);
+        }
+        liveInterval = setInterval(function() {
+            refreshLiveMatch(matchId);
+        }, 60000);
     }
 });
 
@@ -245,7 +277,7 @@ var refreshLiveMatch = function(matchId) {
     };
 
     $.mobile.showPageLoadingMsg("a", "Loading live match info...");
-    $('#content').html('');
+    $('#content_live').html('');
     getData(files.live, params)
     .done(function(resp) {
         var xmlDoc = $.parseXML(resp),
@@ -255,35 +287,34 @@ var refreshLiveMatch = function(matchId) {
             if ($(this).find('MatchID').text() === matchId) {
                 var homeTeam = $(this).find('HomeTeam'),
                     awayTeam = $(this).find('AwayTeam'),
-                    eventList = $(this).find('EventList');
-
-                var obj = {
-                    homeTeam: {
-                        name: homeTeam.find('HomeTeamShortName').text(),
-                        id: homeTeam.find('HomeTeamID').text(),
-                        goals: $(this).find('HomeGoals').text()
+                    eventList = $(this).find('EventList'),
+                    obj = {
+                        homeTeam: {
+                            name: homeTeam.find('HomeTeamShortName').text(),
+                            id: homeTeam.find('HomeTeamID').text(),
+                            goals: $(this).find('HomeGoals').text()
+                        },
+                        awayTeam: {
+                            name: awayTeam.find('AwayTeamShortName').text(),
+                            id: awayTeam.find('AwayTeamID').text(),
+                            goals: $(this).find('AwayGoals').text()
+                        }/*,
+                        matchMinute: getMatchMinute($(this).find('MatchDate').text())*/
                     },
-                    awayTeam: {
-                        name: awayTeam.find('AwayTeamShortName').text(),
-                        id: awayTeam.find('AwayTeamID').text(),
-                        goals: $(this).find('AwayGoals').text()
-                    }
-                };
+                    events = [];
 
-                var events = [];
                 eventList.find('Event').each(function() {
                     events.push({
                         minute: $(this).find('Minute').text(),
-                        description: $(this).find('EventText').text(),
-                        teamId: $(this).find('SubjectTeamID').text()
+                        description: $(this).find('EventText').text().replace(/<[^>]*>/g, ''),
+                        homeTeam: ($(this).find('SubjectTeamID').text() === homeTeam.id)
                     });
                 });
                 obj.events = events;
 
 
                 $.Mustache.load('templates/live.html', function() {
-                    var html = mustache('live', obj);
-                    $('#content_live').html(html);
+                    $('#content_live').mustache('live', obj);
                     $('#list_live').listview();
                 });
             }
@@ -295,12 +326,149 @@ var refreshLiveMatch = function(matchId) {
 
 
 $(document).on('pageshow', '#team', function() {
-    getData(files.teamDetails).done(function(resp) {
+    if (liveInterval) {
+        clearInterval(liveInterval);
+    }
+    $.mobile.showPageLoadingMsg("a", "Loading team info...");
+    $('#content_team').html('');
+    getData(files.teamDetails)
+    .done(function(resp) {
         var xmlDoc = $.parseXML(resp),
-            $xml = $(xmlDoc);
+            $xml = $(xmlDoc),
+            user = $xml.find('User'),
+            teams = $xml.find('Teams'),
+            obj = null;
 
+        obj = {
+            user: {
+                username: user.find('Loginname').text(),
+                language: user.find('Language').find('LanguageName').text()
+            }
+        };
 
-    }).fail(function() {
-        alert('fail');
+        teams.find('Team').each(function() {
+            if ($(this).find('IsPrimaryClub').text()) {
+                obj.team = {
+                    name: $(this).find('TeamName').text(),
+                    shortName: $(this).find('ShortTeamName').text(),
+                    arenaName: $(this).find('Arena').find('ArenaName').text(),
+                    leagueName: $(this).find('League').find('LeagueName').text(),
+                    regionName: $(this).find('Region').find('RegionName').text(),
+                    homePage: $(this).find('HomePage').text(),
+                    dressURI: $(this).find('DressURI').text(),
+                    dressAlternateURI: $(this).find('DressAlternateURI').text(),
+                    leagueLevel: $(this).find('LeagueLevelUnit').find('LeagueLevelUnitName').text(),
+                    stillInCup: $(this).find('Cup').find('StillInCup').text() == 'True' ? true : false,
+                    numVictories: $(this).find('NumberOfVictories').text(),
+                    numUndefeated: $(this).find('NumberOfUndefeated').text(),
+                    teamRank: $(this).find('TeamRank').text(),
+                    fanClubName: $(this).find('Fanclub').find('FanclubName').text(),
+
+                    logoUrl: ($(this).find('SupporterTier').text()) ? $(this).find('LogoURL').text() : null
+                };
+            }
+        });
+
+        $.Mustache.load('templates/team.html', function() {
+           $('#content_team').mustache('team_details', obj);
+        });
+
+    }).always(function() {
+        $.mobile.hidePageLoadingMsg();
     });
+});
+
+$(document).on('pageshow', '#players', function() {
+    if (liveInterval) {
+        clearInterval(liveInterval);
+    }
+    $('#content_players').html('');
+    $.mobile.showPageLoadingMsg("a", "Loading players...");
+
+    getData(files.players)
+    .done(function(resp) {
+        var xmlDoc = $.parseXML(resp),
+            $xml = $(xmlDoc),
+            team = $xml.find('Team'),
+            players = team.find('PlayerList'),
+            playerList = [],
+            obj = {
+                teamName: team.find('TeamName').text()
+            };
+
+        players.find('Player').each(function() {
+            playerList.push({
+                name: $(this).find('FirstName').text() + ' ' + $(this).find('LastName').text(),
+                number: ($(this).find('PlayerNumber').text() != 100) ? $(this).find('PlayerNumber').text() : null,
+                age: $(this).find('Age').text(),
+                ageDays: $(this).find('AgeDays').text(),
+                salary: $(this).find('Salary').text(),
+                cards: ($(this).find('Cards').text() != 0) ? $(this).find('Cards').text() : null,
+                injury: getInjurySign($(this).find('InjuryLevel').text()),
+                tsi: $(this).find('TSI').text()
+            });
+        });
+
+        obj.players = playerList;
+
+        $.Mustache.load('templates/players.html', function() {
+            $('#content_players').mustache('players', obj);
+            $('#list_players').listview();
+        });
+
+    }).always(function() {
+        $.mobile.hidePageLoadingMsg();
+    });
+});
+
+$(document).on('pageshow', '#league', function() {
+    if (liveInterval) {
+        clearInterval(liveInterval);
+    }
+    $.mobile.showPageLoadingMsg("a", "Loading league details...");
+    $('#content_league').html('');
+    getData(files.league)
+    .done(function(resp) {
+        var xmlDoc = $.parseXML(resp),
+            $xml = $(xmlDoc),
+            obj = null,
+            teams = [];
+
+        obj = {
+            league: {
+                country: $xml.find('LeagueName').text(),
+                name: $xml.find('LeagueLevelUnitName').text(),
+                currentRound: $xml.find('CurrentMatchRound').text()
+            }
+        };
+
+        $xml.find('Team').each(function() {
+            teams.push({
+                name: $(this).find('TeamName').text(),
+                position: $(this).find('Position').text(),
+                played: $(this).find('Matches').text(),
+                goalsFor: $(this).find('GoalsFor').text(),
+                goalsAgainst: $(this).find('GoalsAgainst').text(),
+                points: $(this).find('Points').text(),
+                won: $(this).find('Won').text(),
+                lost: $(this).find('Lost').text(),
+                draws: $(this).find('Draws').text()
+            });
+        });
+        obj.teams = teams;
+
+        $.Mustache.load('templates/league.html', function() {
+           $('#content_league').mustache('league', obj);
+        });
+
+    }).always(function() {
+        $.mobile.hidePageLoadingMsg();
+    });
+});
+
+$(document).on('pageinit', '#settings', function() {
+    if (liveInterval) {
+        clearInterval(liveInterval);
+    }
+
 });
