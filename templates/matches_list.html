@@ -3,21 +3,36 @@
     {{#finished.fill}}
         <li data-role='list-divider'>Finished</li>
         {{#finished.list}}
-            <li><a href='#match?id={{matchId}}'>{{homeTeamName}} {{matchHomeGoals}} - {{matchAwayGoals}} {{awayTeamName}}</a></li>
+            <li>
+                <a href='#match?id={{matchId}}'>
+                    <img src='../img/{{matchType}}' class="ui-li-icon ui-li-thumb"/>
+                    {{homeTeamName}} {{matchHomeGoals}} - {{matchAwayGoals}} {{awayTeamName}}
+                </a>
+            </li>
         {{/finished.list}}
     {{/finished.fill}}
 
     {{#ongoing.fill}}
-        <li data-role='list-divider'>Finished</li>
+        <li data-role='list-divider'>Ongoing</li>
         {{#ongoing.list}}
-            <li><a href='#match?id={{matchId}}'>{{homeTeamName}} {{matchHomeGoals}} - {{matchAwayGoals}} {{awayTeamName}}</a></li>
+            <li>
+                <a href='#live?id={{matchId}}'>
+                    <img src='../img/{{matchType}}' class="ui-li-icon ui-li-thumb"/>
+                    {{homeTeamName}} {{matchHomeGoals}} - {{matchAwayGoals}} {{awayTeamName}}
+                </a>
+            </li>
         {{/ongoing.list}}
     {{/ongoing.fill}}
 
     {{#future.fill}}
-        <li data-role='list-divider'>Finished</li>
+        <li data-role='list-divider'>Future</li>
         {{#future.list}}
-            <li><a href='#match?id={{matchId}}'>{{homeTeamName}} {{matchHomeGoals}} - {{matchAwayGoals}} {{awayTeamName}}</a></li>
+            <li data-icon='alert'>
+                <a>
+                    <img src='../img/{{matchType}}' class="ui-li-icon ui-li-thumb"/>
+                    {{homeTeamName}} {{matchHomeGoals}} - {{matchAwayGoals}} {{awayTeamName}}
+                </a>
+            </li>
         {{/future.list}}
     {{/future.fill}}
     </ul>

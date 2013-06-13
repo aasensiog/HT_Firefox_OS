@@ -72,7 +72,7 @@ var request_token = function() {
     success: function(response) {
       var params = OAuth.getParameterMap(response);
       for (var key in params) {
-        console.log(params[key]);
+        //console.log(params[key]);
         localStorage.setItem(key,params[key]);
       }
       deferred.resolve();
@@ -103,13 +103,13 @@ var getAccessToken = function() {
   OAuth.completeRequest(message, accessor);
   url = message.action + '?' + OAuth.formEncode(message.parameters);
 
-  console.log(url);
+  //console.log(url);
 
   doXhrCall(url, {
     success: function(response) {
       var params = OAuth.getParameterMap(response);
       for (var key in params) {
-        console.log(params[key]);
+        //console.log(params[key]);
         localStorage.setItem('ok_'+key,params[key]);
       }
       deferred.resolve();
@@ -152,11 +152,11 @@ var getData = function(data, params) {
   OAuth.completeRequest(message, accessor);
   url = message.action + '?' + OAuth.formEncode(message.parameters);
 
-  console.log(url);
+  //console.log(url);
 
   doXhrCall(url, {
     success: function(response) {
-      console.log(response);
+      //console.log(response);
       deferred.resolve(response);
     },
     error: function() {
@@ -164,4 +164,43 @@ var getData = function(data, params) {
     }
   });
   return deferred.promise();
+};
+
+var logOut = function() {
+  var deferred = $.Deferred();
+  var consumer = getConsumerInfo();
+
+  $.extend(true, accessor, {
+    token: localStorage.getItem('ok_oauth_token'),
+    tokenSecret: localStorage.getItem('ok_oauth_token_secret')
+  });
+
+  var message = {
+    action: consumer.serviceProvider.invalidate_token_url,
+    method: consumer.serviceProvider.method,
+    parameters: {}
+  };
+
+  OAuth.completeRequest(message, accessor);
+  url = message.action + '?' + OAuth.formEncode(message.parameters);
+
+  //console.log(url);
+
+  doXhrCall(url, {
+    success: function(response) {
+      //console.log(response);
+      deferred.resolve(response);
+    },
+    error: function() {
+      deferred.reject();
+    }
+  });
+  return deferred.promise();
+};
+
+var resetAccessor = function() {
+  accessor = {
+    consumerSecret: getConsumerInfo().consumerSecret,
+    consumerKey: getConsumerInfo().consumerKey
+  };
 };

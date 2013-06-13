@@ -1,0 +1,32 @@
+<script type="text/template" id="team_details">
+    <h3>{{team.name}} / {{user.username}}</h3>
+    <div class="ui-grid-a">
+        <div class="ui-block-a">
+            <img src='{{team.logoUrl}}' />
+        </div>
+        <div class="ui-block-b">
+            <p class='italic'>{{team.arenaName}}</p>
+            <p>{{team.leagueName}} {{team.regionName}}</p>
+            <p class='italic'>{{team.leagueLevel}}</p>
+            {{#team.stillInCup}}
+                <p><strong>Still playing <img src='../img/cup.png' /></strong></p>
+            {{/team.stillInCup}}
+            
+        </div>
+        <div class="ui-block-a">
+            <img src='{{team.dressURI}}' />
+        </div>
+        <div class="ui-block-b">
+            <img src='{{team.dressAlternateURI}}' />
+        </div>
+    </div>
+    <div class="ui-grid-solo">
+        <div class="ui-block-a">
+            <p>Victories: {{team.numVictories}}, Undefeated: {{team.numUndefeated}}</p>
+            <p>Ranking: {{team.teamRank}}</p>
+            <p>Fan club: <span class='italic'>{{team.fanClubName}}</span></p>
+        </div>
+    </div>
+
+
+</script>

@@ -1,0 +1,12 @@
+<script type="text/template" id="players">
+    <ul data-role="listview" data-inset='true' id='list_players' data-scroll="y" data-theme="c">
+        <li data-role='list-divider'>{{teamName}}</li>
+    {{#players}}
+        <li>
+            <h3>{{#number}}<span class='playerNumber'>{{number}}.</span> {{/number}}<span>{{name}}</span></h3>
+            <p class="ui-li-desc"><strong>{{age}}</strong>y {{ageDays}}d {{#cards}}<img src='../img/card_{{cards}}.png'/>{{/cards}} {{#injury}}<img src='../img/injury_{{injury}}.gif'/>{{/injury}}</p>
+            <p class="ui-li-desc">TSI: <strong>{{tsi}}</strong> Salary: <strong>{{salary}}</strong></p>
+        </li>
+    {{/players}}
+    </ul>
+</script>
