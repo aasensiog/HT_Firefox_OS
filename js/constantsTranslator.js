@@ -3,6 +3,8 @@ var EvImages = {
     ocasion: ''
 };
 
+NS.TIMEOUT = 5000;
+
 var files = {
     teamDetails: {
         file: 'teamdetails',

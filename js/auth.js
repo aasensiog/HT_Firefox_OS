@@ -39,6 +39,12 @@ var doXhrCall = function(url, callback) {
     mozSystem: true
   });
 
+  xhr.timeout = NS.TIMEOUT;
+  
+  xhr.ontimeout = function() {
+      callback.error();
+  };
+
   xhr.open("GET", url, true);
 
   xhr.onreadystatechange = function () {
