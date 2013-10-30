@@ -298,16 +298,18 @@ var refreshLiveMatch = function(matchId) {
                             name: awayTeam.find('AwayTeamShortName').text(),
                             id: awayTeam.find('AwayTeamID').text(),
                             goals: $(this).find('AwayGoals').text()
-                        }/*,
-                        matchMinute: getMatchMinute($(this).find('MatchDate').text())*/
+                        },
+                        matchDate: $(this).find('MatchDate').text() //Date YYYY-MM-DD HH:MM:SS Internet Date/Time Format in CE(ST), see rfc3339 chapter 5.6 / [ISO8601]
                     },
                     events = [];
 
                 eventList.find('Event').each(function() {
                     events.push({
                         minute: $(this).find('Minute').text(),
+                        eventKey: $(this).find('eventKey').text(), //TODO: translate
                         description: $(this).find('EventText').text().replace(/<[^>]*>/g, ''),
-                        homeTeam: ($(this).find('SubjectTeamID').text() === homeTeam.id)
+                        teamName: ($(this).find('SubjectTeamID').text() === obj.homeTeam.id) ?
+                            obj.homeTeam.name : obj.awayTeam.name
                     });
                 });
                 obj.events = events;

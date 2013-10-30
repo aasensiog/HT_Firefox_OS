@@ -3,15 +3,11 @@
     <ul data-role="listview" data-inset="true" id='list_live' data-scroll="y" data-theme="c">
     <li data-role='list-divider'>Highlights</li>
     {{#events}}
-        {{#homeTeam}}
-        <li class='homeTeam'>
-        {{/homeTeam}}
-        {{^homeTeam}}
-        <li class='awayTeam'>
-        {{/homeTeam}}
-            <!--<h3>{{teamId}}</h3>-->
+        <li>
+            <p class="ui-li-aside ui-li-desc">min. <strong>{{minute}}</strong></p>
+            <h3 class='ui-li-heading'>{{teamName}}</h3>
+            <p class="ui-li-desc">{{eventKey}}</p>
             <p class="ui-li-desc"><font style="white-space:normal; font-size: small" >{{description}}</font></p>
-            <!--<p class="ui-li-aside ui-li-desc"><strong>{{minute}}</strong>PM</p>-->
         </li>
     {{/events}}
     </ul>
