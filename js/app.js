@@ -74,7 +74,8 @@ $(document).on('pageshow', '#matchList', function() {
                 matchHomeGoals: $(this).find('HomeGoals').text(),
                 matchAwayGoals: $(this).find('AwayGoals').text(),
                 homeTeamName: $(this).find('HomeTeam').find('HomeTeamNameShortName').text(),
-                awayTeamName: $(this).find('AwayTeam').find('AwayTeamNameShortName').text()
+                awayTeamName: $(this).find('AwayTeam').find('AwayTeamNameShortName').text(),
+                matchDate: $(this).find('MatchDate').text()
             };
 
             if (obj.matchStatus === 'FINISHED') {
