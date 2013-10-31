@@ -111,6 +111,7 @@ $(document).on('pageshow', '#match', function() {
     var params = {
         matchID: matchId
     };
+    
     $.mobile.showPageLoadingMsg("a", "Loading match info...");
     $('#content').html('');
     getData(files.matchDetails, params)
@@ -228,6 +229,10 @@ $(document).on('pageshow', '#live', function() {
     if ($.mobile.pageData && $.mobile.pageData.id) {
         matchId = $.mobile.pageData.id;
     }
+    
+    $('#refresh').click(function() {
+        refreshLiveMatch(matchId);
+    });
 
     var liveMatchesAdded = JSON.parse(localStorage.getItem('liveMatchesAdded'));
     if (!liveMatchesAdded) {
