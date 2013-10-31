@@ -435,12 +435,25 @@ $(document).on('pageshow', '#league', function() {
     }
     $.mobile.showPageLoadingMsg("a", "Loading league details...");
     $('#content_league').html('');
-    getData(files.league)
-    .done(function(resp) {
-        var xmlDoc = $.parseXML(resp),
+    $.when(getData(files.league), getData(files.teamDetails))
+    .done(function(respLeague, respTeam) {
+        //TeamDetails part
+        var teamId = null,
+            xmlDoc = $.parseXML(respTeam),
             $xml = $(xmlDoc),
+            teamsLeague = $xml.find('Teams'),
             obj = null,
             teams = [];
+
+        teamsLeague.find('Team').each(function() {
+            if ($(this).find('IsPrimaryClub').text()) {
+                teamId = $(this).find('TeamID').text();
+            }
+        });
+
+        //League part
+        xmlDoc = $.parseXML(respLeague);
+        $xml = $(xmlDoc);
 
         obj = {
             league: {
@@ -452,6 +465,7 @@ $(document).on('pageshow', '#league', function() {
 
         $xml.find('Team').each(function() {
             teams.push({
+                userTeam: (teamId && $(this).find('TeamID').text() === teamId) ? true : false,
                 name: $(this).find('TeamName').text(),
                 position: $(this).find('Position').text(),
                 played: $(this).find('Matches').text(),

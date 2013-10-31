@@ -13,7 +13,12 @@
 		<th>Pts</th>
     </tr>
     {{#teams}}
-    	<tr>
+        {{#userTeam}}
+        <tr class='userTeam'>
+        {{/userTeam}}
+        {{^userTeam}}
+        <tr>
+        {{/userTeam}}
     		<td>{{position}}</td>
     		<td>{{name}}</td>
     		<td>{{played}}</td>
