@@ -40,7 +40,10 @@ var doXhrCall = function(url, callback) {
   });
 
   xhr.open("GET", url, true);
-
+  xhr.timeout = 4000; //4s
+  xhr.ontimeout = function() {
+      callback.error();
+  };
   xhr.onreadystatechange = function () {
       if (xhr.status === 200 && xhr.readyState === 4) {
           callback.success(xhr.response);
@@ -104,7 +107,6 @@ var getAccessToken = function() {
   url = message.action + '?' + OAuth.formEncode(message.parameters);
 
   //console.log(url);
-
   doXhrCall(url, {
     success: function(response) {
       var params = OAuth.getParameterMap(response);

@@ -5,11 +5,11 @@ var saveOauthVerifier = function() {
         localStorage.setItem('oauth_verifier', verifier);
         $.mobile.showPageLoadingMsg("a", "Verifying");
         getAccessToken().done(function() {
-            alert('Verified');
+            alert('Verification done successfully: Enjoy the app!');
             //TODO: go to Live page
             document.location.href ='#menu';
         }).fail(function() {
-            alert('ERROR oauth verifier');
+            alert('Error verifying code, please review it');
         }).always(function() {
             $.mobile.hidePageLoadingMsg();
         });
@@ -19,13 +19,15 @@ var saveOauthVerifier = function() {
 };
 
 var step1 = function() {
-    var authorizeA = $('#authorize');
+    var authorizeA = $('#authorize'),
+        promise = null;
 	authorizeA.hide();
     //console.log('step1');
     if (!localStorage.getItem('oauth_token')) {
         //console.log(localStorage.getItem('oauth_token'));
         $.mobile.showPageLoadingMsg("a", "Loading ...");
-        request_token().done(function() {
+        promise = request_token();
+        promise.done(function() {
             step2();
         }).fail(function() {
             alert('Conection error');
@@ -35,6 +37,7 @@ var step1 = function() {
     } else {
         step2();
     }
+    return promise;
 };
 
 var step2 = function() {
