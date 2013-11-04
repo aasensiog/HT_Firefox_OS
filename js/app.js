@@ -1,9 +1,9 @@
 
-var liveInterval = null;
+var liveInterval = null,
+    timeMatchListRequested = null;
 
 $(document).bind("pagebeforechange", function( event, data ) {
-    $.mobile.pageData = (data && data.options && data.options.pageData) ?
-    data.options.pageData : null;
+    $.mobile.pageData = data && data.options && data.options.pageData || null
 });
 
 $(document).on('pageshow', '#index', function() {
@@ -32,8 +32,6 @@ $(document).on('pageinit', '#menu', function() {
 
 $(document).on('pageinit', '#authentication', function() {
     $('#auth_html').hide();
-    //console.log('No tenemos el ok_access_token');
-    //console.log(localStorage.getItem('ok_oauth_token'));
     step1();
 });
 
@@ -41,65 +39,70 @@ $(document).on('pageshow', '#matchList', function() {
     if (liveInterval) {
         clearInterval(liveInterval);
     }
-    $.mobile.showPageLoadingMsg("a", "Loading matches list...");
-    $('#content_matchList').html('');
-    getData(files.matches)
-    .done(function(resp) {
-        //TODO: Create a list of a with href=#live/match?id=matchId
-        var xmlDoc = $.parseXML(resp),
-            $xml = $(xmlDoc),
-            matchList = $xml.find('MatchList'),
-            maList = {
-                finished: {
-                    list: [],
-                    fill: false
+    
+    if (!timeMatchListRequested || timeMatchListRequested + 60000 < Date.now()) {
+        
+        timeMatchListRequested = Date.now();
+        $.mobile.showPageLoadingMsg("a", "Loading matches list...");
+        $('#content_matchList').html('');
+        getData(files.matches)
+        .done(function(resp) {
+            //TODO: Create a list of a with href=#live/match?id=matchId
+            var xmlDoc = $.parseXML(resp),
+                $xml = $(xmlDoc),
+                matchList = $xml.find('MatchList'),
+                maList = {
+                    finished: {
+                        list: [],
+                        fill: false
+                    },
+                    ongoing: {
+                        list: [],
+                        fill: false
+                    },
+                    future: {
+                        list: [],
+                        fill: false
+                    }
                 },
-                ongoing: {
-                    list: [],
-                    fill: false
-                },
-                future: {
-                    list: [],
-                    fill: false
+                obj = null;
+    
+            matchList.find('Match').each(function() {
+                var matchType = getMatchTypeImage($(this).find('MatchType').text());
+                obj = {
+                    matchId: $(this).find('MatchID').text(),
+                    matchStatus: $(this).find('Status').text(),
+                    matchType: matchType,
+                    matchHomeGoals: $(this).find('HomeGoals').text(),
+                    matchAwayGoals: $(this).find('AwayGoals').text(),
+                    homeTeamName: $(this).find('HomeTeam').find('HomeTeamNameShortName').text(),
+                    awayTeamName: $(this).find('AwayTeam').find('AwayTeamNameShortName').text(),
+                    matchDate: $(this).find('MatchDate').text()
+                };
+    
+                if (obj.matchStatus === 'FINISHED') {
+                    maList.finished.list.push(obj);
+                    maList.finished.fill = true;
+                } else if (obj.matchStatus === 'ONGOING') {
+                    maList.ongoing.list.push(obj);
+                    maList.ongoing.fill = true;
+                } else {
+                    maList.future.list.push(obj);
+                    maList.future.fill = true;
                 }
-            },
-            obj = null;
-
-        matchList.find('Match').each(function() {
-            var matchType = getMatchTypeImage($(this).find('MatchType').text());
-            obj = {
-                matchId: $(this).find('MatchID').text(),
-                matchStatus: $(this).find('Status').text(),
-                matchType: matchType,
-                matchHomeGoals: $(this).find('HomeGoals').text(),
-                matchAwayGoals: $(this).find('AwayGoals').text(),
-                homeTeamName: $(this).find('HomeTeam').find('HomeTeamNameShortName').text(),
-                awayTeamName: $(this).find('AwayTeam').find('AwayTeamNameShortName').text(),
-                matchDate: $(this).find('MatchDate').text()
-            };
-
-            if (obj.matchStatus === 'FINISHED') {
-                maList.finished.list.push(obj);
-                maList.finished.fill = true;
-            } else if (obj.matchStatus === 'ONGOING') {
-                maList.ongoing.list.push(obj);
-                maList.ongoing.fill = true;
-            } else {
-                maList.future.list.push(obj);
-                maList.future.fill = true;
-            }
+            });
+    
+            $.Mustache.load('templates/matches_list.html', function() {
+                $('#content_matchList').mustache('matches_list', maList);
+                $('#list_matches').listview();
+            });
+    
+        }).fail(function() {
+            alert('fail');
+        }).always(function() {
+            $.mobile.hidePageLoadingMsg();
         });
-
-        $.Mustache.load('templates/matches_list.html', function() {
-            $('#content_matchList').mustache('matches_list', maList);
-            $('#list_matches').listview();
-        });
-
-    }).fail(function() {
-        alert('fail');
-    }).always(function() {
-        $.mobile.hidePageLoadingMsg();
-    });
+    }
 });
 
 $(document).on('pageshow', '#match', function() {
