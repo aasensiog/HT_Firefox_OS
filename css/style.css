@@ -4,6 +4,12 @@
   font-weight: 400;
   src: url(blackopsone.woff);
 }
+.homeTeam {
+  color: darkgreen;
+}
+.awayTeam {
+  color: darkblue;
+}
 
 .goalMinute {
 	color: grey;
