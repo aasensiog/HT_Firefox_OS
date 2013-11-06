@@ -1,5 +1,5 @@
 {
-    "version": "1.1",
+    "version": "1.2",
 	"name": "HT Live Viewer",
 	"description": "Live your current Hattrick matches anywhere!",
 	"type": "privileged",
@@ -12,6 +12,7 @@
 		"128": "/logo_128.png"
 	},
 	"default_locale": "en",
+	"installs_allowed_from": ["*"],
 	"permissions": {
 		"systemXHR":{
 			"description": "Required for connecting to service provider"
