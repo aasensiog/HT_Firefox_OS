@@ -172,3 +172,25 @@ var getMatchTypeImage = function(type) {
             return '';
     }
 };
+
+var getMinutesFromInit = function(stringStart) {
+
+    var startingDate = new Date(Date.parse(stringStart.replace(' ', 'T'))),
+        nowDate = new Date(),
+        diff = (nowDate - startingDate) / 60000;
+
+    if (diff) {
+
+        if (diff >= 60) {
+            return parseInt(diff - 15);
+        } else if (diff > 45) {
+            return 'halftime';
+        } else {
+            return parseInt(diff);
+        }
+    } else {
+        return 'Started at: ' + stringStart;
+    }
+
+};
+

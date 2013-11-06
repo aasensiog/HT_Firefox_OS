@@ -11,7 +11,7 @@
             {{#team.stillInCup}}
                 <p><strong>Still playing <img src='../img/cup.png' /></strong></p>
             {{/team.stillInCup}}
-            
+
         </div>
         <div class="ui-block-a">
             <img src='{{team.dressURI}}' />
@@ -23,7 +23,12 @@
     <div class="ui-grid-solo">
         <div class="ui-block-a">
             <p>Victories: {{team.numVictories}}, Undefeated: {{team.numUndefeated}}</p>
-            <p>Ranking: {{team.teamRank}}</p>
+            {{# team.teamRank}}
+                <p>Ranking: {{team.teamRank}}</p>
+            {{/ team.teamRank}}
+            {{^ team.teamRank}}
+                <p>Ranking: Your team is playing now</p>
+            {{/ team.teamRank}}
             <p>Fan club: <span class='italic'>{{team.fanClubName}}</span></p>
         </div>
     </div>

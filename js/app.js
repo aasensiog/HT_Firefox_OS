@@ -48,10 +48,10 @@ $(document).on('pageshow', '#matchList', function() {
     if (liveInterval) {
         clearInterval(liveInterval);
     }
-    
+
     if (!timeMatchListRequested || timeMatchListRequested + 60000 < Date.now()) {
         timeMatchListRequested = Date.now();
-        
+
         $.mobile.showPageLoadingMsg("a", "Loading matches list...");
         getData(files.matches)
         .done(function(resp) {
@@ -75,7 +75,7 @@ $(document).on('pageshow', '#matchList', function() {
                     }
                 },
                 obj = null;
-    
+
             matchList.find('Match').each(function() {
                 var matchType = getMatchTypeImage($(this).find('MatchType').text());
                 obj = {
@@ -88,7 +88,7 @@ $(document).on('pageshow', '#matchList', function() {
                     awayTeamName: $(this).find('AwayTeam').find('AwayTeamNameShortName').text(),
                     matchDate: $(this).find('MatchDate').text()
                 };
-    
+
                 if (obj.matchStatus === 'FINISHED') {
                     maList.finished.list.push(obj);
                     maList.finished.fill = true;
@@ -100,12 +100,12 @@ $(document).on('pageshow', '#matchList', function() {
                     maList.future.fill = true;
                 }
             });
-    
+
             $.Mustache.load('templates/matches_list.html', function() {
                 $('#content_matchList').mustache('matches_list', maList);
                 $('#list_matches').listview();
             });
-    
+
         }).fail(function() {
             alert('Connection error');
             timeMatchListRequested = null;
@@ -125,7 +125,7 @@ $(document).on('pageshow', '#match', function() {
     var params = {
         matchID: matchId
     };
-    
+
     $.mobile.showPageLoadingMsg("a", "Loading match info...");
     getData(files.matchDetails, params)
     .done(function(resp) {
@@ -243,7 +243,7 @@ $(document).on('pageshow', '#live', function() {
     if ($.mobile.pageData && $.mobile.pageData.id) {
         matchId = $.mobile.pageData.id;
     }
-    
+
     $('#refresh').click(function() {
         refreshLiveMatch(matchId);
     });
@@ -318,7 +318,8 @@ var refreshLiveMatch = function(matchId) {
                             id: awayTeam.find('AwayTeamID').text(),
                             goals: $(this).find('AwayGoals').text()
                         },
-                        matchDate: $(this).find('MatchDate').text() //Date YYYY-MM-DD HH:MM:SS Internet Date/Time Format in CE(ST), see rfc3339 chapter 5.6 / [ISO8601]
+                        matchMinute: getMinutesFromInit($(this).find('MatchDate').text()),
+                        lastUpdate: (new Date()).toLocaleTimeString()
                     },
                     events = [];
 
@@ -352,7 +353,7 @@ $(document).on('pageshow', '#team', function() {
     }
     if (!timeTeamRequested || timeTeamRequested + 60000 < Date.now()) {
         timeTeamRequested = Date.now();
-        
+
         $.mobile.showPageLoadingMsg("a", "Loading team info...");
         getData(files.teamDetails)
         .done(function(resp) {
@@ -362,14 +363,14 @@ $(document).on('pageshow', '#team', function() {
                 user = $xml.find('User'),
                 teams = $xml.find('Teams'),
                 obj = null;
-    
+
             obj = {
                 user: {
                     username: user.find('Loginname').text(),
                     language: user.find('Language').find('LanguageName').text()
                 }
             };
-    
+
             teams.find('Team').each(function() {
                 if ($(this).find('IsPrimaryClub').text()) {
                     obj.team = {
@@ -387,16 +388,16 @@ $(document).on('pageshow', '#team', function() {
                         numUndefeated: $(this).find('NumberOfUndefeated').text(),
                         teamRank: $(this).find('TeamRank').text(),
                         fanClubName: $(this).find('Fanclub').find('FanclubName').text(),
-    
+
                         logoUrl: ($(this).find('SupporterTier').text()) ? $(this).find('LogoURL').text() : null
                     };
                 }
             });
-    
+
             $.Mustache.load('templates/team.html', function() {
                $('#content_team').mustache('team_details', obj);
             });
-    
+
         }).fail(function() {
             alert('Connection error');
         }).always(function() {
@@ -409,10 +410,10 @@ $(document).on('pageshow', '#players', function() {
     if (liveInterval) {
         clearInterval(liveInterval);
     }
-    
+
     if (!timePlayersRequested || timePlayersRequested + 60000 < Date.now()) {
         timePlayersRequested = Date.now();
-        
+
         $.mobile.showPageLoadingMsg("a", "Loading players...");
         getData(files.players)
         .done(function(resp) {
@@ -425,7 +426,7 @@ $(document).on('pageshow', '#players', function() {
                 obj = {
                     teamName: team.find('TeamName').text()
                 };
-    
+
             players.find('Player').each(function() {
                 playerList.push({
                     name: $(this).find('FirstName').text() + ' ' + $(this).find('LastName').text(),
@@ -438,14 +439,14 @@ $(document).on('pageshow', '#players', function() {
                     tsi: $(this).find('TSI').text()
                 });
             });
-    
+
             obj.players = playerList;
-    
+
             $.Mustache.load('templates/players.html', function() {
                 $('#content_players').mustache('players', obj);
                 $('#list_players').listview();
             });
-    
+
          }).fail(function() {
             alert('Connection error');
          }).always(function() {
@@ -458,7 +459,7 @@ $(document).on('pageshow', '#league', function() {
     if (liveInterval) {
         clearInterval(liveInterval);
     }
-    
+
     if (!timeLegueRequested || timeLegueRequested + 60000 < Date.now()) {
         timeLegueRequested = Date.now();
 
@@ -473,17 +474,17 @@ $(document).on('pageshow', '#league', function() {
                 teamsLeague = $xml.find('Teams'),
                 obj = null,
                 teams = [];
-    
+
             teamsLeague.find('Team').each(function() {
                 if ($(this).find('IsPrimaryClub').text()) {
                     teamId = $(this).find('TeamID').text();
                 }
             });
-    
+
             //League part
             xmlDoc = $.parseXML(respLeague);
             $xml = $(xmlDoc);
-    
+
             obj = {
                 league: {
                     country: $xml.find('LeagueName').text(),
@@ -491,7 +492,7 @@ $(document).on('pageshow', '#league', function() {
                     currentRound: $xml.find('CurrentMatchRound').text()
                 }
             };
-    
+
             $xml.find('Team').each(function() {
                 teams.push({
                     userTeam: (teamId && $(this).find('TeamID').text() === teamId) ? true : false,
@@ -507,11 +508,11 @@ $(document).on('pageshow', '#league', function() {
                 });
             });
             obj.teams = teams;
-    
+
             $.Mustache.load('templates/league.html', function() {
                $('#content_league').mustache('league', obj);
             });
-    
+
         }).fail(function() {
             alert('Connection error');
         }).always(function() {
