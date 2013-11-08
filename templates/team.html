@@ -2,14 +2,17 @@
     <h3>{{team.name}} / {{user.username}}</h3>
     <div class="ui-grid-a">
         <div class="ui-block-a">
-            <img src='{{team.logoUrl}}' />
+            <img src='{{team.logoUrl}}' width='140px'/>
         </div>
         <div class="ui-block-b">
             <p class='italic'>{{team.arenaName}}</p>
             <p>{{team.leagueName}} {{team.regionName}}</p>
             <p class='italic'>{{team.leagueLevel}}</p>
             {{#team.stillInCup}}
-                <p><strong>Still playing <img src='../img/cup.png' /></strong></p>
+                <p><img src='../img/cup.png' /> Still playing cup</p>
+            {{/team.stillInCup}}
+            {{^team.stillInCup}}
+                <p><img src='../img/cup_ko.png' /> Eliminated from cup</p>
             {{/team.stillInCup}}
 
         </div>

@@ -390,7 +390,7 @@ $(document).on('pageshow', '#team', function() {
                         teamRank: $(this).find('TeamRank').text(),
                         fanClubName: $(this).find('Fanclub').find('FanclubName').text(),
 
-                        logoUrl: ($(this).find('SupporterTier').text()) ? $(this).find('LogoURL').text() : null
+                        logoUrl: $(this).find('LogoURL').text()
                     };
                 }
             });

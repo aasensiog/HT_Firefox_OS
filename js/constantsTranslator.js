@@ -6,7 +6,7 @@ var EvImages = {
 var files = {
     teamDetails: {
         file: 'teamdetails',
-        version:'2.8'
+        version:'3.0'
     },
     live: {
         file: 'live',
