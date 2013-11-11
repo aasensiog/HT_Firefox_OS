@@ -335,7 +335,6 @@ var refreshLiveMatch = function(matchId) {
                 });
                 obj.events = events;
 
-
                 $.Mustache.load('templates/live.html', function() {
                     $('#content_live').mustache('live', obj);
                     $('#list_live').listview();

@@ -1,9 +1,3 @@
-@font-face {
-  font-family: 'Black Ops One';
-  font-style: normal;
-  font-weight: 400;
-  src: url(blackopsone.woff);
-}
 .homeTeam {
   color: darkgreen;
 }
@@ -38,10 +32,6 @@
 
 .italic {
     font-style: italic;
-}
-
-.playerNumber {
-    font-family: 'Black Ops One', cursive;
 }
 
 table {
