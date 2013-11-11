@@ -427,42 +427,42 @@ $(document).on('pageshow', '#player', function() {
                 skills: {
                     stamina: {
                         name: getSkill(parseInt($(playerInfo).find('StaminaSkill').text(), 10)),
-                        value: parseInt($(playerInfo).find('StaminaSkill').text()
+                        value: parseInt($(playerInfo).find('StaminaSkill').text())
                     },
                     keeper: {
                         name: getSkill(parseInt($(playerInfo).find('KeeperSkill').text(), 10)),
-                        value: parseInt($(playerInfo).find('KeeperSkill').text()
+                        value: parseInt($(playerInfo).find('KeeperSkill').text())
                     },
                     playmaker: {
                         name: getSkill(parseInt($(playerInfo).find('PlaymakerSkill').text(), 10)),
-                        value: parseInt($(playerInfo).find('PlaymakerSkill').text()
+                        value: parseInt($(playerInfo).find('PlaymakerSkill').text())
                     },
                     scorer: {
                         name: getSkill(parseInt($(playerInfo).find('ScorerSkill').text(), 10)),
-                        value: parseInt($(playerInfo).find('ScorerSkill').text()
+                        value: parseInt($(playerInfo).find('ScorerSkill').text())
                     },
                     passing: {
                         name: getSkill(parseInt($(playerInfo).find('PassingSkill').text(), 10)),
-                        value: parseInt($(playerInfo).find('PassingSkill').text()
+                        value: parseInt($(playerInfo).find('PassingSkill').text())
                     },
                     defense: {
-                        name: getSkill(parseInt($(playerInfo).find('DefenseSkill').text(), 10)),
-                        value: parseInt($(playerInfo).find('DefenseSkill').text()
+                        name: getSkill(parseInt($(playerInfo).find('DefenderSkill').text(), 10)),
+                        value: parseInt($(playerInfo).find('DefenderSkill').text())
                     },
                     winger: {
                         name: getSkill(parseInt($(playerInfo).find('WingerSkill').text(), 10)),
-                        value: parseInt($(playerInfo).find('WingerSkill').text()
+                        value: parseInt($(playerInfo).find('WingerSkill').text())
                     },
                     setPieces: {
                         name: getSkill(parseInt($(playerInfo).find('SetPiecesSkill').text(), 10)),
-                        value: parseInt($(playerInfo).find('SetPiecesSkill').text()
+                        value: parseInt($(playerInfo).find('SetPiecesSkill').text())
                     }
                 }
             };
 
         $.Mustache.load('templates/player.html', function() {
             $('#content_player').mustache('player', obj);
-            $('#playerSkills').table();
+            $('#playerSkills').table({});
         });
     } else {
         alert('Error retrieving player info');

@@ -6,19 +6,39 @@
     {{#injury}}<img src='../img/injury_{{injury}}.gif'/>{{/injury}}
 
     {{#skills}}
-    <table data-role="table" id="my-table">
-    <thead>
-        <tr>
-        <th>Skill</th>
-        <th>Value</th>
-        </tr>
-    </thead>
-    <tbody>
+    <table id="playerSkills">
         <tr>
             <td>Stamina</td>
-            <td>{{skills.stamina.value}}</td>
+            <td>{{skills.stamina.name}}</td>
         </tr>
-    </tbody>
+        <tr>
+            <td>Keeper</td>
+            <td>{{skills.keeper.name}}</td>
+        </tr>
+        <tr>
+            <td>Playmaker</td>
+            <td>{{skills.playmaker.name}}</td>
+        </tr>
+        <tr>
+            <td>Scorer</td>
+            <td>{{skills.scorer.name}}</td>
+        </tr>
+        <tr>
+            <td>Passing</td>
+            <td>{{skills.passing.name}}</td>
+        </tr>
+        <tr>
+            <td>Winger</td>
+            <td>{{skills.winger.name}}</td>
+        </tr>
+        <tr>
+            <td>Defense</td>
+            <td>{{skills.defense.name}}</td>
+        </tr>
+        <tr>
+            <td>Set Pieces</td>
+            <td>{{skills.setPieces.name}}</td>
+        </tr>
     </table>
     {{/skills}}
 </script>
