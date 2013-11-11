@@ -1,0 +1,24 @@
+<script type="text/template" id="player">
+    <h3>{{name}}</h3>
+    <p>Age: {{age}}y {{ageDays}}d</p>
+    <p>TSI: <strong>{{tsi}}</strong> Salary: <strong>{{salary}}</strong></p>
+    {{#cards}}<img src='../img/card_{{cards}}.png'/>{{/cards}}
+    {{#injury}}<img src='../img/injury_{{injury}}.gif'/>{{/injury}}
+
+    {{#skills}}
+    <table data-role="table" id="my-table">
+    <thead>
+        <tr>
+        <th>Skill</th>
+        <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Stamina</td>
+            <td>{{skills.stamina.value}}</td>
+        </tr>
+    </tbody>
+    </table>
+    {{/skills}}
+</script>
