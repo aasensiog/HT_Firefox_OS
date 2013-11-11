@@ -423,6 +423,7 @@ $(document).on('pageshow', '#player', function() {
                 form: getSkill(parseInt($(playerInfo).find('PlayerForm').text(), 10)),
                 experience: getSkill(parseInt($(playerInfo).find('Experience').text(), 10)),
                 leadership: getSkill(parseInt($(playerInfo).find('Leadership').text(), 10)),
+                lastMatchRating: $(playerInfo).find('LastMatch').find('Rating').text(),
 
                 skills: {
                     stamina: {

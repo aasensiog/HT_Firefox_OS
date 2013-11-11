@@ -2,10 +2,12 @@
     <h3>{{name}}</h3>
     <p>Age: {{age}}y {{ageDays}}d</p>
     <p>TSI: <strong>{{tsi}}</strong> Salary: <strong>{{salary}}</strong></p>
-    {{#cards}}<img src='../img/card_{{cards}}.png'/>{{/cards}}
-    {{#injury}}<img src='../img/injury_{{injury}}.gif'/>{{/injury}}
+    <p>{{#cards}}<img src='../img/card_{{cards}}.png'/>{{/cards}}</p>
+    <p>{{#injury}}<img src='../img/injury_{{injury}}.gif'/>{{/injury}}</p>
 
-    {{#skills}}
+    <p>Last Match Rating: {{lastMatchRating}}</p>
+
+    <p>{{#skills}}
     <table id="playerSkills">
         <tr>
             <td>Stamina</td>
@@ -41,4 +43,5 @@
         </tr>
     </table>
     {{/skills}}
+    </p>
 </script>
