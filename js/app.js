@@ -410,20 +410,20 @@ $(document).on('pageshow', '#player', function() {
     $('#content_player').html('');
     if ($.mobile.pageData && $.mobile.pageData.id && playersData) {
         var playerId = $.mobile.pageData.id,
-            playerInfo = playersData[playerId];
+            playerInfo = playersData[playerId],
             obj = {
                 name: $(playerInfo).find('FirstName').text() + ' ' + $(playerInfo).find('LastName').text(),
                 number: ($(playerInfo).find('PlayerNumber').text() != 100) ? $(playerInfo).find('PlayerNumber').text() : null,
                 age: $(playerInfo).find('Age').text(),
                 ageDays: $(playerInfo).find('AgeDays').text(),
-                salary: $(playerInfo).find('Salary').text(),
+                salary: parseInt($(playerInfo).find('Salary').text(), 10) / 10,
                 cards: ($(playerInfo).find('Cards').text() != 0) ? $(playerInfo).find('Cards').text() : null,
                 injury: getInjurySign($(playerInfo).find('InjuryLevel').text()),
+                injuryTime: parseInt($(playerInfo).find('InjuryLevel').text(), 10) > 0 ? $(playerInfo).find('InjuryLevel').text() : null, 
                 tsi: $(playerInfo).find('TSI').text(),
                 form: getSkill(parseInt($(playerInfo).find('PlayerForm').text(), 10)),
                 experience: getSkill(parseInt($(playerInfo).find('Experience').text(), 10)),
                 leadership: getSkill(parseInt($(playerInfo).find('Leadership').text(), 10)),
-                lastMatchRating: $(playerInfo).find('LastMatch').find('Rating').text(),
 
                 skills: {
                     stamina: {
@@ -464,6 +464,10 @@ $(document).on('pageshow', '#player', function() {
         $.Mustache.load('templates/player.html', function() {
             $('#content_player').mustache('player', obj);
             $('#playerSkills').table({});
+            $.each(obj.skills, function(key, value) {
+                var divName = 'skill'+ (key.charAt(0).toUpperCase() + key.slice(1));
+                new ProgressBar(divName, {'width':'100px', 'height':'20px'}).setPercent(value.value*100 / 20);
+            });
         });
     } else {
         alert('Error retrieving player info');
@@ -500,7 +504,7 @@ $(document).on('pageshow', '#players', function() {
                     number: ($(this).find('PlayerNumber').text() != 100) ? $(this).find('PlayerNumber').text() : null,
                     age: $(this).find('Age').text(),
                     ageDays: $(this).find('AgeDays').text(),
-                    salary: $(this).find('Salary').text(),
+                    salary: parseInt($(this).find('Salary').text(), 10) / 10,
                     cards: ($(this).find('Cards').text() != 0) ? $(this).find('Cards').text() : null,
                     injury: getInjurySign($(this).find('InjuryLevel').text()),
                     tsi: $(this).find('TSI').text()

@@ -54,7 +54,7 @@ var ratings = [
 ];
 
 var getSkill = function(skillLevel) {
-    return ratings[skillLevel];
+    return ratings[skillLevel-1];
 };
 
 var getRating = function(rat) {
