@@ -3,6 +3,7 @@
         <li data-role='list-divider'>{{teamName}}</li>
     {{#players}}
         <li>
+            <a href='#player?id={{id}}'>
             <h3>
                 <span>
                 {{#number}}
@@ -13,6 +14,7 @@
             </h3>
             <p class="ui-li-desc"><strong>{{age}}</strong>y {{ageDays}}d {{#cards}}<img src='../img/card_{{cards}}.png'/>{{/cards}} {{#injury}}<img src='../img/injury_{{injury}}.gif'/>{{/injury}}</p>
             <p class="ui-li-desc">TSI: <strong>{{tsi}}</strong> Salary: <strong>{{salary}}</strong></p>
+            </a>
         </li>
     {{/players}}
     </ul>

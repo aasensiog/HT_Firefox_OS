@@ -1,0 +1,56 @@
+<script type="text/template" id="player">
+    <h3>{{name}}</h3>
+    <p>Age: {{age}}y {{ageDays}}d</p>
+    <p>TSI: <strong>{{tsi}}</strong> Salary: <strong>{{salary}}</strong></p>
+    <p>Experience: <strong>{{experience}}</strong></p>
+    <p>Leadership: <strong>{{leadership}}</strong></p>
+    <p>{{#cards}}<img src='../img/card_{{cards}}.png'/>{{/cards}}</p>
+    <p>{{#injury}}<img src='../img/injury_{{injury}}.gif'/>{{/injury}} {{#injuryTime}}{{injuryTime}}{{/injuryTime}}</p>
+    <p>Form: <strong>{{form}}</strong></p>
+
+    <p>{{#skills}}
+    <table id="playerSkills">
+        <tr>
+            <td>Stamina</td>
+            <td>{{skills.stamina.name}}</td>
+            <td><div class='progressBar' id='skillStamina'></div></td>
+        </tr>
+        <tr>
+            <td>Keeper</td>
+            <td>{{skills.keeper.name}}</td>
+            <td><div class='progressBar' id='skillKeeper'></div></td>
+        </tr>
+        <tr>
+            <td>Playmaker</td>
+            <td>{{skills.playmaker.name}}</td>
+            <td><div class='progressBar' id='skillPlaymaker'></div></td>
+        </tr>
+        <tr>
+            <td>Scorer</td>
+            <td>{{skills.scorer.name}}</td>
+            <td><div class='progressBar' id='skillScorer'></div></td>
+        </tr>
+        <tr>
+            <td>Passing</td>
+            <td>{{skills.passing.name}}</td>
+            <td><div class='progressBar' id='skillPassing'></div></td>
+        </tr>
+        <tr>
+            <td>Winger</td>
+            <td>{{skills.winger.name}}</td>
+            <td><div class='progressBar' id='skillWinger'></div></td>
+        </tr>
+        <tr>
+            <td>Defense</td>
+            <td>{{skills.defense.name}}</td>
+            <td><div class='progressBar' id='skillDefense'></div></td>
+        </tr>
+        <tr>
+            <td>Set Pieces</td>
+            <td>{{skills.setPieces.name}}</td>
+            <td><div class='progressBar' id='skillSetPieces'></div></td>
+        </tr>
+    </table>
+    {{/skills}}
+    </p>
+</script>

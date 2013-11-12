@@ -53,6 +53,10 @@ var ratings = [
     'divine'
 ];
 
+var getSkill = function(skillLevel) {
+    return ratings[skillLevel-1];
+};
+
 var getRating = function(rat) {
     var div = Math.floor((rat-1) / 4);
     var rest = (rat-1) % 4;

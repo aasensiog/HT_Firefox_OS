@@ -3,7 +3,8 @@ var liveInterval = null,
     timeMatchListRequested = null,
     timeLegueRequested = null,
     timePlayersRequested = null,
-    timeTeamRequested = null;
+    timeTeamRequested = null,
+    playersData = {};
 
 $(document).bind("pagebeforechange", function( event, data ) {
     $.mobile.pageData = data && data.options && data.options.pageData || null
@@ -56,7 +57,6 @@ $(document).on('pageshow', '#matchList', function() {
         getData(files.matches)
         .done(function(resp) {
             $('#content_matchList').html('');
-            //TODO: Create a list of a with href=#live/match?id=matchId
             var xmlDoc = $.parseXML(resp),
                 $xml = $(xmlDoc),
                 matchList = $xml.find('MatchList'),
@@ -87,7 +87,7 @@ $(document).on('pageshow', '#matchList', function() {
                     homeTeamName: $(this).find('HomeTeam').find('HomeTeamNameShortName').text(),
                     awayTeamName: $(this).find('AwayTeam').find('AwayTeamNameShortName').text(),
                     matchDate: $(this).find('MatchDate').text(),
-                    ordersGiven: $(this).find('OrdersGiven').text() == 'True' ? true : false,
+                    ordersGiven: $(this).find('OrdersGiven').text() == 'True' ? true : false
                 };
 
                 if (obj.matchStatus === 'FINISHED') {
@@ -406,6 +406,75 @@ $(document).on('pageshow', '#team', function() {
     }
 });
 
+$(document).on('pageshow', '#player', function() {
+    $('#content_player').html('');
+    if ($.mobile.pageData && $.mobile.pageData.id && playersData) {
+        var playerId = $.mobile.pageData.id,
+            playerInfo = playersData[playerId],
+            obj = {
+                name: $(playerInfo).find('FirstName').text() + ' ' + $(playerInfo).find('LastName').text(),
+                number: ($(playerInfo).find('PlayerNumber').text() != 100) ? $(playerInfo).find('PlayerNumber').text() : null,
+                age: $(playerInfo).find('Age').text(),
+                ageDays: $(playerInfo).find('AgeDays').text(),
+                salary: parseInt($(playerInfo).find('Salary').text(), 10) / 10,
+                cards: ($(playerInfo).find('Cards').text() != 0) ? $(playerInfo).find('Cards').text() : null,
+                injury: getInjurySign($(playerInfo).find('InjuryLevel').text()),
+                injuryTime: parseInt($(playerInfo).find('InjuryLevel').text(), 10) > 0 ? $(playerInfo).find('InjuryLevel').text() : null, 
+                tsi: $(playerInfo).find('TSI').text(),
+                form: getSkill(parseInt($(playerInfo).find('PlayerForm').text(), 10)),
+                experience: getSkill(parseInt($(playerInfo).find('Experience').text(), 10)),
+                leadership: getSkill(parseInt($(playerInfo).find('Leadership').text(), 10)),
+
+                skills: {
+                    stamina: {
+                        name: getSkill(parseInt($(playerInfo).find('StaminaSkill').text(), 10)),
+                        value: parseInt($(playerInfo).find('StaminaSkill').text())
+                    },
+                    keeper: {
+                        name: getSkill(parseInt($(playerInfo).find('KeeperSkill').text(), 10)),
+                        value: parseInt($(playerInfo).find('KeeperSkill').text())
+                    },
+                    playmaker: {
+                        name: getSkill(parseInt($(playerInfo).find('PlaymakerSkill').text(), 10)),
+                        value: parseInt($(playerInfo).find('PlaymakerSkill').text())
+                    },
+                    scorer: {
+                        name: getSkill(parseInt($(playerInfo).find('ScorerSkill').text(), 10)),
+                        value: parseInt($(playerInfo).find('ScorerSkill').text())
+                    },
+                    passing: {
+                        name: getSkill(parseInt($(playerInfo).find('PassingSkill').text(), 10)),
+                        value: parseInt($(playerInfo).find('PassingSkill').text())
+                    },
+                    defense: {
+                        name: getSkill(parseInt($(playerInfo).find('DefenderSkill').text(), 10)),
+                        value: parseInt($(playerInfo).find('DefenderSkill').text())
+                    },
+                    winger: {
+                        name: getSkill(parseInt($(playerInfo).find('WingerSkill').text(), 10)),
+                        value: parseInt($(playerInfo).find('WingerSkill').text())
+                    },
+                    setPieces: {
+                        name: getSkill(parseInt($(playerInfo).find('SetPiecesSkill').text(), 10)),
+                        value: parseInt($(playerInfo).find('SetPiecesSkill').text())
+                    }
+                }
+            };
+
+        $.Mustache.load('templates/player.html', function() {
+            $('#content_player').mustache('player', obj);
+            $('#playerSkills').table({});
+            $.each(obj.skills, function(key, value) {
+                var divName = 'skill'+ (key.charAt(0).toUpperCase() + key.slice(1));
+                new ProgressBar(divName, {'width':'100px', 'height':'20px'}).setPercent(value.value*100 / 20);
+            });
+        });
+    } else {
+        alert('Error retrieving player info');
+        document.location.href = '#players';
+    }
+});
+
 $(document).on('pageshow', '#players', function() {
     if (liveInterval) {
         clearInterval(liveInterval);
@@ -418,6 +487,7 @@ $(document).on('pageshow', '#players', function() {
         getData(files.players)
         .done(function(resp) {
             $('#content_players').html('');
+            playersData = {};
             var xmlDoc = $.parseXML(resp),
                 $xml = $(xmlDoc),
                 team = $xml.find('Team'),
@@ -429,17 +499,18 @@ $(document).on('pageshow', '#players', function() {
 
             players.find('Player').each(function() {
                 playerList.push({
+                    id: $(this).find('PlayerID').text(),
                     name: $(this).find('FirstName').text() + ' ' + $(this).find('LastName').text(),
                     number: ($(this).find('PlayerNumber').text() != 100) ? $(this).find('PlayerNumber').text() : null,
                     age: $(this).find('Age').text(),
                     ageDays: $(this).find('AgeDays').text(),
-                    salary: $(this).find('Salary').text(),
+                    salary: parseInt($(this).find('Salary').text(), 10) / 10,
                     cards: ($(this).find('Cards').text() != 0) ? $(this).find('Cards').text() : null,
                     injury: getInjurySign($(this).find('InjuryLevel').text()),
                     tsi: $(this).find('TSI').text()
                 });
+                playersData[$(this).find('PlayerID').text()] = this;
             });
-
             obj.players = playerList;
 
             $.Mustache.load('templates/players.html', function() {

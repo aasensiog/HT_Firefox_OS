@@ -28,16 +28,14 @@
         <li data-role='list-divider'>Future</li>
         {{#future.list}}
             <li data-icon='alert'>
-                <a>
-                    <img src='../img/{{matchType}}' class="ui-li-icon"/>
-                    <h2 class='ui-li-heading'>{{homeTeamName}} {{matchHomeGoals}} - {{matchAwayGoals}} {{awayTeamName}}</h2>
-                    <p class='ui-li-desc'>
-                        {{matchDate}}
-                        {{#ordersGiven}}
-                            <img src='../img/tick.png'/>
-                        {{/ordersGiven}}
-                    </p>
-                </a>
+                <img src='../img/{{matchType}}' class="ui-li-icon"/>
+                <h2 class='ui-li-heading'>{{homeTeamName}} {{matchHomeGoals}} - {{matchAwayGoals}} {{awayTeamName}}</h2>
+                <p class='ui-li-desc'>
+                    {{matchDate}}
+                    {{#ordersGiven}}
+                        <img src='../img/tick.png'/>
+                    {{/ordersGiven}}
+                </p>
             </li>
         {{/future.list}}
     {{/future.fill}}
