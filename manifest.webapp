@@ -9,13 +9,13 @@
 		"url": "http://albertasensio.es"
 	},
 	"icons": {
-		"30": "/logo_30.png",
-		"32": "/logo_32.png",
-		"60": "/logo_60.png",
-		"90": "/logo_90.png",
-		"120": "/logo_120.png",
-		"128": "/logo_128.png",
-		"256": "/logo_256.png"
+		"30": "/img/logo/logo_30.png",
+		"32": "/img/logo/logo_32.png",
+		"60": "/img/logo/logo_60.png",
+		"90": "/img/logo/logo_90.png",
+		"120": "/img/logo/logo_120.png",
+		"128": "/img/logo/logo_128.png",
+		"256": "/img/logo/logo_256.png"
 	},
 	"default_locale": "en",
 	"installs_allowed_from": ["*"],
