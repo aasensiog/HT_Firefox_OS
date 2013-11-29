@@ -1,5 +1,5 @@
 <script type="text/template" id="matches_list">
-    <ul data-role="listview" data-inset="true" data-divider-theme="a" id='list_matches'>
+    <ul data-role="listview" data-inset="true" data-theme='d' data-divider-theme="a" id='list_matches'>
     {{#finished.fill}}
         <li data-role='list-divider'>Finished</li>
         {{#finished.list}}
@@ -13,7 +13,7 @@
     {{/finished.fill}}
 
     {{#ongoing.fill}}
-        <li data-role='list-divider'>Ongoing</li>
+        <li data-role='list-divider'>Live</li>
         {{#ongoing.list}}
             <li>
                 <a href='#live?id={{matchId}}'>
@@ -25,7 +25,7 @@
     {{/ongoing.fill}}
 
     {{#future.fill}}
-        <li data-role='list-divider'>Future</li>
+        <li data-role='list-divider'>Upcoming</li>
         {{#future.list}}
             <li data-icon='alert'>
                 <img src='../img/{{matchType}}' class="ui-li-icon"/>

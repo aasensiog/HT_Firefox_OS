@@ -64,3 +64,24 @@ table tr:last-child td {
 .userTeam {
     background: Gold;
 }
+
+# Footer
+
+.ui-icon-footer-home {
+    background-image: url('../img/footer/home.png');
+}
+.ui-icon-footer-matches {
+    background-image: url('../img/footer/matches.png');
+}
+.ui-icon-footer-players {
+    background-image: url('../img/footer/players.png');
+}
+.ui-icon-footer-team {
+    background-image: url('../img/footer/team.png');
+}
+.ui-icon-footer-league {
+    background-image: url('../img/footer/league.png');
+}
+.ui-icon-footer-training {
+    background-image: url('../img/footer/training.png');
+}

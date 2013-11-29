@@ -4,6 +4,7 @@ var liveInterval = null,
     timeLegueRequested = null,
     timePlayersRequested = null,
     timeTeamRequested = null,
+    timeTrainingRequested = null,
     playersData = {};
 
 $(document).bind("pagebeforechange", function( event, data ) {
@@ -419,7 +420,7 @@ $(document).on('pageshow', '#player', function() {
                 salary: parseInt($(playerInfo).find('Salary').text(), 10) / 10,
                 cards: ($(playerInfo).find('Cards').text() != 0) ? $(playerInfo).find('Cards').text() : null,
                 injury: getInjurySign($(playerInfo).find('InjuryLevel').text()),
-                injuryTime: parseInt($(playerInfo).find('InjuryLevel').text(), 10) > 0 ? $(playerInfo).find('InjuryLevel').text() : null, 
+                injuryTime: parseInt($(playerInfo).find('InjuryLevel').text(), 10) > 0 ? $(playerInfo).find('InjuryLevel').text() : null,
                 tsi: $(playerInfo).find('TSI').text(),
                 form: getSkill(parseInt($(playerInfo).find('PlayerForm').text(), 10)),
                 experience: getSkill(parseInt($(playerInfo).find('Experience').text(), 10)),
@@ -586,6 +587,36 @@ $(document).on('pageshow', '#league', function() {
 
         }).fail(function() {
             alert('Connection error');
+        }).always(function() {
+            $.mobile.hidePageLoadingMsg();
+        });
+    }
+});
+
+$(document).on('pageshow', '#training', function() {
+    if (liveInterval) {
+        clearInterval(liveInterval);
+    }
+
+    if (!timeTrainingRequested || timeTrainingRequested + 60000 < Date.now()) {
+        timeTrainingRequested = Date.now();
+
+        $.mobile.showPageLoadingMsg("a", "Loading training info...");
+        getData(files.training)
+        .done(function(resp) {
+            $('#content_training').html('');
+            var xmlDoc = $.parseXML(resp),
+                $xml = $(xmlDoc),
+                matchList = $xml.find('MatchList'),
+                obj = null;
+
+            $.Mustache.load('templates/training.html', function() {
+                $('#content_training').mustache('training', maList);
+            });
+
+        }).fail(function() {
+            alert('Connection error');
+            timeMatchListRequested = null;
         }).always(function() {
             $.mobile.hidePageLoadingMsg();
         });

@@ -1,12 +1,29 @@
 <script type="text/template" id="player">
     <h3>{{name}}</h3>
-    <p>Age: {{age}}y {{ageDays}}d</p>
-    <p>TSI: <strong>{{tsi}}</strong> Salary: <strong>{{salary}}</strong></p>
-    <p>Experience: <strong>{{experience}}</strong></p>
-    <p>Leadership: <strong>{{leadership}}</strong></p>
-    <p>{{#cards}}<img src='../img/card_{{cards}}.png'/>{{/cards}}</p>
-    <p>{{#injury}}<img src='../img/injury_{{injury}}.gif'/>{{/injury}} {{#injuryTime}}{{injuryTime}}{{/injuryTime}}</p>
-    <p>Form: <strong>{{form}}</strong></p>
+    <div class="ui-grid-a">
+        <div class="ui-block-a">
+            <p>{{age}} years {{ageDays}} days</p>
+        </div>
+        <div class="ui-block-b">
+            <p>{{#cards}}<img src='../img/card_{{cards}}.png'/>{{/cards}}{{#injury}}<img src='../img/injury_{{injury}}.gif'/>{{/injury}} {{#injuryTime}}{{injuryTime}}{{/injuryTime}}</p>
+        </div>
+    </div>
+    <div class="ui-grid-a">
+        <div class="ui-block-a">
+            <p>TSI: </p>
+            <p>Salary: </p>
+            <p>Experience: </p>
+            <p>Leadership: </p>
+            <p>Form: </p>
+        </div>
+        <div class="ui-block-b">
+            <p><strong>{{tsi}}</strong></p>
+            <p><strong>{{salary}}</strong></p>
+            <p><strong>{{experience}}</strong></p>
+            <p><strong>{{leadership}}</strong></p>
+            <p><strong>{{form}}</strong></p>
+        </div>
+    </div>
 
     <p>{{#skills}}
     <table id="playerSkills">

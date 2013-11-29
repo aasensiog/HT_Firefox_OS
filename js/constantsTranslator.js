@@ -27,10 +27,15 @@ var files = {
     league: {
         file: 'leaguedetails',
         version: '1.4'
+    },
+    training: {
+        file: 'training',
+        version: '2.2'
     }
 };
 
 var ratings = [
+    'inexistent',
     'disastrous',
     'wretched',
     'poor',
@@ -54,7 +59,7 @@ var ratings = [
 ];
 
 var getSkill = function(skillLevel) {
-    return ratings[skillLevel-1];
+    return ratings[skillLevel];
 };
 
 var getRating = function(rat) {
