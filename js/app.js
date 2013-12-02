@@ -607,11 +607,35 @@ $(document).on('pageshow', '#training', function() {
             $('#content_training').html('');
             var xmlDoc = $.parseXML(resp),
                 $xml = $(xmlDoc),
-                matchList = $xml.find('MatchList'),
-                obj = null;
+                team = $xml.find('Team'),
+                obj = {
+                    level: team.find('TrainingLevel').text(),
+                    type: getTraining(team.find('TrainingType').text()),
+                    staminaPart: team.find('StaminaTrainingPart').text(),
+                    morale: getMorale(parseInt(team.find('Morale').text(), 10)),
+                    selfconfidence: getConfidence(parseInt(team.find('SelfConfidence').text(), 10)),
+                    trainer: {
+                        id: team.find('Trainer').find('TrainerID').text(),
+                        name: team.find('Trainer').find('TrainerName').text(),
+                        arrivalDate: team.find('Trainer').find('ArrivalDate').text().substr(0,10)
+                    },
+                    experience: {
+                        442: getSkill(parseInt(team.find('Experience442').text(), 10)),
+                        433: getSkill(parseInt(team.find('Experience433').text(), 10)),
+                        451: getSkill(parseInt(team.find('Experience451').text(), 10)),
+                        352: getSkill(parseInt(team.find('Experience352').text(), 10)),
+                        532: getSkill(parseInt(team.find('Experience532').text(), 10)),
+                        343: getSkill(parseInt(team.find('Experience343').text(), 10)),
+                        541: getSkill(parseInt(team.find('Experience541').text(), 10)),
+                        523: getSkill(parseInt(team.find('Experience523').text(), 10)),
+                        550: getSkill(parseInt(team.find('Experience550').text(), 10)),
+                        253: getSkill(parseInt(team.find('Experience253').text(), 10))
+                    }
+                };
 
             $.Mustache.load('templates/training.html', function() {
-                $('#content_training').mustache('training', maList);
+                $('#content_training').mustache('training', obj);
+                $('#tacticalExperience').table({});
             });
 
         }).fail(function() {

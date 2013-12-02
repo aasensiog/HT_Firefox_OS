@@ -203,3 +203,57 @@ var getMinutesFromInit = function(stringStart) {
 
 };
 
+var MORALE = [
+    'like the Cold War',
+    'murderous',
+    'furious',
+    'irritated',
+    'composed',
+    'calm',
+    'content',
+    'satisfied',
+    'delirious',
+    'walking on clouds',
+    'Paradise on Earth!'
+];
+
+var getMorale = function(morale) {
+    return MORALE[morale];
+};
+
+var CONFIDENCE = [
+    'non-existent',
+    'disastrours',
+    'wretched',
+    'poor',
+    'decent',
+    'strong',
+    'wonderful',
+    'slightly exaggerated',
+    'exaggerated',
+    'completely exaggerated'
+];
+
+var getConfidence = function(confidence) {
+    return CONFIDENCE[confidence];
+};
+
+var TRAINING_TYPES = [
+    'General',
+    'Stamina',
+    'Set Pieces',
+    'Defending',
+    'Scoring',
+    'Cross Pass (Winger)',
+    'Shooting',
+    'Short Passes',
+    'Playmaking',
+    'Goaltending',
+    'Through Passes',
+    'Defensive positions',
+    'Wing attacks'
+];
+var getTraining = function(training) {
+    return TRAINING_TYPES[training];
+};
+
