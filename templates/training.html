@@ -3,11 +3,11 @@
 <p>Training <b>{{type}}</b> at <b>{{level}}%</b></p>
 <p>Stamina part: <b>{{staminaPart}}%</b></p>
 
-<p>Morale: <b>{{morale}}</b></p>
-<p>Self-confidence: <b>{{selfconfidence}}</b></p>
+<p>Morale: {{#morale}}<b>{{morale}}</b>{{/morale}}{{^morale}}Playing a match{{/morale}}</p>
+<p>Self-confidence: {{#selfconfidence}}<b>{{selfconfidence}}</b>{{/selfconfidence}}{{^selfconfidence}}Playing a match{{/selfconfidence}}</p>
 
 <h4>Coach</h4>
-<p><a href='#player?id={{trainer.id}}'>{{trainer.name}}</a> from {{trainer.arrivalDate}}</p>
+<p><a data-role="button" data-icon="forward" href='#player?id={{trainer.id}}'>{{trainer.name}}</a> from {{trainer.arrivalDate}}</p>
 
 <h4>Tactical experience</h4>
 <table id="tacticalExperience">
