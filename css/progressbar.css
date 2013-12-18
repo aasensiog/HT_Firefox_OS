@@ -8,7 +8,7 @@
 
     border-radius: 2px;
     border:1px solid #BBBBBB;
-    
+
    /* Safari 4-5, Chrome 1-9 */
    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#CCCCCC), to(#EEEEEE));
 
@@ -23,9 +23,9 @@
 
    /* Opera 11.10+ */
    background: -o-linear-gradient(top, #CCCCCC, #EEEEEE);
-    
+
    overflow: visible;
-    
+
 }
 
 .progressbar-control .item-bar {
@@ -36,7 +36,7 @@
     margin: -1px;
 
     border-radius: 2px;
-    
+
     -webkit-transition: all 500ms ease-out;
     -moz-transition: all 500ms ease-out;
     -o-transition: all 500ms ease-out;
@@ -46,11 +46,11 @@
 
 .progressbar-control .item-bar.blue {
 
-   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#249AEE), to(#2082C9));
-   background: -webkit-linear-gradient(top, #249AEE, #2082C9);
-   background: -moz-linear-gradient(top, #249AEE, #2082C9);
-   background: -ms-linear-gradient(top, #249AEE, #2082C9);
-   background: -o-linear-gradient(top, #249AEE, #2082C9);
+   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#A8CA68), to(#82B530));
+   background: -webkit-linear-gradient(top, #A8CA68, #82B530);
+   background: -moz-linear-gradient(top, #A8CA68, #82B530);
+   background: -ms-linear-gradient(top, #A8CA68, #82B530);
+   background: -o-linear-gradient(top, #A8CA68, #82B530);
 
    border:1px solid #000000;
 
@@ -63,7 +63,7 @@
    background: -moz-linear-gradient(top, #A8CA68, #82B530);
    background: -ms-linear-gradient(top, #A8CA68, #82B530);
    background: -o-linear-gradient(top, #A8CA68, #82B530);
- 
+
    border:1px solid #000000;
 
 }
@@ -75,7 +75,7 @@
     background: -moz-linear-gradient(top, #FFD12B, #F9CD2B);
     background: -ms-linear-gradient(top, #FFD12B, #F9CD2B);
     background: -o-linear-gradient(top, #FFD12B, #F9CD2B);
-  
+
     border:1px solid #000000;
 
 }
@@ -99,7 +99,7 @@
     background: -moz-linear-gradient(top, #F73D22, #D6351F);
     background: -ms-linear-gradient(top, #F73D22, #D6351F);
     background: -o-linear-gradient(top, #F73D22, #D6351F);
-    
+
     border:1px solid #000000;
 
 }
@@ -111,7 +111,7 @@
     background: -moz-linear-gradient(top, #FFFFFF, #EEEEEE);
     background: -ms-linear-gradient(top, #FFFFFF, #EEEEEE);
     background: -o-linear-gradient(top, #FFFFFF, #EEEEEE);
-    
+
     border:1px solid #000000;
 
 }
@@ -177,6 +177,6 @@
 
 .progressbar-control .item-text {
 
-    
-    
+
+
 }
