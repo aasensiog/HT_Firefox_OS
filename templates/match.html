@@ -1,8 +1,9 @@
 <script type="text/template" id="match">
 	<h3 class='center'><span class='homeTeam'>{{homeTeam.name}}</span> {{homeTeam.goals}} - {{awayTeam.goals}} <span class='awayTeam'>{{awayTeam.name}}</span></h3>
-	<p><img src='../img/{{matchType}}'/> <b>{{arena.name}} <img src='../img/weather_{{arena.weather}}.png'/></b>: {{arena.soldTotal}} spectators</p>
+	<p><img src='../img/{{matchType}}'/> <b>{{arena.name}} </b></p>
+	<p><img src='../img/weather_{{arena.weather}}.png'/> <b>{{arena.soldTotal}}</b> spectators</p>
 
-	<ul data-role='listview' data-inset="true" id='list_goals' data-theme="c">
+	<ul data-role='listview' data-inset="true" id='list_goals' data-theme="d">
 		<li data-role='list-divider'>Highlights</li>
 	{{#goals}}
 		{{#homeScorer}}
@@ -128,9 +129,14 @@
 	        <td></td>
 	    </tr>
 	    <tr>
-	        <th>Possession</th>
-	        <td>{{homeTeam.possession.firstHalf}}% {{homeTeam.possession.secondHalf}}%</td>
-	        <td>{{awayTeam.possession.firstHalf}}% {{awayTeam.possession.secondHalf}}%</td>
+	        <th>1st half</th>
+	        <td>{{homeTeam.possession.firstHalf}}%</td>
+	        <td>{{awayTeam.possession.firstHalf}}%</td>
+	    </tr>
+	    <tr>
+	        <th>2nd half</th>
+	        <td>{{homeTeam.possession.secondHalf}}%</td>
+	        <td>{{awayTeam.possession.secondHalf}}%</td>
 	    </tr>
 	</table>
 

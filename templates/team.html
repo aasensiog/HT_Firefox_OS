@@ -2,25 +2,30 @@
     <h3>{{team.name}} / {{user.username}}</h3>
     <div class="ui-grid-a">
         <div class="ui-block-a">
+            {{#team.logoUrl}}
             <img src='{{team.logoUrl}}' width='140px'/>
+            {{/team.logoUrl}}
+            {{^team.logoUrl}}
+            <img src='../img/escudo.png' width='128px'/>
+            {{/team.logoUrl}}
         </div>
         <div class="ui-block-b">
             <p class='italic'>{{team.arenaName}}</p>
             <p>{{team.leagueName}} {{team.regionName}}</p>
             <p class='italic'>{{team.leagueLevel}}</p>
             {{#team.stillInCup}}
-                <p><img src='../img/cup.png' /> Still playing cup</p>
+                <p><img src='../img/cup.png' /> Cup: playing</p>
             {{/team.stillInCup}}
             {{^team.stillInCup}}
-                <p><img src='../img/cup_ko.png' /> Eliminated from cup</p>
+                <p><img src='../img/cup_ko.png' /> Cup: eliminated</p>
             {{/team.stillInCup}}
 
         </div>
         <div class="ui-block-a">
-            <img src='{{team.dressURI}}' />
+            <p><img src='{{team.dressURI}}' /> Local</p>
         </div>
         <div class="ui-block-b">
-            <img src='{{team.dressAlternateURI}}' />
+            <p><img src='{{team.dressAlternateURI}}' /> Away</p>
         </div>
     </div>
     <div class="ui-grid-solo">
@@ -32,7 +37,9 @@
             {{^ team.teamRank}}
                 <p>Ranking: Your team is playing now</p>
             {{/ team.teamRank}}
+            {{# team.fanClubName}}
             <p>Fan club: <span class='italic'>{{team.fanClubName}}</span></p>
+            {{/ team.fanClubName}}
         </div>
     </div>
 

@@ -1,0 +1,59 @@
+<script type="text/template" id="training">
+<h4>General</h4>
+<p>Training <b>{{type}}</b> at <b>{{level}}%</b></p>
+<p>Stamina part: <b>{{staminaPart}}%</b></p>
+
+<p>Morale: {{#morale}}<b>{{morale}}</b>{{/morale}}{{^morale}}Playing a match{{/morale}}</p>
+<p>Self-confidence: {{#selfconfidence}}<b>{{selfconfidence}}</b>{{/selfconfidence}}{{^selfconfidence}}Playing a match{{/selfconfidence}}</p>
+
+<h4>Coach</h4>
+<p><a data-role="button" data-icon="forward" href='#player?id={{trainer.id}}'>{{trainer.name}}</a> from {{trainer.arrivalDate}}</p>
+
+<h4>Tactical experience</h4>
+<table id="tacticalExperience">
+    <tr>
+        <th>Tactics</td>
+        <th>Experience</td>
+    </tr>
+    <tr>
+        <td>4-4-2</td>
+        <td>{{experience.442}}</td>
+    </tr>
+    <tr>
+        <td>4-3-3</td>
+        <td>{{experience.433}}</td>
+    </tr>
+    <tr>
+        <td>4-5-1</td>
+        <td>{{experience.451}}</td>
+    </tr>
+    <tr>
+        <td>3-5-2</td>
+        <td>{{experience.352}}</td>
+    </tr>
+    <tr>
+        <td>5-3-2</td>
+        <td>{{experience.532}}</td>
+    </tr>
+    <tr>
+        <td>3-4-3</td>
+        <td>{{experience.343}}</td>
+    </tr>
+    <tr>
+        <td>5-4-1</td>
+        <td>{{experience.541}}</td>
+    </tr>
+    <tr>
+        <td>5-2-3</td>
+        <td>{{experience.523}}</td>
+    </tr>
+    <tr>
+        <td>5-5-0</td>
+        <td>{{experience.550}}</td>
+    </tr>
+    <tr>
+        <td>2-5-3</td>
+        <td>{{experience.253}}</td>
+    </tr>
+</table>
+</script>

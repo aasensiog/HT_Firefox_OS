@@ -1,6 +1,6 @@
 
 var getConsumerInfo = function () {
-  var base_url = 'http://albertasensio.es/php_rest_api/proxy.php?url=https://chpp.hattrick.org/oauth/';
+  var base_url = 'https://chpp.hattrick.org/oauth/';
 
   var consumer = {
     consumerKey: 'I7YbVQstMasUCioQvQE19K',
@@ -70,11 +70,9 @@ var request_token = function() {
 
   OAuth.completeRequest(message, accessor);
   url = message.action + '?' + OAuth.formEncode(message.parameters);
-  alert(url);
 
   doXhrCall(url, {
     success: function(response) {
-      alert(response);
       var params = OAuth.getParameterMap(response);
       for (var key in params) {
         //console.log(params[key]);
@@ -83,7 +81,6 @@ var request_token = function() {
       deferred.resolve();
     },
     error: function() {
-      alert('error');
       deferred.reject();
     }
   });

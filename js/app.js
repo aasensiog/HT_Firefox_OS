@@ -4,6 +4,7 @@ var liveInterval = null,
     timeLegueRequested = null,
     timePlayersRequested = null,
     timeTeamRequested = null,
+    timeTrainingRequested = null,
     playersData = {};
 
 $(document).bind("pagebeforechange", function( event, data ) {
@@ -399,6 +400,7 @@ $(document).on('pageshow', '#team', function() {
             });
 
         }).fail(function() {
+            timeTeamRequested = null;
             alert('Connection error');
         }).always(function() {
             $.mobile.hidePageLoadingMsg();
@@ -419,7 +421,7 @@ $(document).on('pageshow', '#player', function() {
                 salary: parseInt($(playerInfo).find('Salary').text(), 10) / 10,
                 cards: ($(playerInfo).find('Cards').text() != 0) ? $(playerInfo).find('Cards').text() : null,
                 injury: getInjurySign($(playerInfo).find('InjuryLevel').text()),
-                injuryTime: parseInt($(playerInfo).find('InjuryLevel').text(), 10) > 0 ? $(playerInfo).find('InjuryLevel').text() : null, 
+                injuryTime: parseInt($(playerInfo).find('InjuryLevel').text(), 10) > 0 ? $(playerInfo).find('InjuryLevel').text() : null,
                 tsi: $(playerInfo).find('TSI').text(),
                 form: getSkill(parseInt($(playerInfo).find('PlayerForm').text(), 10)),
                 experience: getSkill(parseInt($(playerInfo).find('Experience').text(), 10)),
@@ -519,6 +521,7 @@ $(document).on('pageshow', '#players', function() {
             });
 
          }).fail(function() {
+            timePlayersRequested = null;
             alert('Connection error');
          }).always(function() {
             $.mobile.hidePageLoadingMsg();
@@ -585,7 +588,62 @@ $(document).on('pageshow', '#league', function() {
             });
 
         }).fail(function() {
+            timeLegueRequested = null;
             alert('Connection error');
+        }).always(function() {
+            $.mobile.hidePageLoadingMsg();
+        });
+    }
+});
+
+$(document).on('pageshow', '#training', function() {
+    if (liveInterval) {
+        clearInterval(liveInterval);
+    }
+
+    if (!timeTrainingRequested || timeTrainingRequested + 60000 < Date.now()) {
+        timeTrainingRequested = Date.now();
+
+        $.mobile.showPageLoadingMsg("a", "Loading training info...");
+        getData(files.training)
+        .done(function(resp) {
+            $('#content_training').html('');
+            var xmlDoc = $.parseXML(resp),
+                $xml = $(xmlDoc),
+                team = $xml.find('Team'),
+                obj = {
+                    level: team.find('TrainingLevel').text(),
+                    type: getTraining(team.find('TrainingType').text()),
+                    staminaPart: team.find('StaminaTrainingPart').text(),
+                    morale: getMorale(parseInt(team.find('Morale').text(), 10)),
+                    selfconfidence: getConfidence(parseInt(team.find('SelfConfidence').text(), 10)),
+                    trainer: {
+                        id: team.find('Trainer').find('TrainerID').text(),
+                        name: team.find('Trainer').find('TrainerName').text(),
+                        arrivalDate: team.find('Trainer').find('ArrivalDate').text().substr(0,10)
+                    },
+                    experience: {
+                        442: getSkill(parseInt(team.find('Experience442').text(), 10)),
+                        433: getSkill(parseInt(team.find('Experience433').text(), 10)),
+                        451: getSkill(parseInt(team.find('Experience451').text(), 10)),
+                        352: getSkill(parseInt(team.find('Experience352').text(), 10)),
+                        532: getSkill(parseInt(team.find('Experience532').text(), 10)),
+                        343: getSkill(parseInt(team.find('Experience343').text(), 10)),
+                        541: getSkill(parseInt(team.find('Experience541').text(), 10)),
+                        523: getSkill(parseInt(team.find('Experience523').text(), 10)),
+                        550: getSkill(parseInt(team.find('Experience550').text(), 10)),
+                        253: getSkill(parseInt(team.find('Experience253').text(), 10))
+                    }
+                };
+
+            $.Mustache.load('templates/training.html', function() {
+                $('#content_training').mustache('training', obj);
+                $('#tacticalExperience').table({});
+            });
+
+        }).fail(function() {
+            alert('Connection error');
+            timeMatchListRequested = null;
         }).always(function() {
             $.mobile.hidePageLoadingMsg();
         });

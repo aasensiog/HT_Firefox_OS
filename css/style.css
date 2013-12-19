@@ -1,3 +1,4 @@
+
 .homeTeam {
   color: darkgreen;
 }
@@ -38,7 +39,7 @@ table {
     color: black;
     border: 1px solid #b4b4b4;
     background: #fff;
-    font: bold 12px helvetica;
+    font: bold 12px lato;
     padding: 0;
     margin-top:10px;
     width: 100%;
@@ -62,5 +63,24 @@ table tr:last-child td {
 }
 
 .userTeam {
-    background: Gold;
+    background: #AAD315;
+}
+
+.ui-icon-footer-home {
+    background-image: url('../img/footer/home.png');
+}
+.ui-icon-footer-matches {
+    background-image: url('../img/footer/matches.png');
+}
+.ui-icon-footer-players {
+    background-image: url('../img/footer/players.png');
+}
+.ui-icon-footer-team {
+    background-image: url('../img/footer/team.png');
+}
+.ui-icon-footer-league {
+    background-image: url('../img/footer/league.png');
+}
+.ui-icon-footer-training {
+    background-image: url('../img/footer/training.png');
 }
