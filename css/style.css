@@ -1,3 +1,4 @@
+
 .homeTeam {
   color: darkgreen;
 }
@@ -38,7 +39,7 @@ table {
     color: black;
     border: 1px solid #b4b4b4;
     background: #fff;
-    font: bold 12px helvetica;
+    font: bold 12px lato;
     padding: 0;
     margin-top:10px;
     width: 100%;

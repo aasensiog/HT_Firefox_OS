@@ -400,6 +400,7 @@ $(document).on('pageshow', '#team', function() {
             });
 
         }).fail(function() {
+            timeTeamRequested = null;
             alert('Connection error');
         }).always(function() {
             $.mobile.hidePageLoadingMsg();
@@ -520,6 +521,7 @@ $(document).on('pageshow', '#players', function() {
             });
 
          }).fail(function() {
+            timePlayersRequested = null;
             alert('Connection error');
          }).always(function() {
             $.mobile.hidePageLoadingMsg();
@@ -586,6 +588,7 @@ $(document).on('pageshow', '#league', function() {
             });
 
         }).fail(function() {
+            timeLegueRequested = null;
             alert('Connection error');
         }).always(function() {
             $.mobile.hidePageLoadingMsg();

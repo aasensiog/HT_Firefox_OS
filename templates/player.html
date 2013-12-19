@@ -1,15 +1,16 @@
 <script type="text/template" id="player">
-    <h3>{{name}}</h3>
+    <h3>{{#cards}}<img src='../img/card_{{cards}}.png'/>{{/cards}}{{#injuryTime}}{{injuryTime}}{{/injuryTime}}{{#injury}}<img src='../img/injury_{{injury}}.gif'/>{{/injury}} {{name}}</h3>
     <div class="ui-grid-a">
         <div class="ui-block-a">
-            <p>{{age}} years {{ageDays}} days</p>
+
         </div>
         <div class="ui-block-b">
-            <p>{{#cards}}<img src='../img/card_{{cards}}.png'/>{{/cards}}{{#injury}}<img src='../img/injury_{{injury}}.gif'/>{{/injury}} {{#injuryTime}}{{injuryTime}}{{/injuryTime}}</p>
+
         </div>
     </div>
     <div class="ui-grid-a">
         <div class="ui-block-a">
+            <p>Age</p>
             <p>TSI: </p>
             <p>Salary: </p>
             <p>Experience: </p>
@@ -17,6 +18,7 @@
             <p>Form: </p>
         </div>
         <div class="ui-block-b">
+            <p>{{age}} years {{ageDays}} days</p>
             <p><strong>{{tsi}}</strong></p>
             <p><strong>{{salary}}</strong></p>
             <p><strong>{{experience}}</strong></p>
