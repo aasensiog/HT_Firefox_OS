@@ -35,27 +35,27 @@ var files = {
 };
 
 var ratings = [
-    'inexistent',
-    'disastrous',
-    'wretched',
+    'inexistent', //0
+    'disastrous', //1
+    'wretched', 
     'poor',
     'weak',
-    'inadequate',
+    'inadequate', //5
     'passable',
     'solid',
     'excellent',
     'formidable',
-    'outstanding',
+    'outstanding', //10
     'brilliant',
     'magnificent',
     'world class',
     'supernatural',
-    'titanic',
+    'titanic', //15
     'extra-terrestrial',
     'mythical',
     'magical',
     'utopian',
-    'divine'
+    'divine' //20
 ];
 
 var getSkill = function(skillLevel) {
@@ -63,8 +63,8 @@ var getSkill = function(skillLevel) {
 };
 
 var getRating = function(rat) {
-    var div = Math.floor((rat-1) / 4);
-    var rest = (rat-1) % 4;
+    var div = Math.floor((rat - 1) / 4);
+    var rest = (rat - 1) % 4;
     var sublevel = '';
 
     switch (rest) {
@@ -81,7 +81,7 @@ var getRating = function(rat) {
             sublevel = '++';
             break;
     }
-    return ratings[div]+sublevel;
+    return ratings[div + 1] + sublevel;
 };
 
 var Attitude = {

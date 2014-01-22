@@ -296,6 +296,14 @@ var refreshLiveMatch = function(matchId) {
         actionType: 'viewAll',
         matchID: matchId
     };
+    var getTeamName = function(eventid, team1, team2) {
+        if (eventid === team1.id) {
+            return team1.name;
+        } else if (eventid === team2.id) {
+            return team2.name;
+        }
+        return "< common >";
+    };
 
     $.mobile.showPageLoadingMsg("a", "Loading live match info...");
     getData(files.live, params)
@@ -330,8 +338,7 @@ var refreshLiveMatch = function(matchId) {
                         minute: $(this).find('Minute').text(),
                         eventKey: $(this).find('eventKey').text(), //TODO: translate
                         description: $(this).find('EventText').text().replace(/<[^>]*>/g, ''),
-                        teamName: ($(this).find('SubjectTeamID').text() === obj.homeTeam.id) ?
-                            obj.homeTeam.name : obj.awayTeam.name
+                        teamName: getTeamName($(this).find('SubjectTeamID').text(), obj.homeTeam, obj.awayTeam)
                     });
                 });
                 obj.events = events;
@@ -578,7 +585,8 @@ $(document).on('pageshow', '#league', function() {
                     points: $(this).find('Points').text(),
                     won: $(this).find('Won').text(),
                     lost: $(this).find('Lost').text(),
-                    draws: $(this).find('Draws').text()
+                    draws: $(this).find('Draws').text(),
+                    //positionChange: $(this).find('PositionChange').text()
                 });
             });
             obj.teams = teams;
